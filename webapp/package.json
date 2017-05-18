@@ -1,0 +1,13 @@
+{
+  "name": "dog-weight-manager",
+  "version": "0.0.1",
+  "description": "Weight management app for dogs",
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-ui-router": "^1.0.3",
+    "connect": "^3.6.2",
+    "ng-flow": "^2.1.4",
+    "requirejs": "^2.3.3",
+    "serve-static": "^1.12.3"
+  }
+}

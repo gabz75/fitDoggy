@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <div flow-init flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]">
+        <h3>
+            {{vm.day}}
+        </h3>
+        <div class="thumbnail">
+            <span flow-btn class="btn btn-primary" ng-show="!$flow.files.length">
+                Select a photo
+                <input type="file" />
+                <p>
+                    Only PNG,GIF,JPG,JEPG files allowed.
+                </p>
+            </span>
+            <img ng-if="$flow.files.length" flow-img="$flow.files[0]" />
+        </div>
+        <div ng-if="$flow.files.length">
+            <span flow-btn class="btn btn-info" ng-show="$flow.files.length">
+                Change
+                <input type="file" />
+            </span>
+            <span class="btn btn-danger" ng-show="$flow.files.length" ng-click="$flow.cancel()">
+                Remove
+            </span>
+        </div>
+    </div>
+</div>
