@@ -1,45 +1,37 @@
 define([
 	'angular',
-	'modules/home/homeService'
-], function (angular) {
+	'dateformat'
+], function (angular, dateformat) {
 	'use strict';
 
-	angular.module('home.controller', ['home.service'])
-		.controller('home.controller', homeCtrl);
+	angular.module('home.controller', ['common.pubsub', 'home.service'])
+		.controller('homeCtrl', homeCtrl);
 
-	homeCtrl.$inject = ['home.service'];
-	function homeCtrl(homeService) {
+	homeCtrl.$inject = ['$scope', 'pubsub', 'homeService'];
+	function homeCtrl($scope, pubsub, homeService) {
 		var vm = this;
 
 		vm.getDogs = getDogs;
-		vm.addNewDog = addNewDog;
-		vm.getDog = getDog;
+
+		init();
+
+		function init() {
+			pubsub.initSubscriptions();
+			getDogs();
+			vm.date = dateformat(new Date(), 'mmddyyyy');
+
+		}
 
 		function getDogs() {
 			homeService.getDogs().then(function (response) {
-				vm.dog = response;
+				vm.dogs = response;
+				console.log(response);
 			}, function (error) {
-		//openErrorModal(error);
-		console.log(error);
-	});
+				//openErrorModal(error);
+				console.error(error);
+				vm.dogs = [];
+			});
 		}
 
-		function addNewDog() {
-			homeService.addNewDog().then(function (response) {
-
-			}, function (error) {
-		//openErrorModal(error);
-		console.log(error);
-	});
-		}
-
-		function getDog(id) {
-			homeService.getDog(id).then(function (response) {
-				vm.dog = response;
-			}, function (error) {
-		//openErrorModal(error);
-		console.log(error);
-	});
-		}
 	}
 });

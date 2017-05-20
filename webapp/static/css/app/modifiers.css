@@ -1,0 +1,15 @@
+body {
+	font-family: 'PT Sans', sans-serif;
+}
+.p-0 {
+	padding: 0;
+}
+.p-l-0 {
+	padding-left: 0;
+}
+.p-r-0 {
+	padding-right: 0;
+}
+.pull-left {
+	float: left!important;
+}

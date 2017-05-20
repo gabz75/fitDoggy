@@ -4,10 +4,12 @@
   "description": "Weight management app for dogs",
   "dependencies": {
     "angular": "^1.6.4",
-    "angular-ui-router": "^1.0.3",
-    "connect": "^3.6.2",
-    "ng-flow": "^2.1.4",
+    "angular-route": "^1.6.4",
+    "dateformat": "^2.0.0",
+    "domready": "^1.0.8",
+    "lodash": "^4.17.4",
     "requirejs": "^2.3.3",
-    "serve-static": "^1.12.3"
+    "requirejs-domready": "^2.0.3",
+    "rx": "^4.1.0"
   }
 }

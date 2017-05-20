@@ -1,15 +1,18 @@
 from flask import Flask
-from pymongo import MongoClient
+from flask_sqlalchemy import SQLAlchemy
+from flask_uploads import UploadSet, IMAGES, configure_uploads
 
 import os
 import json
 
-application = Flask(__name__)
-
+application = Flask(__name__, instance_relative_config=True)
 application.config.from_object('webapp.settings')
-application.url_map.strict_slashes = False
+ 
+# application.url_map.strict_slashes = False
 
-client = MongoClient('localhost:27017')
-db = client.MachineData
+db = SQLAlchemy(application)
+images = UploadSet('images', IMAGES)
+configure_uploads(application, images)
 
 import webapp.app
+import webapp.models

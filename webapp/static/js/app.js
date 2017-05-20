@@ -1,31 +1,55 @@
 define([
     'angular',
-    'uiRouter',
-    'modules/home/home'
+    'ngRoute',
+    'common/services/pubsub',
+    'common/services/cache',
+    'modules/home/home',
+    'modules/details/details',
+    'modules/edit/edit'
 ], function (angular) {
 
     'use strict';
 
     angular.module('app', [
+        'ngRoute',
+        'common.pubsub',
+        'common.cache',
         'home',
-        'ui.router'
+        'details'
     ])
         .config(appConfig);
 
-    appConfig.$inject = ['$stateProvider'];
-    function appConfig($stateProvider) {
-        $stateProvider
-        .state('dogApp', {
-            url: '/',
-            templateUrl: 'index.html',
-            redirectTo: 'dogApp.home'
+    appConfig.$inject = ['$routeProvider'];
+    function appConfig($routeProvider) {
+        $routeProvider
+        .when('/', {
+            redirectTo: '/home'
         })
-        .state('dogApp.home', {
-            url: '/home',
-            templateUrl: '../../templates/home.html',
+        .when('/home', {
+            templateUrl: 'static/partials/home.html',
             controller: 'homeCtrl',
             controllerAs: 'vm'
+        })
+        .when('/dog/:dog/date/:date', {
+            templateUrl: 'static/partials/details.html',
+            controller: 'detailsCtrl',
+            controllerAs: 'vm'
+        })
+        .when('/dog/:dog/edit', {
+            templateUrl: 'static/partials/edit.html',
+            controller: 'editCtrl',
+            controllerAs: 'vm'
+        })
+        .when('/dog/new', {
+            templateUrl: 'static/partials/addNew.html',
+            controller: 'editCtrl',
+            controllerAs: 'vm'
+        })
+        .otherwise({
+            redirectTo: '/home'
         });
 
     }
+
 });
+

@@ -3,55 +3,25 @@ define([
 ], function (angular) {
 	'use strict';
 
-	angular.module('home.service', [])
-		.service('home.service', homeService);
+	angular.module('home.service', ['common.cache'])
+		.service('homeService', homeService);
 	
-	homeService.$inject = ['$http'];
-	function homeService($http) {
+	homeService.$inject = ['$http', 'cache'];
+	function homeService($http, cache) {
 		this.getDogs = getDogs;
-		this.addNewDog = addNewDog;
 
 		function getDogs() {
 			return $http({
 				method: 'POST',
-				url: '/getDogs',
+				url: '/dog/all',
 			}).then(function (response) {
+				cache.setDogs = response.data;
 				return response.data;
 			}, function (error) {
-			//openErrorModal(error);
-			console.log(error);
-			return error;
-		});
-		}
-
-
-		function addNewDog(dog) {
-			return $http({
-				method: 'POST',
-				url: '/addDog',
-				dog: dog
-			}).then(function (response) {
-			//show
-		}, function (error) {
-			//openErrorModal(error);
-			return error;
-		});
-		}
-
-		function getDog(id) {			
-			return $http({
-				method: 'POST',
-				url: '/getDog',
-				data: {
-					id: id
-				}
-			}).then(function (response) {
-				return response.data;
-			}, function (error) {
-			//openErrorModal(error);
-			console.log(error);
-			return error;
-		});
+				//openErrorModal(error);
+				console.error(error);
+				return error;
+			});
 		}
 	}
 });

@@ -1,6 +1,44 @@
-.thumbnail {
-	max-width: 200px; 
-	max-height: 150px; 
-	line-height: 20px; 
-	margin-bottom: 5px;
+.container__padded {
+	padding: 25px 15px;
+}
+.panel__fixed {
+	margin: auto;
+}
+.nav-pills__pill__outlined {
+	border-radius: 4px;
+	border: 1px solid #003e51;
+}
+.nav-pills>li>a{
+	color: #003e51;
+	border-radius: 4px;
+	text-align: center;
+}
+.thumbnail-container {
+	background-color: #f5f5f5;
+	color: #495259;
+	font-size: large;
+	width: 400px; 
+	height: 400px; 
+	margin: 5px auto;
+}
+.input__hidden {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.input__hidden + label {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    line-height: 400px;
+    text-align: center;
 }
