@@ -1,17 +1,18 @@
 define([
 	'angular',
-	'lodash',
-	'rx'
-], function (angular, _, rx) {
+	'lodash'
+], function (angular, _) {
 	'use strict';
 
 	angular.module('common.cache', [])
 		.service('cache', cache);
 
-	cache.$inject = [];
 	function cache() {
-		var dogs = {};
-
+		var dogs = {},
+			map = {
+				'/dog': getDog
+			};
+		this.get = get;
 		this.getDogs = getDogs;
 		this.setDogs = setDogs;
 		this.getDog = getDog;
@@ -28,5 +29,15 @@ define([
 			return dogs[id];
 		}
 
+		function get(url, data) {
+			var result;
+			if (!map[url]) {
+				return result;
+			}
+			_.forEach(data, function (value) {
+				result = map[url](value) || result;
+			});
+			return result
+		}
 	}
 });

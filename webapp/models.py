@@ -49,22 +49,15 @@ class Log(db.Model):
         self.image_filename = image_filename
         self.image_url = image_url 
 
-class Exercise(db.Model):
-    __tablename__ = 'exercise'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    exercise_type = db.Column(db.String(128))
-
 class ExerciseLog(db.Model):
     __tablename__ = 'exerciselog'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    exercise_type = db.Column(db.String(128))
     length = db.Column(db.Float)
 
     log_id = db.Column(db.Integer, db.ForeignKey('log.id'))
     log = db.relationship('Log', back_populates='exerciselogs')
-
-    exercise_id = db.Column(db.Integer, db.ForeignKey('exercise.id'))
 
 class Food(db.Model):
     __tablename__ = 'food'
@@ -86,7 +79,6 @@ db.create_all()
 application.config['API_MODELS'] = {
     'dog': Dog,
     'log': Log,
-    'exercise': Exercise,
     'exerciselog': ExerciseLog,
     'food': Food
 }
@@ -96,7 +88,6 @@ application.config['API_MODELS'] = {
 application.config['CRUD_URL_MODELS'] = {
     'dog': Dog,
     'log': Log,
-    'exercise': Exercise,
     'exerciselog': ExerciseLog,
     'food': Food
 }

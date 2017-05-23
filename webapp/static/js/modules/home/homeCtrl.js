@@ -1,14 +1,14 @@
 define([
 	'angular',
-	'dateformat'
-], function (angular, dateformat) {
+	'moment'
+], function (angular, moment) {
 	'use strict';
 
-	angular.module('home.controller', ['common.pubsub', 'home.service'])
+	angular.module('home.controller', ['common.dialog', 'common.pubsub', 'home.service'])
 		.controller('homeCtrl', homeCtrl);
 
-	homeCtrl.$inject = ['$scope', 'pubsub', 'homeService'];
-	function homeCtrl($scope, pubsub, homeService) {
+	homeCtrl.$inject = ['$scope', 'dialog', 'pubsub', 'homeService'];
+	function homeCtrl($scope, dialog, pubsub, homeService) {
 		var vm = this;
 
 		vm.getDogs = getDogs;
@@ -18,17 +18,15 @@ define([
 		function init() {
 			pubsub.initSubscriptions();
 			getDogs();
-			vm.date = dateformat(new Date(), 'mmddyyyy');
+			vm.date = moment().format('mmddyyyy');
 
 		}
 
 		function getDogs() {
 			homeService.getDogs().then(function (response) {
 				vm.dogs = response;
-				console.log(response);
 			}, function (error) {
-				//openErrorModal(error);
-				console.error(error);
+				dialog.error(error);
 				vm.dogs = [];
 			});
 		}

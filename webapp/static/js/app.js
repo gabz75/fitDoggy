@@ -1,10 +1,13 @@
 define([
     'angular',
-    'ngRoute',
+    'angular-route',
     'common/services/pubsub',
     'common/services/cache',
+    'common/services/httpService',
+    'common/services/dialog',
     'modules/home/home',
     'modules/details/details',
+    'modules/log/log',
     'modules/edit/edit'
 ], function (angular) {
 
@@ -12,10 +15,13 @@ define([
 
     angular.module('app', [
         'ngRoute',
-        'common.pubsub',
         'common.cache',
+        'common.dialog',
+        'common.pubsub',
+        'common.service',
         'home',
-        'details'
+        'details',
+        'log'
     ])
         .config(appConfig);
 
@@ -31,8 +37,8 @@ define([
             controllerAs: 'vm'
         })
         .when('/dog/:dog/date/:date', {
-            templateUrl: 'static/partials/details.html',
-            controller: 'detailsCtrl',
+            templateUrl: 'static/partials/log.html',
+            controller: 'logCtrl',
             controllerAs: 'vm'
         })
         .when('/dog/:dog/edit', {
@@ -41,8 +47,13 @@ define([
             controllerAs: 'vm'
         })
         .when('/dog/new', {
-            templateUrl: 'static/partials/addNew.html',
+            templateUrl: 'static/partials/new.html',
             controller: 'editCtrl',
+            controllerAs: 'vm'
+        })
+        .when('/dog/:dog', {
+            templateUrl: 'static/partials/details.html',
+            controller: 'detailsCtrl',
             controllerAs: 'vm'
         })
         .otherwise({

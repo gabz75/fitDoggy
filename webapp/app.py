@@ -4,7 +4,8 @@ from datetime import datetime
 from dateutil import parser
 from operator import eq
 from webapp import application, db, images
-from models import Dog, Log
+from models import Dog, Log, Food, ExerciseLog
+from helpers import createJsonResponse
 
 import os
 import json
@@ -15,24 +16,24 @@ def index():
 
 @application.route('/dog',methods=['POST'])
 def getDog():
-    print request.json
     try:
         dogId = request.json['id']
         dog = Dog.query.filter_by(id=dogId).first()
-        print dog.name
+        if (dog is None):
+            return createJsonResponse({})
         dogDetail = {
-            'name': dog.name,
+            'name': dog.dog_name,
             'breed': dog.breed,
-            'birthday': dog.birthday,
+            'birthday': dog.birthday.strftime('%m/%d/%Y'),
             'current': dog.current,
             'goal': dog.goal,
-            'date': dog.date,
+            'date': dog.date.strftime('%m/%d/%Y'),
             'metric': dog.metric,
             'id': str(dog.id)
         }
         return json.dumps(dogDetail)
     except Exception, e:
-        return str(e)
+        return json.dumps(str(e))
 
 @application.route('/dog/all',methods=['POST'])
 def getDogs():
@@ -53,8 +54,8 @@ def getDogs():
             }
             dogList.append(dogItem)
         return json.dumps(dogList)
-    except Exception,e:
-        return jsonify(status='ERROR',message=str(e))
+    except Exception, e:
+        return json.dumps(str(e))
 
 @application.route('/dog/new',methods=['POST'])
 def addNewDog():
@@ -75,17 +76,10 @@ def addNewDog():
         db.session.add(dog)
         db.session.commit()
 
-        return json.dumps({
-            'status': 'SUCCESS', 
-            'data': dog
-        })
+        return json.dumps(dog)
 
-    except Exception,e:
-        print e;
-        return json.dumps({
-            'status': 'ERROR',
-            'data': str(e)
-        })
+    except Exception, e:
+        return json.dumps(str(e))
 
 @application.route('/dog/log',methods=['POST'])
 def getLog():
@@ -94,14 +88,62 @@ def getLog():
         logDate = request.json['date']
         log = Log.query.filter_by(dog_id=dogId, date=datetime.strptime(logDate, '%m%d%Y')).first()
         if (log is None):
-            log = [] 
-        return json.dumps({
-            'status': 'SUCCESS', 
-            'log': log
-        })
+            return createJsonResponse({})
+
+        logItem = {
+            'id': str(log.id),
+            'date': log.date,
+            'weight': log.weight,
+            'image_filename': log.image_filename,
+            'image_url': log.image_url,
+            'foods': getFood(str(log.id)),
+            'exercise': getExercise(str(log.id))
+        }
+        return json.dumps(log)
 
     except Exception, e:
-        return str(e)
+        return json.dumps(str(e))
+
+def getFood(logId):
+    foodList = []
+    try:
+        foods = Food.query.filter_by(log_id=logId)
+        
+        for food in foods:
+            foodItem = {
+                'food': food.food,
+                'food_amount': food.food_amount,
+                'log_id': food.log_id,
+                'id': str(food.id)
+            }
+            foodList.append(foodItem)
+            print food.food;
+        return foodList
+    except Exception, e:
+        # return json.dumps(str(e))
+        raise e
+
+def getExercise(logId):
+    exerciseList = []
+    try:
+        exerciseLog = ExerciseLog.query.filter_by(log_id=logId)
+        
+        for exercise in exerciseLog:
+            exerciseData = {
+                'exercise_type': exercise.exercise_type,
+                'length': exercise.length,
+                'log_id': exercise.log_id,
+                'id': str(exercise.id)
+            }
+            exerciseList.append(exerciseData)
+        return exerciseList
+    except Exception, e:
+        # return json.dumps({
+        #     'status': 'ERROR',
+        #     'error': str(e)
+        # })
+        raise e
+        
 
 @application.route('/dog/update',methods=['POST'])
 def updateDog():

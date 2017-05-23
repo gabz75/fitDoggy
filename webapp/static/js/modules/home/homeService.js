@@ -3,24 +3,18 @@ define([
 ], function (angular) {
 	'use strict';
 
-	angular.module('home.service', ['common.cache'])
+	angular.module('home.service', ['common.service', 'common.cache'])
 		.service('homeService', homeService);
 	
-	homeService.$inject = ['$http', 'cache'];
-	function homeService($http, cache) {
+	homeService.$inject = ['httpService', 'cache'];
+	function homeService(httpService, cache) {
 		this.getDogs = getDogs;
 
 		function getDogs() {
-			return $http({
-				method: 'POST',
-				url: '/dog/all',
-			}).then(function (response) {
-				cache.setDogs = response.data;
-				return response.data;
+			return httpService.post('/dog/all', {}).then(function (response) {
+				return response;
 			}, function (error) {
-				//openErrorModal(error);
-				console.error(error);
-				return error;
+				console.error(error)
 			});
 		}
 	}

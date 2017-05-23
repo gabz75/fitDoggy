@@ -1,22 +1,18 @@
 define(['angular'], function (angular) {
     'use strict';
 
-    angular.module('edit.service', [])
+    angular.module('edit.service', ['common.service'])
         .service('editService', editService);
 
-    editService.$inject = ['$http'];
-    function editService($http) {
+    editService.$inject = ['httpService'];
+    function editService($httpService) {
         this.addNewDog = addNewDog;
 
         function addNewDog(dog) {
-            return $http({
-                method: 'POST',
-                url: '/dog/new',
-                data: dog
+            return httpService.post('/dog/new', {
+                dog: dog
             }).then(function (response) {
-                if (response.status !== 'ERROR') {
-                    return response.data;
-                }
+                return response.data;
             }, function (error) {
                 //openErrorModal(error);
                 return error;
