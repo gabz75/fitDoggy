@@ -3,11 +3,11 @@ define([
 ], function (angular) {
 	'use strict';
 
-	angular.module('home.service', ['common.service', 'common.cache'])
+	angular.module('home.service', ['common.service'])
 		.service('homeService', homeService);
 	
-	homeService.$inject = ['httpService', 'cache'];
-	function homeService(httpService, cache) {
+	homeService.$inject = ['httpService'];
+	function homeService(httpService) {
 		this.getDogs = getDogs;
 
 		function getDogs() {

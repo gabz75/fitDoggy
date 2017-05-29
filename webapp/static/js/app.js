@@ -1,14 +1,15 @@
 define([
     'angular',
     'angular-route',
-    'common/services/pubsub',
-    'common/services/cache',
+    'common/services/cache/Cache',
+    'common/services/cache/cacheService',
+    'common/services/dialog/dialog',
     'common/services/httpService',
-    'common/services/dialog',
+    'common/services/pubsub',
     'modules/home/home',
     'modules/details/details',
     'modules/log/log',
-    'modules/edit/edit'
+    'modules/newDog/newDog'
 ], function (angular) {
 
     'use strict';
@@ -16,49 +17,54 @@ define([
     angular.module('app', [
         'ngRoute',
         'common.cache',
+        'common.cacheService',
         'common.dialog',
         'common.pubsub',
         'common.service',
         'home',
         'details',
-        'log'
+        'log',
+        'newDog'
     ])
         .config(appConfig);
 
-    appConfig.$inject = ['$routeProvider'];
-    function appConfig($routeProvider) {
+    appConfig.$inject = ['$routeProvider', '$locationProvider'];
+    function appConfig($routeProvider, $locationProvider) {
         $routeProvider
         .when('/', {
             redirectTo: '/home'
         })
         .when('/home', {
-            templateUrl: 'static/partials/home.html',
+            templateUrl: '/static/partials/home.html',
             controller: 'homeCtrl',
             controllerAs: 'vm'
         })
         .when('/dog/:dog/date/:date', {
-            templateUrl: 'static/partials/log.html',
+            templateUrl: '/static/partials/log.html',
             controller: 'logCtrl',
             controllerAs: 'vm'
         })
-        .when('/dog/:dog/edit', {
-            templateUrl: 'static/partials/edit.html',
-            controller: 'editCtrl',
-            controllerAs: 'vm'
-        })
         .when('/dog/new', {
-            templateUrl: 'static/partials/new.html',
-            controller: 'editCtrl',
+            templateUrl: '/static/partials/newDog.html',
+            controller: 'newDogCtrl',
             controllerAs: 'vm'
         })
         .when('/dog/:dog', {
-            templateUrl: 'static/partials/details.html',
+            templateUrl: '/static/partials/details.html',
             controller: 'detailsCtrl',
             controllerAs: 'vm'
         })
         .otherwise({
             redirectTo: '/home'
         });
+
+        // $locationProvider.hashPrefix('#!');
+
+        // $locationProvider.html5Mode({
+        //     enabled: true,
+        //     requireBase: false
+        // });
+
 
     }
 

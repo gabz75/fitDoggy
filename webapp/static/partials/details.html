@@ -1,8 +1,28 @@
 <div class="panel panel-default panel__fixed">
-<div class="panel-heading">
-<h3>{{vm.dog.name}}</h3>
-</div>
+	<div class="panel-heading row">
+		<h3 class="col-xs-6"> {{vm.dog.name}} </h3>
+		<a class="col-xs-6" ng-click="vm.confirmDelete()">
+			<i class="fa fa-trash-o" aria-hidden="true"></i>
+		</a>
+	</div>
 	<div class="panel-body">
-		
+		<ul class="nav nav-tabs">
+			<li class="active" ng-repeat="chartType in vm.chartTypes">
+				<a data-toggle="tab" ng-click="vm.setType(chartType)">{{chartType.label}}</a>
+			</li>
+		</ul>
+		<div class="chart-container row">
+			<div class="chart-container__nav col-xs-2" ng-click="vm.prev()" ng-if="vm.hasPrev()">
+				<i class="fa fa-chevron-left" aria-hidden="true"></i>
+			</div>
+			<div class="col-xs-8">
+				<div id="linechart"></div>
+			</div>
+			<div class="chart-container__nav col-xs-2" ng-click="vm.next()" ng-if="vm.hasNext()">
+				<i class="fa fa-chevron-right" aria-hidden="true"></i>
+			</div>
+		</div>
+		<div class="info-container row">
+		</div>
 	</div>
 </div>

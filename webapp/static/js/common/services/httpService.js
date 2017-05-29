@@ -3,16 +3,16 @@ define([
 ], function (angular) {
 	'use strict';
 
-	angular.module('common.service', ['common.service', 'common.cache'])
+	angular.module('common.service', ['common.service', 'common.cacheService'])
 		.service('httpService', httpService);
 
-	httpService.$inject = ['$q', '$http', 'cache'];
-	function httpService($q, $http, cache) {
+	httpService.$inject = ['$q', '$http', 'cacheService'];
+	function httpService($q, $http, cacheService) {
 		this.post = post;
 
 		function post(url, queryParams) {	
 			var deferred = $q.defer(),
-				cached = cache.get(url, queryParams);
+				cached = cacheService.get(url, queryParams);
 			if (cached) {
 				deferred.resolve(cached);
 			} else {
@@ -23,9 +23,12 @@ define([
 				}).then(function (response) {
 					if (response.status !== 500) {
 						deferred.resolve(response.data);
+						cacheService.set(url, queryParams, response.data);
 					} else {
-						deferred.reject(response.data)
+						deferred.reject(response.data);
 					}
+				}, function (response) {
+					deferred.reject(response.data);
 				});
 			}			
 			

@@ -1,19 +1,58 @@
-.container__padded {
-	margin-left: auto;
-	margin-right: auto;
-	width: 750px;
+.panel-container {
+    margin-top: -100px;
+    padding-top: 150px;
+    padding-bottom: 50px;
+    overflow: auto;
+	height: 100%!important;
+}
+.container__fixed {
+	max-width: 650px;
+	margin: auto;
 }
 .container__footer {
-	position: absolute;
+	position: fixed;
 	text-align: center;
-	border-top: 1px solid #003e51;
+	border-top: 1px solid #e1e1e1;
 	bottom: 0;
 	width: 100%;
 	height: 50px;
 	padding-top: 15px;
+	background-color: #fff;
 }
 .panel__fixed {
+	position: relative;
+	margin: 50px auto;
+}
+.form__fixed {
 	margin: auto;
+}
+.form-group__label {
+	font-size: 16px;
+	font-weight: 600;
+}
+.form-group__inline {
+	height: 36px;
+}
+.form-group label {
+	margin: 0;
+}
+.form-group__footer {
+	text-align: right;
+}
+.form-group__icon__link {
+	padding-left: 10px;
+}
+#exercise td,
+#food td {
+	vertical-align: middle!important;
+}
+#exercise .form-control,
+#food .form-control {
+	height: 30px;
+}
+#exercise .input-group-addon,
+#food .input-group-addon {
+	padding: 5px 12px;
 }
 .nav-pills__pill__outlined {
 	border-radius: 4px;
@@ -24,12 +63,13 @@
 	border-radius: 4px;
 	text-align: center;
 }
+
 .thumbnail-container {
 	background-color: #f5f5f5;
 	color: #495259;
 	font-size: large;
-	width: 400px; 
-	height: 400px; 
+	width: 350px; 
+	height: 350px; 
 	margin: 5px auto;
 }
 .input__hidden {
@@ -50,6 +90,17 @@
     overflow: hidden;
     width: 100%;
     height: 100%;
-    line-height: 400px;
+    line-height: 350px;
     text-align: center;
+}
+
+.chart-container {
+	height: 500px;
+}
+.chart-container__nav {
+	height: 500px;
+}
+.chart-container__nav:hover {
+    opacity: 0.2;
+    background-color: #fff;
 }

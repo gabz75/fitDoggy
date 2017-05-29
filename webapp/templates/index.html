@@ -2,27 +2,25 @@
 <html lang="en">
 <head>
 	<title>Dogs App</title>
-	<link type="text/css" href="static/node_modules/bootstrap/dist/css/bootstrap.min.css" 
-		rel="stylesheet" />
-	<link type="text/css" href="static/node_modules/bootstrap/dist/css/bootstrap-theme.min.css" 
-		rel="stylesheet" />
-	<link type="text/css" href="static/node_modules/font-awesome/css/font-awesome.css" 
-		rel="stylesheet" />
-		<link type="text/css" href="static/node_modules/highcharts/css/highcharts.css" 
-		rel="stylesheet" />
-	<link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+	<link type="text/css" href="static/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<!-- <link type="text/css" href="static/node_modules/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" /> -->
+	<link type="text/css" href="static/node_modules/font-awesome/css/font-awesome.css" rel="stylesheet" />
+	<link type="text/css" href="static/node_modules/highcharts/css/highcharts.css" rel="stylesheet" />
+	<link type="text/css" href="static/node_modules/flat-ui/dist/css/flat-ui.min.css" rel="stylesheet" />	
+	<!-- <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet"> -->
 	<link type="text/css" href="/static/css/app/app.css" rel="stylesheet" />
 	<link type="text/css" href="/static/css/app/modifiers.css" rel="stylesheet" />
 	<script data-main="/static/js/main.js" src="/static/node_modules/requirejs/require.js"></script>
+	<base href="/"/>
 </head>
 <body>
-<div class="container-fluid p-0 m-0">
-    <div class="container__padded" ng-view></div>
+    <div class="panel-container">
+		<div class="container__fixed" ng-view></div>
+    </div>
     <div class="container__footer">
 		<a href="#!/home">
 			<i class="fa fa-paw" aria-hidden="true"></i>
 		</a>
-    </div>
-</div>
+	</div>
 </body>
 </html>

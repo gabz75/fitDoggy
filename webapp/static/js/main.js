@@ -3,6 +3,7 @@ requirejs.config({
     paths: {
         'angular': '/static/node_modules/angular/angular.min',
         'angular-animate': '/static/node_modules/angular-animate/angular-animate.min',
+        'angular-notify': '/static/node_modules/angular-notify/dist/angular-notify.min',
         'angular-route': '/static/node_modules/angular-route/angular-route.min',
         'angular-touch': '/static/node_modules/angular-touch/angular-touch.min',
         'dateformat': '/static/node_modules/dateformat/lib/dateformat',

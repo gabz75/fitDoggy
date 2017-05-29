@@ -1,5 +1,12 @@
 body {
 	font-family: 'PT Sans', sans-serif;
+	font-size: 12px;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+label {
+	line-height: 1.9;
 }
 .p-0 {
 	padding: 0;
@@ -13,12 +20,36 @@ body {
 .p-r-0 {
 	padding-right: 0;
 }
+.p-r-15 {
+	padding-right: 15px;
+}
 .m-0 {
 	margin: 0;
 }
 .pull-left {
 	float: left!important;
 }
+.pull-right {
+	float: right!important;
+}
 .no-border {
 	border: none;
+}
+.clear {
+	clear: both;
+}
+.l-align {
+	text-align: left;
+}
+.r-align {
+	text-align: right;
+}
+.c-align {
+	text-align: center;
+}
+.full-height {
+	height: 100%!important;
+}
+.full-width {
+	width: 100%!important;
 }

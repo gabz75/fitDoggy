@@ -1,20 +1,181 @@
 <div class="panel panel-default panel__fixed">
-    <div class="panel-heading">
-        <a href="dog/{{vm.dog.id}}/date/{{vm.date.prev}}" class="pull-left">
-            <i class="fa fa-arrow-left" aria-hidden="true">
-                Yesterday
-            </i>
-        </a>
-        <a href="dog/{{vm.dog.id}}" class="pull-left">
-            {{vm.dog.name}}
-        </a>
-        <a href="dog/{{vm.dog.id}}/date/{{vm.date.prev}}" class="pull-left">
-            <i class="fa fa-arrow-right" aria-hidden="true">
-                Tomorrow
-            </i>
-        </a>
-    </div>
-    <div class="panel-body">
-        
+    <ul class="pager full-width m-0">
+        <li class="previous col-xs-4">
+            <a href="#!/dog/{{vm.dog.id}}/date/{{vm.date.prev}}">
+                <span>
+                    <i class="fui-arrow-left"></i>
+                    Previous
+                </span>
+            </a>
+        </li>
+        <li>
+            <a class="c-align col-xs-4" href="#!/dog/{{vm.dog.id}}">
+                {{vm.dog.name}}
+            </a>
+        </li>
+        <li class="next col-xs-4 r-align" ng-if="vm.notInFuture(vm.date.next)">
+            <a class="full-width" href="#!/dog/{{vm.dog.id}}/date/{{vm.date.next}}">
+                Next
+                <i class="fui-arrow-right"></i>
+            </a>
+        </li>
+    </ul>
+    <div class="panel-body full-height">
+        <div class="thumbnail-container">
+            <img src="{{vm.log.image_url || ''}}" />
+        </div>
+        <div class="col-xs-12">
+        <label>Current Weight</label>
+        <div>{{vm.log.weight}} {{vm.dog.metric}}</div>
+        </div>
+        <div class="col-xs-12">
+            <label>Activity</label>
+            <table class="table table-hover table-sm table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th>Activity Type</th>
+                        <th>Duration (min)</th>
+                        <th>Intensity</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody id="exercise">
+                    <tr ng-repeat="exercise in vm.log.exercise track by $index" id="exercise{{$index}}">
+                        <td class="col-sm-4" scope="row">
+                            <div ng-if="!vm.log.exercise[$index].edited">
+                                {{exercise.name}}{{exercise.description ? ', ' + exercise.description : ''}}
+                            </div>
+                            <div class="form-group m-0" ng-if="vm.log.exercise[$index].edited">
+                                <select class="select-primary select-block form-control" ng-model="vm.log.exercise[$index].exerciseId">
+                                    <option ng-repeat="activity in vm.activities" value="{{activity.id}}">
+                                        {{activity.name}}{{activity.description ? ', ' + activity.description : ''}}
+                                    </option>
+                                </select>
+                            </div>
+                        </td>
+                        <td class="col-sm-3">
+                            <div ng-if="!vm.log.exercise[$index].edited">
+                                {{exercise.duration}}
+                            </div>
+                            <div class="input-group m-0" ng-if="vm.log.exercise[$index].edited">
+                                <input type="number" class="form-control" ng-model="vm.log.exercise[$index].duration" min="0">
+                                <div class="input-group-addon">min</div>
+                            </div>
+                        </td>
+                        <td class="col-sm-3">
+                            <div ng-if="!vm.log.exercise[$index].edited">
+                                {{exercise.intensity}}
+                            </div>
+                            <div class="input-group-btn m-0" ng-if="vm.log.exercise[$index].edited">
+                                <select class="select-primary select-block form-control" ng-model="vm.log.exercise[$index].intensity">
+                                    <option ng-repeat="intensity in vm.intensities">{{intensity}}</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td class="col-sm-2 r-align form-group__icon">
+                            <span ng-if="!vm.log.exercise[$index].edited">
+                                <a class="form-group__icon__link" ng-click="vm.editLog('exercise', $index)" >
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                </a>
+                                <a class="form-group__icon__link" ng-click="vm.deleteLog('exercise', $index)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </a>
+                            </span>
+                            <span ng-if="vm.log.exercise[$index].edited">
+                                <a class="form-group__icon__link" ng-click="vm.saveExerciseLog()">
+                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                </a>
+                                <a class="form-group__icon__link" ng-click="vm.cancelLog('exercise', $index)">
+                                    <i class="fa fa-ban" aria-hidden="true"></i>
+                                </a>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-group__footer">
+                    <a ng-click="vm.openModal('activity')" class="float-right">
+                        Add Activity
+                    </a> |
+                    <a ng-click="vm.addLog('exercise')">
+                        Add Exercise
+                    </a>
+                </div>
+        </div>
+        <div class="col-xs-12">
+            <label>Food</label>
+            <table class="table table-hover table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th>Food</th>
+                        <th>Amount (oz)</th>
+                        <th>Calories</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody id="food">
+                    <tr ng-repeat="food in vm.log.food">
+                        <td scope="row">
+                            <span ng-if="!vm.log.food[$index].edited">
+                                {{food.name}}
+                            </span>
+                            <span ng-if="vm.log.food[$index].edited">
+                                <select class="select-primary select-block form-control" ng-model="vm.log.food[$index].foodId">
+                                    <option value="" disabled selected>&nbsp;</option>
+                                    <option ng-repeat="food in vm.foods" value="{{food.id}}">
+                                        {{food.name}}
+                                    </option>
+                                </select>
+                            </span>
+                        </td>
+                        <td>
+                            <span ng-if="!vm.log.food[$index].edited">
+                                {{food.amount}}
+                            </span>
+                            <span ng-if="vm.log.food[$index].edited">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" ng-model="vm.log.food[$index].amount" min="0" ng-change="vm.calculateCalories($index)">
+                                    <div class="input-group-addon">oz</div>
+                                </div>
+                            </span>
+                        </td>
+                        <td>
+                            {{food.calories}}
+                        </td>
+                        <td class="col-sm-2 r-align form-group__icon">
+                            <span ng-if="!vm.log.food[$index].edited">
+                                <a class="form-group__icon__link" ng-click="vm.editLog('food', $index)" >
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                </a>
+                                <a class="form-group__icon__link" ng-click="vm.deleteLog('food', $index)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </a>
+                            </span>
+                            <span ng-if="vm.log.food[$index].edited">
+                                <a class="form-group__icon__link" ng-click="vm.saveFoodLog()">
+                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                </a>
+                                <a class="form-group__icon__link" ng-click="vm.cancelLog('food', $index)">
+                                    <i class="fa fa-ban" aria-hidden="true"></i>
+                                </a>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <th colspan="2">Total: {{vm.log.totalCalories}}</th>
+                        
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-group__footer">
+                <a ng-click="vm.openModal('food')" class="float-right">
+                    Add Item
+                </a> | 
+                <a ng-click="vm.addLog('food')">
+                    Add Food
+                </a>
+            </div>
+        </div>
     </div>
 </div>

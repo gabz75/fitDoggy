@@ -18,12 +18,12 @@ define([
 		function init() {
 			pubsub.initSubscriptions();
 			getDogs();
-			vm.date = moment().format('mmddyyyy');
-
+			vm.date = moment().format('MMDDYYYY');
 		}
 
 		function getDogs() {
 			homeService.getDogs().then(function (response) {
+				console.log(response);
 				vm.dogs = response;
 			}, function (error) {
 				dialog.error(error);
