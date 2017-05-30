@@ -20,16 +20,22 @@
             </a>
         </li>
     </ul>
-    <div class="panel-body full-height">
+    <div id="log" class="panel-body full-height">
         <div class="thumbnail-container">
             <img src="{{vm.log.image_url || ''}}" />
         </div>
         <div class="col-xs-12">
-        <label>Current Weight</label>
-        <div>{{vm.log.weight}} {{vm.dog.metric}}</div>
+            <label>Current Weight</label>
+            <div ng-if="!vm.log.edit" ng-click="vm.editWeight()">
+                {{vm.log.weight || '-'}} {{vm.dog.metric}}
+            </div>
+            <div class="input-group m-0" ng-if="vm.log.edit">
+                <input id="weight" type="number" class="form-control" ng-model="vm.log.weight" min="0" ng-blur="vm.saveWeight()">
+                <div class="input-group-addon">{{vm.dog.metric}}</div>
+            </div>
         </div>
         <div class="col-xs-12">
-            <label>Activity</label>
+            <label>Exercise</label>
             <table class="table table-hover table-sm table-bordered table-responsive">
                 <thead>
                     <tr>
@@ -82,7 +88,7 @@
                                 </a>
                             </span>
                             <span ng-if="vm.log.exercise[$index].edited">
-                                <a class="form-group__icon__link" ng-click="vm.saveExerciseLog()">
+                                <a class="form-group__icon__link" ng-click="vm.saveLog('exercise', $index)">
                                     <i class="fa fa-check" aria-hidden="true"></i>
                                 </a>
                                 <a class="form-group__icon__link" ng-click="vm.cancelLog('exercise', $index)">
@@ -115,20 +121,19 @@
                 </thead>
                 <tbody id="food">
                     <tr ng-repeat="food in vm.log.food">
-                        <td scope="row">
+                        <td class="col-sm-4" scope="row">
                             <span ng-if="!vm.log.food[$index].edited">
                                 {{food.name}}
                             </span>
                             <span ng-if="vm.log.food[$index].edited">
                                 <select class="select-primary select-block form-control" ng-model="vm.log.food[$index].foodId">
-                                    <option value="" disabled selected>&nbsp;</option>
                                     <option ng-repeat="food in vm.foods" value="{{food.id}}">
                                         {{food.name}}
                                     </option>
                                 </select>
                             </span>
                         </td>
-                        <td>
+                        <td class="col-sm-3">
                             <span ng-if="!vm.log.food[$index].edited">
                                 {{food.amount}}
                             </span>
@@ -139,7 +144,7 @@
                                 </div>
                             </span>
                         </td>
-                        <td>
+                        <td class="col-sm-3">
                             {{food.calories}}
                         </td>
                         <td class="col-sm-2 r-align form-group__icon">
@@ -152,7 +157,7 @@
                                 </a>
                             </span>
                             <span ng-if="vm.log.food[$index].edited">
-                                <a class="form-group__icon__link" ng-click="vm.saveFoodLog()">
+                                <a class="form-group__icon__link" ng-click="vm.saveLog('food', $index)">
                                     <i class="fa fa-check" aria-hidden="true"></i>
                                 </a>
                                 <a class="form-group__icon__link" ng-click="vm.cancelLog('food', $index)">

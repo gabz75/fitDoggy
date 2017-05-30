@@ -1,5 +1,6 @@
 *.class
 *.DS_Store
+*.pyc
 /webapp/static/node_modules/*
 
 # Package Files #

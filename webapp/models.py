@@ -43,8 +43,10 @@ class Log(db.Model):
     __tablename__ = 'log'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    _date = db.Column(db.Date())
+    _date = db.Column(db.Date)
     _weight = db.Column(db.Float, default=None, nullable=True)
+    _totalDuration = db.Column(db.Integer)
+    _totalCalories = db.Column(db.Integer)
     _image_filename = db.Column(db.String, default=None, nullable=True)
     _image_url = db.Column(db.String, default=None, nullable=True)
 
@@ -55,10 +57,12 @@ class Log(db.Model):
     dog = db.relationship('Dog', back_populates='logs')
 
 
-    def __init__(self, date, weight, dog_id, image_filename=None, image_url=None):
+    def __init__(self, date, weight, dog_id, totalCalories= 0, totalDuration=0, image_filename=None, image_url=None):
         self._date = date
         self._weight = weight
         self.dog_id = dog_id
+        self._totalCalories = totalCalories
+        self._totalDuration = totalDuration
         self._image_filename = image_filename
         self._image_url = image_url 
 
@@ -67,6 +71,8 @@ class Log(db.Model):
             'id': str(self.id),
             'date': self._date.strftime('%m/%d/%Y'),
             'weight': self._weight,
+            'totalCalories': self._totalCalories,
+            'totalDuration': self._totalDuration,
             'image_filename': self._image_filename,
             'image_url': self._image_url
         }
@@ -87,6 +93,14 @@ class FoodLog(db.Model):
         self.food_id = food_id
         self.log_id = log_id
 
+    def to_json(self):
+        return {
+            'id': str(self.id),
+            'amount': self._amount,
+            'foodId': self.food_id,
+            'logId': self.log_id
+        }
+
 class ExerciseLog(db.Model):
     __tablename__ = 'exerciselog'
 
@@ -105,6 +119,14 @@ class ExerciseLog(db.Model):
         self.exercise_id = exercise_id
         self.log_id = log_id
 
+    def to_json(self):
+        return {
+            'id': str(self.id),
+            'duration': self._duration,
+            'intensity': self._intensity,
+            'exerciseId': self.exercise_id,
+            'logId': self.log_id
+        }
 
 class Exercise(db.Model):
     __tablename__ = 'exercise'

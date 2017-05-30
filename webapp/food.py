@@ -1,7 +1,7 @@
 from flask import request, jsonify
-from datetime import datetime, date
 from webapp import application, db
-from models import FoodLog, Food
+from models import FoodLog, Food, Log
+from helpers import get_date
 
 import os
 import json
@@ -25,8 +25,9 @@ def add_new_food():
     try:
         json_data = request.json
         food_name = json_data.get('food')
-        calories = json_data.get('calories', '')
-        serving = json_data.get('serving', '')
+        calories = json_data.get('calories', 0)
+        serving = json_data.get('serving', 0)
+        print food_name, calories, serving
         similar = Food.query.filter(Food._name==food_name, Food._calories==calories).first();
         if similar is None:
             food = Food(food_name, calories, serving)
@@ -66,8 +67,14 @@ def update_food_log():
         food_log = request.json.get('foodLog')
         food_log_id = food_log.get('id')
         if food_log_id is None:
-            log_id = request.json.get('id')
-            add_food_log(log_id, food_log)
+            dog_id = request.json.get('id')
+            log_date = get_date(request.json.get('date'))
+            log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
+            if log is None:
+                log = Log(log_date, None, dog_id);
+                db.session.add(log)
+                db.session.commit()
+            return add_food_log(log.id, food_log)
         else:
             edit_food_log(food_log)
 
@@ -79,7 +86,16 @@ def add_food_log(log_id, log):
         food_log = FoodLog(log.get('amount'), log.get('foodId'), log_id)
         db.session.add(food_log)
         db.session.commit()
-
+        
+        food = Food.query.filter(Food.id==log.get('foodId')).first()
+        food_item = {
+            'amount': food_log._amount,
+            'name': food._name,
+            'calories': food._calories * food_log._amount / food._serving,
+            'foodId': food.id,
+            'id': food_log.id
+        }
+        return json.dumps(food_item)
     except Exception, e:
         raise e;
 
@@ -91,7 +107,7 @@ def edit_food_log(log):
         food_log.food_id = log.get('foodId', food_log.food_id)
         db.session.add(food_log)
         db.session.commit()
-        
+        return json.dump(food_log.to_json())
     except Exception, e:
         raise e;
 

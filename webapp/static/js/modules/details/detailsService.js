@@ -19,7 +19,7 @@ define([
 		}
 
 		function getWeightData(id, startDate, endDate) {
-			return httpService.post('/dog/weights', {
+			return httpService.post('/dog/data', {
 				id: id,
 				startDate: startDate,
 				endDate: endDate

@@ -1,7 +1,7 @@
 from flask import request, jsonify
-from datetime import datetime, date
 from webapp import application, db
-from models import ExerciseLog, Exercise
+from models import ExerciseLog, Exercise, Log
+from helpers import get_date
 
 import os
 import json
@@ -11,7 +11,6 @@ def get_exercises():
     exerciseList = []
     try:
         activities = Exercise.query.all()
-        print 'activities', activities
         for activity in activities:
             exerciseList.append(activity.to_json())
         return json.dumps(exerciseList)
@@ -63,20 +62,35 @@ def update_exercise_log():
         exercise_log = request.json.get('exerciseLog')
         exercise_log_id = exercise_log.get('id')
         if exercise_log_id is None:
-            log_id = request.json.get('id')
-            add_exercise_log(log_id, exercise_log)
+            dog_id = request.json.get('id')
+            log_date = get_date(request.json.get('date'))
+            log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
+            if log is None:
+                log = Log(log_date, None, dog_id)
+                db.session.add(log)
+                db.session.commit()
+            return add_exercise_log(log.id, exercise_log)
         else:
-            edit_exercise_log(exercise_log)
+            return edit_exercise_log(exercise_log)
 
     except Exception, e:
-        raise e
+        return json.dumps(str(e)), 500
 
 def add_exercise_log(log_id, log):
     try:
-        exercise_log = ExerciseLog(log.get('duration', ''), log.get('intensity', ''), log.get('exerciseId'), log_id)
+        exercise_log = ExerciseLog(log.get('duration', 0), log.get('intensity', ''), log.get('exerciseId'), log_id)
         db.session.add(exercise_log)
         db.session.commit()
-
+        exercise = Exercise.query.filter(Exercise.id==exercise_log.exercise_id).first()
+        exercise_item = {
+            'duration': exercise_log._duration,
+            'intensity': exercise_log._intensity,
+            'name': exercise._name,
+            'description': exercise._description,
+            'exerciseId': exercise.id,
+            'id': exercise_log.id
+        }
+        return json.dumps(exercise_item)
     except Exception, e:
         raise e;
 
@@ -88,7 +102,8 @@ def edit_exercise_log(log):
         exercise_log.exercise_id = log.get('exerciseId', exercise_log.exercise_id)
         db.session.add(exercise_log)
         db.session.commit()
-
+        print exercise_log.id
+        return json.dumps(exercise_log.to_json())
     except Exception, e:
         raise e;
 

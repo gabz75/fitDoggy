@@ -7,8 +7,8 @@ define([
 	angular.module('log.service', ['common.service'])
 		.service('logService', logService);
 
-	logService.$inject = ['httpService'];
-	function logService(httpService) {
+	logService.$inject = ['$q', 'httpService'];
+	function logService($q, httpService) {
 		this.getLog = getLog;
 		this.getDog = getDog;
 		this.getActivities = getActivities;
@@ -16,6 +16,8 @@ define([
 
         this.addNew = addNew;
         this.saveLog = saveLog;
+        this.deleteLog = deleteLog;
+        this.updateLog = updateLog;
 
 		function getLog(id, date) {			
 			return httpService.post('/log', {
@@ -50,25 +52,27 @@ define([
             return httpService.post('/food/all', {});
         }
 
-        function saveLog(type, id, log) {
+        function saveLog(type, id, date, log) {
         	if (type === 'exercise') {
-        		return saveExerciseLog(id, log);
+        		return saveExerciseLog(id, date, log);
         	} else if (type === 'food') {
-        		return saveFoodLog(id, log);
+        		return saveFoodLog(id, date, log);
         	}
         }
 
-        function saveExerciseLog(id, log) {
+        function saveExerciseLog(id, date, log) {
         	return httpService.post('/log/exercise/update', {
+                exerciseLog: log,
         		id: id,
-        		exerciseLog: log
+                date: date
         	});
         }
 
-        function saveFoodLog(id, log) {
+        function saveFoodLog(id, date, log) {
         	return httpService.post('/log/food/update', {
+                foodLog: log,
         		id: id,
-        		foodLog: log
+                date: date
         	});
         }
 
@@ -76,7 +80,7 @@ define([
         	if (type === 'activity') {
         		return addNewActivity(params.activity, params.description);
         	} else if (type === 'food') {
-        		return addNewFood(params.food, params.calories, params.serving);
+        		return addNewFood(params.food, params.cal, params.serving);
         	}
         }
 
@@ -92,6 +96,40 @@ define([
                 food: food,
                 calories: calories,
                 serving: serving
+            });
+        }
+
+        function deleteLog(type, id) {
+            if (type === 'exercise') {
+                return httpService.post('/log/exercise/delete', {
+                    id: id
+                }); 
+            } else if (type === 'food') {
+                return httpService.post('/log/food/delete', {
+                    id: id
+                }); 
+            } else if (type === 'log') {
+                return httpService.post('/log/delete', {
+                    id: id
+                });
+            } else {
+                var deferred = $q.defer();
+                deferred.resolve();
+                return deferred.promise;
+            }
+        }
+
+        function updateLog(dogId, date, log) {
+            var updated = {
+                weight: log.weight,
+                totalCalories: log.totalCalories,
+                totalDuration: log.totalDuration,
+                id: log.id
+            };
+            return httpService.post('log/update', {
+                dogId: dogId,
+                date: date,
+                updated: updated
             });
         }
 	}

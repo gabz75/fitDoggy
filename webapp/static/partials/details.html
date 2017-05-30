@@ -1,9 +1,8 @@
 <div class="panel panel-default panel__fixed">
-	<div class="panel-heading row">
-		<h3 class="col-xs-6"> {{vm.dog.name}} </h3>
-		<a class="col-xs-6" ng-click="vm.confirmDelete()">
-			<i class="fa fa-trash-o" aria-hidden="true"></i>
-		</a>
+	<div class="panel-heading col-xs-12">
+		<h5 class="p-0 m-0">
+			<a href="#!/dog/{{vm.dog.id}}/date/{{vm.date}}">{{vm.dog.name}}</a>
+		</h5>
 	</div>
 	<div class="panel-body">
 		<ul class="nav nav-tabs">
@@ -23,6 +22,9 @@
 			</div>
 		</div>
 		<div class="info-container row">
+			<div class="col-xs-2">
+				<button class="btn btn-danger" ng-click="vm.confirmDelete()"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
+			</div>
 		</div>
 	</div>
 </div>

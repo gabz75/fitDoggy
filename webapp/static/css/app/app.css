@@ -46,9 +46,9 @@
 #food td {
 	vertical-align: middle!important;
 }
-#exercise .form-control,
-#food .form-control {
+#log .form-control {
 	height: 30px;
+	padding: 2px 8px;
 }
 #exercise .input-group-addon,
 #food .input-group-addon {

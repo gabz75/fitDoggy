@@ -11,39 +11,40 @@ define([
 	detailsCtrl.$inject = ['$q', '$location', 'dialog', 'detailsService', 'lineChartOptions'];
 	function detailsCtrl($q, $location, dialog, detailsService, lineChartOptions) {
 		var vm = this, 
+			today = moment(),
 			dogId,
-			today,
 			chart;
 
+		vm.dog = {};
+		vm.incr = 0;
+		vm.chartTypes = [{
+			value: 'week',
+			label: 'Weekly'
+		}, {
+			value: 'month',
+			label: 'Monthly'
+		}, {
+			value: 'year',
+			label: 'Yearly'
+		}];
+		vm.date = today.format('MMDDYYYY');
+		vm.chartType = vm.chartTypes[0];
+		vm.next = next;
+		vm.hasNext = hasNext;
+		vm.prev = prev;
+		vm.hasPrev = hasPrev;
+		vm.setType = setType;
+		vm.confirmDelete = confirmDelete;
 		init();
 
 		function init() {
-			today = moment();
 			dogId = $location.url().split('/')[2];
-			vm.dog = {};
-			vm.incr = 0;
-			vm.chartTypes = [{
-				value: 'week',
-				label: 'Weekly'
-			}, {
-				value: 'month',
-				label: 'Monthly'
-			}, {
-				value: 'year',
-				label: 'Yearly'
-			}];
-			vm.chartType = vm.chartTypes[0];
-			vm.next = next;
-			vm.hasNext = hasNext;
-			vm.prev = prev;
-			vm.hasPrev = hasPrev;
-			vm.setType = setType;
-			vm.confirmDelete = confirmDelete;
 
 			$q.all([detailsService.getDog(dogId), getChartData()]).then(function (response) {
 				vm.dog = response[0];
+				console.log(response[1]);
 				chart = Highcharts.chart('linechart', lineChartOptions({
-					title: vm.chartType.label + ' Weight Change',
+					title: vm.chartType.label + ' Change',
 					subtitle: vm.startDate.format('MM/DD/YYYY') + ' to ' + vm.endDate.format('MM/DD/YYYY'),
 					yAxis: 'Weight (' + vm.dog.metric + ')',
 					series: response[1] || []
@@ -60,7 +61,7 @@ define([
 			if (prevChartType !== vm.chartType) {
 				getChartData().then(function (response) {
 					chart.update({
-				        title: vm.chartType.label + ' Weight Change',
+				        title: vm.chartType.label + ' Change',
 						subtitle: vm.startDate.format('MM/DD/YYYY') + ' to ' + vm.endDate.format('MM/DD/YYYY'),
 						series: response
 				    });

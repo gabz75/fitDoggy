@@ -8,8 +8,8 @@ define([
 	angular.module('log.controller', ['common.cache', 'common.dialog', 'log.service', 'log.formFactory'])
 		.controller('logCtrl', logCtrl);
 
-	logCtrl.$inject = ['$scope', '$compile', '$location', 'Cache', 'dialog', 'logService', 'logFormFactory'];
-	function logCtrl($scope, $compile, $location, Cache, dialog, logService, logFormFactory) {
+	logCtrl.$inject = ['$scope', '$compile', '$location', '$timeout', 'Cache', 'dialog', 'logService', 'logFormFactory'];
+	function logCtrl($scope, $compile, $location, $timeout, Cache, dialog, logService, logFormFactory) {
 		var vm = this,
 			counts = {},
 			cache = {},
@@ -18,7 +18,7 @@ define([
 			today;
 
 		vm.date = {};
-		vm.intensities = ['Light', 'Normal', 'Hard'];
+		vm.intensities = ['Light', 'Moderate', 'Hard'];
 		vm.notInFuture = notInFuture;
 		vm.calculateCalories = calculateCalories;
 		
@@ -27,13 +27,14 @@ define([
 		vm.saveLog = saveLog;
 		vm.addLog = addLog;
 		vm.deleteLog = deleteLog;
-		
+		vm.editWeight = editWeight;
+		vm.saveWeight = saveWeight;
 		vm.openModal = openModal;
 	
 		init();
 
 		function init() {
-			currentDay = moment($location.url().split('/')[4], 'MMDDYYYY');
+			currentDay = $location.url().split('/')[4];
 			dogId = $location.url().split('/')[2];
 			today = moment();
 			
@@ -47,17 +48,13 @@ define([
 			cache.exercise = new Cache();
 			
 			vm.date.prev = moment(currentDay).subtract(1, 'day').format('MMDDYYYY');
-			vm.date.current = currentDay.format('MMDDYYYY'),
+			vm.date.current = currentDay,
 			vm.date.next = moment(currentDay).add(1, 'day').format('MMDDYYYY')
 
 			getDog(dogId);
 			getLog();
 			getActivities();
 			getFoods();
-		}
-
-		function createLog() {
-			$location.path('/dog/' + dogId + '/date/' + currentDay.format('MMDDYYYY') + '/update');
 		}
 
 		function notInFuture(date) {
@@ -83,14 +80,8 @@ define([
 		function getLog() {
 			return logService.getLog(dogId, vm.date.current).then(function (response) {
 				vm.log = response;
-				if (vm.log) {
-					vm.log.totalCalories = 0;
-					_.forEach(vm.log.food, function (food) {
-						vm.log.totalCalories += food.calories;
-						counts.food++;
-					});
-					counts.exercise = _.keys(vm.log.exercise).length - 1;
-				} 
+				counts.exercise = _.keys(vm.log.exercise).length;
+				counts.food = _.keys(vm.log.food).length;
 			}, function (error) {
 				console.error(error);
 			});
@@ -137,16 +128,8 @@ define([
 				}
 				logService.addNew(type, modalVM.item).then(function (response) {
 					if (response.message) {
-						notify({
-							message: response.message
-						});
-					} else {
-						if (type === 'activity') {
-							vm.activities.push(response);
-						} else if (type === 'food') {
-							vm.foods.push(response);
-						}
-					}
+						console.error(response.message);
+					} 
 				});
 			}
 		}
@@ -158,8 +141,7 @@ define([
 		}
 
 		function addLog(type) {
-			counts[type]++;
-			vm.log[type][counts[type]] = {
+			vm.log[type][counts[type]++] = {
 				edited: true,
 				new: true
 			};
@@ -167,29 +149,73 @@ define([
 
 		function deleteLog(type, n) {
 			counts[type]--;
-			delete vm.log[type][n];
+			var log = vm.log[type][n];
+			if (type === 'food') {
+				vm.totalCalories -= log.calories;
+			} else if (type === 'exercise') {
+				vm.totalDuration -= log.duration;
+			}
+			logService.deleteLog(type, log.id).then(function () {
+				delete vm.log[type][n];
+				updateLog();
+			});
+		}
+
+		function updateLog() {
+			var noExercise = _.values(vm.log.exercise).length === 0,
+				noFood = _.values(vm.log.food).length === 0,
+				noWeight = !vm.log.weight;
+			if (noExercise && noFood && noWeight && vm.log.id) {
+				logService.deleteLog('log', vm.log.id);
+			} else if (vm.log.id) {
+				logService.updateLog(dogId, currentDay, vm.log);
+			}
 		}
 
 		function saveLog(type, index) {
-			logService.saveLog(type, vm.log.id, vm.log[type][index]).then(function (response) {
-				delete vm.log[type][index].edited;			
-				delete vm.log[type][index].new;			
+			logService.saveLog(type, dogId, currentDay, vm.log[type][index]).then(function (response) {
+				delete vm.log[type][index].edited;
+				delete vm.log[type][index].new;
+				vm.log[type][index] = response;
+				if (type === 'exercise') {
+					calculateDuration(); 
+				}
+				logService.updateLog(dogId, currentDay, vm.log);
 			}, function (response) {
 				console.error(response);
 			});
 		}
 
 		function calculateCalories(n) {
-			var oldCalories = vm.log.food[n].calories,
+			var oldCalories = vm.log.food[n].calories || 0,
 				food = _.find(vm.foods, function (food) {
 					return food.id == vm.log.food[n].foodId;
 				});
-			vm.log.food[n].calories = food.calories * vm.log.food[n].amount / food.serving;
+			vm.log.food[n].calories = food.calories * (vm.log.food[n].amount || 0) / food.serving;
 			vm.log.totalCalories += vm.log.food[n].calories - oldCalories;
+		}
+
+		function calculateDuration(n) {
+			vm.log.totalDuration = 0;
+			_.each(vm.log.exercise, function (exercise) {
+				vm.log.totalDuration += exercise.duration;
+			});
 		}
 
 		function capitalize(string) {
 			return string.charAt(0).toUpperCase() + string.slice(1);
+		}
+		function editWeight() {
+			vm.log.edit = true;
+			$timeout(function () {
+				document.querySelector('#weight').focus();
+			});
+		}
+		function saveWeight() {
+			delete vm.log.edit;
+			logService.updateLog(dogId, currentDay, vm.log).then(function (response) {
+				angular.merge(vm.log, response);
+			});
 		}
 	}
 });
