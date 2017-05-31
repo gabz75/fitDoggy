@@ -1,8 +1,9 @@
 from flask import request, render_template, send_file, jsonify
-from datetime import datetime
+from datetime import datetime, date
 from webapp import application, db, images
-from models import Dog, Log
-from helpers import get_date
+from models import *
+from helpers import get_date, getMER
+from random import *
 
 import os
 import json
@@ -18,7 +19,6 @@ def get_dog():
         dog = Dog.query.filter_by(id=dog_id).first()
         if (dog is None):
             return json.dumps({})
-        
         return json.dumps(dog.to_json())
     except Exception, e:
         return json.dumps(str(e)), 500
@@ -96,15 +96,18 @@ def dog_data():
         dog_id = request.json.get('id')
         start_date = request.json.get('startDate')
         end_date = request.json.get('endDate')
+        print start_date, end_date
         logs = Log.query.filter(Log.dog_id == dog_id, Log._date >= get_date(start_date), Log._date <= get_date(end_date))
         weights = []
         foods = []
         exercise = []
         for log in logs:
-            weights.append([log._date.strftime('%m/%d/%Y'), log._weight])
-            foods.append([log._date.strftime('%m/%d/%Y'), log._totalCalories])
-            exercise.append([log._date.strftime('%m/%d/%Y'), log._totalDuration])
-        return json.dumps([{'data': weights}, {'data': foods}, {'data': exercise}])
+            timestamp = int(datetime.combine(log._date, datetime.min.time()).strftime('%s'))*1000
+
+            weights.append([timestamp, log._weight])
+            foods.append([timestamp, log._totalCalories])
+            exercise.append([timestamp, log._totalDuration])
+        return json.dumps([[{'name': 'Weights', 'data': weights}], [{'name': 'Food', 'data': foods}], [{'name': 'Exercise', 'data': exercise}]])
 
     except Exception, e:
         return json.dumps(str(e)), 500
@@ -113,9 +116,47 @@ def init():
     try:
         dog = Dog.query.filter(Dog._name=='Pluto').first()
         if dog is None:
-            dog = Dog('Pluto', 'Lab Mix', datetime.strptime('07012016', '%m%d%Y'),'lb', 25, 30, datetime.now())
+            dog = Dog('Pluto', 'Lab Mix', datetime.strptime('07012016', '%m%d%Y'),'lb', 25, 30, date(2017, 1, 3))
             db.session.add(dog)
             db.session.commit()
+        exercise = Exercise.query.filter(Exercise._name=='Run').first()
+        if exercise is None:
+            exercise = Exercise('Run', '4 mph')
+            db.session.add(exercise)
+            db.session.commit()
+        food = Food.query.filter(Food._name=='Blue - Chicken and Brown Rice Recipe').first()
+        if food is None:
+            food = Food('Blue - Chicken and Brown Rice Recipe', 378, 8)
+            db.session.add(food)
+            db.session.commit()
+        log = Log.query.filter(Log.dog_id==dog.id).first()
+        if log is None:
+            for i in range(1, 6):
+                for j in range(3, 29):
+                    totalCalories = randint(10, 700)
+                    totalDuration = randint(10, 120)
+                    log = Log(date(2017, i, j), randint(20, 30), dog.id, totalCalories, totalDuration)
+                    db.session.add(log)
+                    db.session.commit()
+                    caloriesSoFar = 0
+                    for k in range(0, 3):
+                        calories = randint(10, max(totalCalories - caloriesSoFar, 11))
+                        food_log = FoodLog(calories / food._calories * food._serving, food.id, log.id)
+                        if log.id == 4:
+                            print calories, food._calories, food._serving, calories / food._calories * food._serving
+                        db.session.add(food_log)
+                        caloriesSoFar += calories
+                        if caloriesSoFar >= totalCalories:
+                            break
+                    durationSoFar = 0
+                    for k in range(0, 3):
+                        duration = randint(10, max(totalDuration - durationSoFar, 11))
+                        exercise_log = ExerciseLog(duration, 'Moderate', exercise.id, log.id)
+                        db.session.add(exercise_log)
+                        durationSoFar += duration
+                        if durationSoFar >= totalDuration:
+                            break
+        db.session.commit()
         return {}
     except Exception, e:
         raise e

@@ -6,10 +6,13 @@ define([
 	angular.module('details.service', ['common.service'])
 		.service('detailsService', detailsService);
 
-	detailsService.$inject = ['httpService'];
-	function detailsService(httpService) {
+	detailsService.$inject = ['$q', 'httpService'];
+	function detailsService($q, httpService) {
+		var prevStartDate,
+			prevEndDate,
+			data;
 		this.getDog = getDog;
-		this.getWeightData = getWeightData;
+		this.getData = getData;
 		this.deleteDog = deleteDog;
 
 		function getDog(id) {
@@ -18,12 +21,23 @@ define([
 			});
 		}
 
-		function getWeightData(id, startDate, endDate) {
-			return httpService.post('/dog/data', {
-				id: id,
-				startDate: startDate,
-				endDate: endDate
-			});
+		function getData(id, startDate, endDate) {
+			if (prevStartDate !== startDate || prevEndDate !== endDate) {
+				prevStartDate = startDate;
+				prevEndDate = endDate;
+				return httpService.post('/dog/data', {
+					id: id,
+					startDate: startDate,
+					endDate: endDate
+				}).then(function (response) {
+					data = response;
+					return response;
+				});
+			}
+			var deferred = $q.defer();
+			deferred.resolve(data);
+			return deferred.promise;
+			
 		}
 
 		function deleteDog(id) {

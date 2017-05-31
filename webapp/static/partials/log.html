@@ -21,8 +21,26 @@
         </li>
     </ul>
     <div id="log" class="panel-body full-height">
-        <div class="thumbnail-container">
-            <img src="{{vm.log.image_url || ''}}" />
+        <div class="chart-container row">
+            <div class="chart-container__nav left" ng-click="vm.prev()">
+                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            </div>
+            <div class="thumbnail-container full-height">
+                <div ng-if="vm.view === 'img'" class="full-height">
+                    <img src="{{vm.log.image_url || ''}}" />
+                    <div class="placeholder" ng-if="!vm.log.image_url"></div>
+                </div>
+                <div ng-if="vm.view === 'foodChart'">
+                    <div pie-chart data-options="vm.pieChart.food" data-series="vm.log.food"></div>
+                    <!-- <div id="foodChart"></div> -->
+                </div>
+                <div ng-if="vm.view==='exerciseChart'">
+                    <div pie-chart data-options="vm.pieChart.exercise" data-series="vm.log.exercise"></div>
+                </div>
+            </div>
+            <div class="chart-container__nav right" ng-click="vm.next()">
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </div>
         </div>
         <div class="col-xs-12">
             <label>Current Weight</label>

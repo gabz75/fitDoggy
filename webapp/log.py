@@ -1,7 +1,7 @@
 from flask import request
 from webapp import application, db
-from models import Log, ExerciseLog, FoodLog, Food, Exercise
-from helpers import get_date
+from models import Log, ExerciseLog, FoodLog, Food, Exercise, Dog
+from helpers import get_date, getMER
 
 import json
 
@@ -13,7 +13,11 @@ def get_log():
         log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
         if log is None:
             return json.dumps({})
+
         log_item = log.to_json()
+        dog = Dog.query.filter(Dog.id==dog_id).first()
+        log_item['dailyCalories'] = round(getMER(log._weight, dog._metric))
+
         log_item.update({'food': get_food_log(log.id)})
         log_item.update({'exercise': get_exercise_log(log.id)})
         return json.dumps(log_item)
@@ -97,9 +101,13 @@ def update_log():
             log._weight = update.get('weight', log._weight)
             log._totalCalories = update.get('totalCalories', log._totalCalories)
             log._totalDuration = update.get('totalDuration', log._totalDuration)
+
         db.session.add(log)
         db.session.commit()
-        return json.dumps(log.to_json())
+        log_item = log.to_json()
+        dog = Dog.query.filter(Dog.id==dog_id).first()
+        log_item['dailyCalories'] = round(getMER(log._weight, dog._metric))
+        return json.dumps()
 
     except Exception, e:
         return json.dumps(str(e)), 500

@@ -19,6 +19,22 @@ define([
 
 		vm.date = {};
 		vm.intensities = ['Light', 'Moderate', 'Hard'];
+		vm.views = ['img', 'foodChart', 'exerciseChart'];
+		vm.view = vm.views[0];
+		vm.pieChart = {
+			food: {
+				title: 'Daily Caloric Intake',
+				collect: 'calories',
+				name: 'Food',
+				metric: 'cal'
+			},
+			exercise: {
+				title: 'Daily Exercise',
+				collect: 'duration',
+				name: 'Activity',
+				metric: 'min'
+			}
+		};
 		vm.notInFuture = notInFuture;
 		vm.calculateCalories = calculateCalories;
 		
@@ -30,6 +46,8 @@ define([
 		vm.editWeight = editWeight;
 		vm.saveWeight = saveWeight;
 		vm.openModal = openModal;
+		vm.prev = prev;
+		vm.next = next;
 	
 		init();
 
@@ -47,9 +65,9 @@ define([
 			cache.food = new Cache();
 			cache.exercise = new Cache();
 			
-			vm.date.prev = moment(currentDay).subtract(1, 'day').format('MMDDYYYY');
+			vm.date.prev = moment(currentDay, 'MMDDYYYY').subtract(1, 'day').format('MMDDYYYY');
 			vm.date.current = currentDay,
-			vm.date.next = moment(currentDay).add(1, 'day').format('MMDDYYYY')
+			vm.date.next = moment(currentDay, 'MMDDYYYY').add(1, 'day').format('MMDDYYYY')
 
 			getDog(dogId);
 			getLog();
@@ -80,6 +98,7 @@ define([
 		function getLog() {
 			return logService.getLog(dogId, vm.date.current).then(function (response) {
 				vm.log = response;
+				vm.pieChart.food.total = response.dailyCalories;
 				counts.exercise = _.keys(vm.log.exercise).length;
 				counts.food = _.keys(vm.log.food).length;
 			}, function (error) {
@@ -216,6 +235,26 @@ define([
 			logService.updateLog(dogId, currentDay, vm.log).then(function (response) {
 				angular.merge(vm.log, response);
 			});
+		}
+
+		function next() {
+			var idx = _.indexOf(vm.views, vm.view) + 1;
+			if (idx === vm.views.length) {
+				vm.view = vm.views[0];
+			} else {
+				vm.view = vm.views[idx];
+			}
+			console.log(idx, vm.view);
+		}
+
+		function prev() {
+			var idx = _.indexOf(vm.views, vm.view) - 1;
+			if (idx < 0) {
+				vm.view = vm.views[vm.views.length - 1];
+			} else {
+				vm.view = vm.views[idx];
+			}
+			console.log(vm.view);
 		}
 	}
 });
