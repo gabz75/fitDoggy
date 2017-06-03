@@ -3,22 +3,26 @@
         <form role="form" name="dogInfo">
             <div class="row">
                 <div class="form-group">
-                    <div class="thumbnail-container" ng-if="vm.dogData.image_url">
-                        <img src="{{vm.dogData.image_url}}" />
+                    <div class="thumbnail-container full-height">
+                        <div class="img-container">
+                            <img ng-src="{{vm.dogData.image_url}}" />
+                            
+                        </div>
+
                     </div>
-                    <div class="thumbnail-container">
-                        <input type="file" id="dogPhoto" class="input__hidden" ng-model="vm.dogData.image" />
-                        <label for="dogPhoto">
-                            <i class="fa fa-plus" aria-hidden="true"></i> 
+                    <div class="thumbnail-container__label">
+                        <input type="file" id="dogPhoto" class="input__hidden" accept="{{vm.fileTypes}}" />
+                        <label ng-class="vm.dogData.image_url ? 'col-xs-6 r-align p-0' : 'placeholder'" for="dogPhoto">
                             <span ng-if="!vm.dogData.image_url">
-                                Choose a picture
+                                <i class="fa fa-plus" aria-hidden="true"></i> 
+                                 Choose a picture
                             </span>
-                            <span ng-if="vm.dogData.image_url">
-                                Change the picture
+                            <span ng-if="vm.dogData.image_url" class="text-info">
+                                <i class="fa fa-refresh" aria-hidden="true"></i> Change 
                             </span>
                         </label>
-                        <span class="btn btn-danger" ng-if="vm.dogData.image_url" ng-click="vm.deletePhoto()">
-                            Remove
+                        <span ng-if="vm.dogData.image_url" class="col-xs-6 text-danger image__delete p-0" ng-click="vm.deletePhoto()">
+                            &nbsp;<i class="fa fa-trash-o" aria-hidden="true"></i> Remove
                         </span>
                     </div>
                 </div>
@@ -35,7 +39,7 @@
                 </div>
                 <div class="form-group">
                     <label for="dogBday">Birthday</label>
-                    <input class="form-control" type="date" id="dogBday" ng-model="vm.dogData.birthday" ng-change="vm.warning.birthday=false" />
+                    <input class="form-control" type="date" id="dogBday" ng-model="vm.dogData.birthdate" ng-change="vm.warning.birthday=false" />
                     <span class="text-danger" ng-if="vm.warning.birthday">Please enter your dog's birthday</span>
                 </div>
                 <div class="form-group">
@@ -64,7 +68,7 @@
                     </div>
                 </div>
                 <div class="form-group col-xs-offset-4 col-xs-4">
-                    <button class="form-control btn btn-primary" role="button" type="submit" ng-click="vm.addNewDog()">Submit</button>
+                    <button class="form-control btn btn-primary" role="button" type="submit" ng-click="vm.updateDog()">Submit</button>
                 </div>
             </div>
 

@@ -35,27 +35,6 @@ def add_new_exercise():
     except Exception, e:
         return json.dumps(str(e))
 
-# @application.route('/log/exercise/all', methods=['POST'])
-# def get_exercise_log():
-#     exercises = []
-#     try:
-#         log_id = request.json.get('id')
-#         exercise_logs = ExerciseLog.query.filter(ExerciseLog.log_id==log_id).all()
-        
-#         for log in exercise_logs:
-#             exercise = Exercise.query.filter(Exercise.id==log.exercise_id).first()
-#             exercises.append({
-#                 'duration': log._duration,
-#                 'intensity': log._intensity,
-#                 'name': exercise._name,
-#                 'description': exercise._description,
-#                 'id': log.id
-#             })
-#         return exercises
-
-#     except Exception, e:
-#         raise e
-
 @application.route('/log/exercise/update', methods=['POST'])
 def update_exercise_log():
     try:
@@ -66,7 +45,7 @@ def update_exercise_log():
             log_date = get_date(request.json.get('date'))
             log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
             if log is None:
-                log = Log(log_date, None, dog_id)
+                log = Log(log_date, dog_id)
                 db.session.add(log)
                 db.session.commit()
             return add_exercise_log(log.id, exercise_log)

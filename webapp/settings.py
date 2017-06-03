@@ -5,8 +5,5 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/webapp.db'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # Uploads
-UPLOADS_DEFAULT_DEST = '/webapp/static/img/'
-UPLOADS_DEFAULT_URL = 'http://localhost:5000/static/img/'
- 
-UPLOADED_IMAGES_DEST = '/webapp/static/img/'
-UPLOADED_IMAGES_URL = 'http://localhost:5000/static/img/'
+UPLOAD_FOLDER = 'webapp/static/img/tmp/'
+UPLOAD_URL = 'static/img/tmp/'

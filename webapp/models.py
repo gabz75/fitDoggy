@@ -47,6 +47,7 @@ class Log(db.Model):
     _weight = db.Column(db.Float, default=None, nullable=True)
     _totalDuration = db.Column(db.Integer)
     _totalCalories = db.Column(db.Integer)
+    __dailyCalories = db.Column(db.Float, default=None, nullable=True)
     _image_filename = db.Column(db.String, default=None, nullable=True)
     _image_url = db.Column(db.String, default=None, nullable=True)
 
@@ -57,12 +58,13 @@ class Log(db.Model):
     dog = db.relationship('Dog', back_populates='logs')
 
 
-    def __init__(self, date, weight, dog_id, totalCalories= 0, totalDuration=0, image_filename=None, image_url=None):
+    def __init__(self, date, dog_id, weight=None, daily_calories=None, total_calories=None, total_duration=None, image_filename=None, image_url=None):
         self._date = date
-        self._weight = weight
         self.dog_id = dog_id
-        self._totalCalories = totalCalories
-        self._totalDuration = totalDuration
+        self._weight = weight
+        self.__dailyCalories = daily_calories
+        self._totalCalories = total_calories
+        self._totalDuration = total_duration
         self._image_filename = image_filename
         self._image_url = image_url 
 
@@ -75,6 +77,7 @@ class Log(db.Model):
             'totalDuration': self._totalDuration,
             'image_filename': self._image_filename,
             'image_url': self._image_url
+            
         }
 
 class FoodLog(db.Model):
@@ -166,23 +169,5 @@ class Food(db.Model):
             'serving': self._serving,
             'id': str(self.id)
         }
-
 # db.drop_all()
 db.create_all()
-
-# application.config['API_MODELS'] = {
-#     'dog': Dog,
-#     'log': Log,
-#     'exercise': Exercise,
-#     'exerciselog': ExerciseLog,
-#     'food': Food,
-#     'foodlog': FoodLog
-# }
-# application.config['CRUD_URL_MODELS'] = {
-#     'dog': Dog,
-#     'log': Log,
-#     'exercise': Exercise,
-#     'exerciselog': ExerciseLog,
-#     'food': Food,
-#     'foodlog': FoodLog
-# }

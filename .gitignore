@@ -2,6 +2,7 @@
 *.DS_Store
 *.pyc
 /webapp/static/node_modules/*
+/webapp/static/img/tmp/*
 
 # Package Files #
 *.jar

@@ -5,11 +5,11 @@ define([
 ], function (angular, moment, lodash) {
 	'use strict';
 
-	angular.module('log.controller', ['common.cache', 'common.dialog', 'log.service', 'log.formFactory'])
+	angular.module('log.controller', ['common.cache', 'common.dialog', 'common.upload', 'log.service', 'log.formFactory'])
 		.controller('logCtrl', logCtrl);
 
-	logCtrl.$inject = ['$scope', '$compile', '$location', '$timeout', 'Cache', 'dialog', 'logService', 'logFormFactory'];
-	function logCtrl($scope, $compile, $location, $timeout, Cache, dialog, logService, logFormFactory) {
+	logCtrl.$inject = ['$location', '$timeout', '$q', 'Cache', 'dialog', 'upload', 'logService', 'logFormFactory'];
+	function logCtrl($location, $timeout, $q, Cache, dialog, upload, logService, logFormFactory) {
 		var vm = this,
 			counts = {},
 			cache = {},
@@ -17,6 +17,7 @@ define([
 			dogId,
 			today;
 
+		vm.fileTypes = '.jpeg, .jpg, .png, .gif, image/jpeg, image/pjpeg, image/jpeg, image/pjpeg, image/png, image/gif';
 		vm.date = {};
 		vm.intensities = ['Light', 'Moderate', 'Hard'];
 		vm.views = ['img', 'foodChart', 'exerciseChart'];
@@ -48,7 +49,8 @@ define([
 		vm.openModal = openModal;
 		vm.prev = prev;
 		vm.next = next;
-	
+
+		vm.uploadFile = uploadFile;
 		init();
 
 		function init() {
@@ -69,10 +71,9 @@ define([
 			vm.date.current = currentDay,
 			vm.date.next = moment(currentDay, 'MMDDYYYY').add(1, 'day').format('MMDDYYYY')
 
-			getDog(dogId);
-			getLog();
-			getActivities();
-			getFoods();
+			$q.all([getDog(dogId), getLog(), getActivities(), getFoods()]).then(function () {
+				angular.element(document.querySelector('#dogPhoto')).bind('change', uploadFile);
+			});
 		}
 
 		function notInFuture(date) {
@@ -187,7 +188,7 @@ define([
 			if (noExercise && noFood && noWeight && vm.log.id) {
 				logService.deleteLog('log', vm.log.id);
 			} else if (vm.log.id) {
-				logService.updateLog(dogId, currentDay, vm.log);
+				logService.updateLog(type, dogId, currentDay, vm.log);
 			}
 		}
 
@@ -199,7 +200,7 @@ define([
 				if (type === 'exercise') {
 					calculateDuration(); 
 				}
-				logService.updateLog(dogId, currentDay, vm.log);
+				logService.updateLog(type, dogId, currentDay, vm.log);
 			}, function (response) {
 				console.error(response);
 			});
@@ -232,9 +233,12 @@ define([
 		}
 		function saveWeight() {
 			delete vm.log.edit;
-			logService.updateLog(dogId, currentDay, vm.log).then(function (response) {
+			logService.updateWeight(dogId, currentDay, vm.log).then(function (response) {
 				angular.merge(vm.log, response);
 			});
+			if (moment(currentDay).isSame(today)) {
+				logService.updateDog(dogId, {weight: vm.log.weight});
+			}
 		}
 
 		function next() {
@@ -244,7 +248,6 @@ define([
 			} else {
 				vm.view = vm.views[idx];
 			}
-			console.log(idx, vm.view);
 		}
 
 		function prev() {
@@ -254,7 +257,18 @@ define([
 			} else {
 				vm.view = vm.views[idx];
 			}
-			console.log(vm.view);
 		}
+
+		function uploadFile(event) {
+			vm.log.image = event.target.files[0];
+			upload.readAsDataUrl(vm.log.image, vm).then(function(result) {
+				vm.log.image_url = result;
+			});
+			logService.updateImage(dogId, currentDay, vm.log).then(function (response) {
+				angular.merge(vm.log, response);
+			}, function (error) {
+				console.error(error);
+			});
+    	}
 	}
 });

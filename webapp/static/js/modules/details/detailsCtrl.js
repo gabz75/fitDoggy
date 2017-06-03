@@ -37,6 +37,7 @@ define([
 		vm.hasPrev = hasPrev;
 		vm.setType = setType;
 		vm.confirmDelete = confirmDelete;
+		vm.updateDog = updateDog;
 		init();
 
 		function init() {
@@ -44,9 +45,13 @@ define([
 			dogId = $location.url().split('/')[2];
 			detailsService.getDog(dogId).then(function (response) {
 				vm.dog = response;
+				vm.images = [{
+					'filename': response.filename,
+					'url': response.url
+				}] || [];
 				vm.chartTypes[0].title = 'Weight (' + vm.dog.metric + ')';
 				getChartData().then(function (data) {
-					console.log(data[vm.chartType.value]);
+					vm.images = _.concat(data[3], vm.images);
 					chart = Highcharts.chart('linechart', lineChartOptions({
 						title: 'Change In ' + vm.chartType.label,
 						subtitle: vm.startDate.format('MM/DD/YYYY') + ' to ' + vm.endDate.format('MM/DD/YYYY'),
@@ -65,7 +70,7 @@ define([
 			if (prevChartType !== vm.chartType) {
 				getChartData().then(function (response) {
 					updateChart(response);
-				})
+				});
 			}
 		}
 
@@ -123,17 +128,20 @@ define([
 
 		function setInstructions() {
 			vm.instructions = document.ontouchstart === undefined ?
-                    'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in';
+                'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in';
 		}
 
 		function updateChart(response) {
-			console.log(response[vm.chartType.value]);
 			chart.update(lineChartOptions({
 				title: 'Change In ' + vm.chartType.label,
 				subtitle: vm.startDate.format('MM/DD/YYYY') + ' to ' + vm.endDate.format('MM/DD/YYYY'),
 				yAxis: 'Weight (' + vm.dog.metric + ')',
 				series: response[vm.chartType.value] || []
 			}));
+		}
+
+		function updateDog() {
+            $location.path('/dog/' + vm.dog.id + '/update');
 		}
 	}
 });

@@ -56,10 +56,10 @@
 }
 .nav-pills__pill__outlined {
 	border-radius: 4px;
-	border: 1px solid #003e51;
+	border: 1px solid #2C3E50;
 }
 .nav-pills>li>a{
-	color: #003e51;
+	color: #2C3E50;
 	border-radius: 4px;
 	text-align: center;
 }
@@ -71,12 +71,16 @@
     width: 350px;
     margin: auto;
 }
-
-.thumbnail-container .placeholder {
-	background-color: #f5f5f5;
-	color: #495259;
-	width: 100%;
-	height: 100%;
+.thumbnail-container__label {
+	width: 350px;
+    margin: auto;
+}
+.img-container img {
+	position: relative;
+	display: block;
+	margin: auto;
+	max-width: 350px;
+	max-height: 350px;
 }
 .input__hidden {
 	width: 0.1px;
@@ -86,20 +90,24 @@
 	position: absolute;
 	z-index: -1;
 }
-.input__hidden + label {
-    font-size: 1.5rem;
-    font-weight: 700;
+.input__hidden + label,
+.image__delete {
+    font-size: 1.2rem;
+    font-weight: 600;
     text-overflow: ellipsis;
     white-space: nowrap;
     cursor: pointer;
     display: inline-block;
     overflow: hidden;
-    width: 100%;
-    height: 100%;
-    line-height: 350px;
-    text-align: center;
 }
-
+.input__hidden + label.placeholder {
+    background-color: #f5f5f5;
+	color: #495259;
+	width: 100%;
+	height: 350px;
+	text-align: center;
+    line-height: 350px;
+}
 .chart-container {
 	height: 400px;
 	position: relative;
@@ -131,4 +139,29 @@
 }
 .thumbnail-container .chart-container__nav {
 	line-height: 350px
+	text-align: center;
+	color: #999;
+}
+.pager {
+	border-radius: 4px;
+	background-color: #3498DB;
+}
+.pager li>a {
+	border-left: 2px solid #3498DB;
+}
+.pager li>a:hover,
+.pager li>a:active {
+	background-color: #2980B9;
+}
+.panel-body {
+	background-color: white;
+}
+.gallery__thumbnail {
+	max-height: 200px;
+    width: 25%;
+    display: inline-block;
+    overflow: hidden;
+}
+.gallery__thumbnail img {
+	width: 100%
 }

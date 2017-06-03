@@ -18,6 +18,10 @@ define([
         this.saveLog = saveLog;
         this.deleteLog = deleteLog;
         this.updateLog = updateLog;
+        this.updateWeight = updateWeight;
+        this.updateImage = updateImage;
+
+        this.updateDog = updateDog;
 
 		function getLog(id, date) {			
 			return httpService.post('/log', {
@@ -119,17 +123,54 @@ define([
             }
         }
 
-        function updateLog(dogId, date, log) {
-            var updated = {
-                weight: log.weight,
-                totalCalories: log.totalCalories,
-                totalDuration: log.totalDuration,
-                id: log.id
-            };
-            return httpService.post('log/update', {
+        function updateLog(type, dogId, date, log) {
+            if (type === 'exercise') {
+                return updateDuration(dogId, date, log);
+            } else if (type === 'food') {
+                return updateDuration(dogId, date, log);
+            }
+        }
+
+        function updateDuration(dogId, date, log) {
+            return httpService.upload('/log/update/duration', {
                 dogId: dogId,
                 date: date,
-                updated: updated
+                totalCalories: log.totalCalories,
+                logId: log.id
+            });
+        }
+
+        function updateCalories(dogId, date, log) {
+            return httpService.upload('/log/update/calories', {
+                dogId: dogId,
+                date: date,
+                totalDuration: log.totalDuration,
+                logId: log.id
+            });
+        }
+
+        function updateWeight(dogId, date, log) {
+            return httpService.post('/log/update/weight', {
+                dogId: dogId,
+                date: date,
+                weight: log.weight,
+                id: log.id
+            });
+        }
+
+        function updateImage(dogId, date, log) {
+            return httpService.upload('/log/update/image', {
+                dogId: dogId,
+                date: date,
+                img: log.image,
+                id: log.id
+            });
+        }
+
+        function updateDog(dogId, queryParams) {
+            return httpService.post('/dog/update', {
+                id: id,
+                dog: dog
             });
         }
 	}

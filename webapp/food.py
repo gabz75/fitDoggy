@@ -41,26 +41,6 @@ def add_new_food():
     except Exception, e:
         return json.dumps(str(e)), 500
 
-# @application.route('/log/food/all', methods=['POST'])
-# def get_food_log():
-#     foods = []
-#     try:
-#         log_id = request.json.get('id')
-#         food_logs = FoodLog.query.filter(FoodLog.log_id==log_id).all()
-        
-#         for log in food_logs:
-#             food = Food.query.filter(Food.id==log.food_id).first()
-#             foods.append({
-#                 'amount': log._amount,
-#                 'name': food._name,
-#                 'calories': food._calories * log._amount / food._serving,
-#                 'id': log.id
-#             })
-#         return foods
-
-#     except Exception, e:
-#         raise e
-
 @application.route('/log/food/update', methods=['POST'])
 def update_food_log():
     try:
@@ -71,7 +51,7 @@ def update_food_log():
             log_date = get_date(request.json.get('date'))
             log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
             if log is None:
-                log = Log(log_date, None, dog_id);
+                log = Log(log_date, dog_id);
                 db.session.add(log)
                 db.session.commit()
             return add_food_log(log.id, food_log)
@@ -86,7 +66,7 @@ def add_food_log(log_id, log):
         food_log = FoodLog(log.get('amount'), log.get('foodId'), log_id)
         db.session.add(food_log)
         db.session.commit()
-        
+
         food = Food.query.filter(Food.id==log.get('foodId')).first()
         food_item = {
             'amount': food_log._amount,

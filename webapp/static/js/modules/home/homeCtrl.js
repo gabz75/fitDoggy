@@ -23,13 +23,11 @@ define([
 
 		function getDogs() {
 			homeService.getDogs().then(function (response) {
-				console.log(response);
 				vm.dogs = response;
 			}, function (error) {
 				dialog.error(error);
 				vm.dogs = [];
 			});
 		}
-
 	}
 });

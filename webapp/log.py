@@ -1,9 +1,11 @@
 from flask import request
+from werkzeug import secure_filename
 from webapp import application, db
 from models import Log, ExerciseLog, FoodLog, Food, Exercise, Dog
-from helpers import get_date, getMER
+from helpers import *
 
 import json
+import os
 
 @application.route('/log', methods=['POST'])
 def get_log():
@@ -15,9 +17,6 @@ def get_log():
             return json.dumps({})
 
         log_item = log.to_json()
-        dog = Dog.query.filter(Dog.id==dog_id).first()
-        log_item['dailyCalories'] = round(getMER(log._weight, dog._metric))
-
         log_item.update({'food': get_food_log(log.id)})
         log_item.update({'exercise': get_exercise_log(log.id)})
         return json.dumps(log_item)
@@ -37,7 +36,7 @@ def get_food_log(log_id):
             foods.append({
                 'amount': log._amount,
                 'name': food._name,
-                'calories': food._calories * log._amount / food._serving,
+                'calories': round(food._calories * log._amount / food._serving, 1),
                 'foodId': food.id,
                 'id': log.id
             })
@@ -85,29 +84,117 @@ def delete_log():
     except Exception, e:
         return json.dumps(str(e)), 500
 
-@application.route('/log/update', methods=['POST'])
-def update_log():
+@application.route('/log/update/image', methods=['POST'])
+def update_log_image():
     try:
-        dog_id = request.json.get('dogId')
-        log_date = get_date(request.json.get('date'))
-        update = request.json.get('updated')
-        if update.get('id') is None:
+        img = request.files['img']
+        filename = None
+        url = None
+        if img and allowed_file(img.filename):
+            print 'here'
+            base_filename = secure_filename(img.filename).rsplit('.', 1)[0]
+            extension = secure_filename(img.filename).rsplit('.', 1)[1]
+            if not os.path.exists(application.config['UPLOAD_FOLDER']):
+                os.makedirs(application.config['UPLOAD_FOLDER'])
+            filename = base_filename + '.' + extension
+            url = os.path.join(application.config['UPLOAD_FOLDER'], filename)
+            index = 1
+            while os.path.exists(url):
+                filename = base_filename + '(' + str(index) + ').' + extension
+                url = os.path.join(application.config['UPLOAD_FOLDER'], filename)
+                index += 1
+            img.save(url)
+            url = os.path.join(application.config['UPLOAD_URL'], filename)
+        dog_id = request.form.get('dogId')
+        log_date = get_date(request.form.get('date'))
+        log_id = request.form.get('logId')
+        if log_id is None:
             log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
         else:
             log = Log.query.filter(Log.id==update.get('id')).first()
+
         if log is None:
-            log = Log(log_date, update.get('weight', 0), dog_id, update.get('totalCalories', 0), update.get('totalDuration', 0))
+            log = Log(log_date, dog_id, 0, image_filename=filename, image_url=url)
         else:
-            log._weight = update.get('weight', log._weight)
-            log._totalCalories = update.get('totalCalories', log._totalCalories)
-            log._totalDuration = update.get('totalDuration', log._totalDuration)
+            if url and log._image_url:
+                os.remove(os.path.join(application.config['UPLOAD_FOLDER'], log._image_filename))
+            log._image_url = url or log._image_url
+            log._image_filename = filename
 
         db.session.add(log)
         db.session.commit()
-        log_item = log.to_json()
+        return json.dumps(log.to_json())
+
+    except Exception, e:
+        raise e
+
+@application.route('/log/update/weight', methods=['POST'])
+def update_log_weight():
+    try:
+        dog_id = request.json.get('dogId')
         dog = Dog.query.filter(Dog.id==dog_id).first()
-        log_item['dailyCalories'] = round(getMER(log._weight, dog._metric))
-        return json.dumps()
+        log_date = get_date(request.json.get('date'))
+        log_id = request.json.get('logId')
+        if log_id is None:
+            log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
+        else:
+            log = Log.query.filter(Log.id==update.get('id')).first()
+
+        if log is None:
+            log = Log(log_date, dog_id, request.json.get('weight', 0))
+        else:
+            log._weight = request.json.get('weight', log._weight)
+
+        log._dailyCalories = round(getMER(log._weight, dog._metric))
+        db.session.add(log)
+        db.session.commit()
+        return json.dumps(log.to_json())
+
+    except Exception, e:
+        return json.dumps(str(e)), 500
+
+@application.route('/log/update/duration', methods=['POST'])
+def update_log_duration():
+    try:
+        dog_id = request.json.get('dogId')
+        log_date = get_date(request.json.get('date'))
+        log_id = request.json.get('logId')
+        if log_id is None:
+            log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
+        else:
+            log = Log.query.filter(Log.id==update.get('id')).first()
+
+        if log is None:
+            log = Log(log_date, dog_id, total_duration=request.json.get('totalDuration', 0))
+        else:
+            log._totalDuration = request.json.get('totalDuration', log._totalDuration)
+
+        db.session.add(log)
+        db.session.commit()
+        return json.dumps(log.to_json())
+
+    except Exception, e:
+        return json.dumps(str(e)), 500
+
+@application.route('/log/update/calories', methods=['POST'])
+def update_log_calories():
+    try:
+        dog_id = request.json.get('dogId')
+        log_date = get_date(request.form.get('date'))
+        log_id = request.json.get('logId')
+        if log_id is None:
+            log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
+        else:
+            log = Log.query.filter(Log.id==update.get('id')).first()
+
+        if log is None:
+            log = Log(log_date, dog_id, 0, total_calories=request.json.get('calories', 0))
+        else:
+            log._totalCalories = request.json.get('totalCalories', log._totalCalories)
+
+        db.session.add(log)
+        db.session.commit()
+        return json.dumps(log.to_json())
 
     except Exception, e:
         return json.dumps(str(e)), 500

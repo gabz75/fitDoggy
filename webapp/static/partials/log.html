@@ -1,7 +1,7 @@
 <div class="panel panel-default panel__fixed">
     <ul class="pager full-width m-0">
-        <li class="previous col-xs-4">
-            <a href="#!/dog/{{vm.dog.id}}/date/{{vm.date.prev}}">
+        <li class="previous">
+            <a class="col-xs-4 l-align" href="#!/dog/{{vm.dog.id}}/date/{{vm.date.prev}}">
                 <span>
                     <i class="fui-arrow-left"></i>
                     Previous
@@ -13,8 +13,8 @@
                 {{vm.dog.name}}
             </a>
         </li>
-        <li class="next col-xs-4 r-align" ng-if="vm.notInFuture(vm.date.next)">
-            <a class="full-width" href="#!/dog/{{vm.dog.id}}/date/{{vm.date.next}}">
+        <li class="next" ng-if="vm.notInFuture(vm.date.next)">
+            <a class="col-xs-4 r-align" href="#!/dog/{{vm.dog.id}}/date/{{vm.date.next}}">
                 Next
                 <i class="fui-arrow-right"></i>
             </a>
@@ -26,13 +26,19 @@
                 <i class="fa fa-chevron-left" aria-hidden="true"></i>
             </div>
             <div class="thumbnail-container full-height">
-                <div ng-if="vm.view === 'img'" class="full-height">
-                    <img src="{{vm.log.image_url || ''}}" />
-                    <div class="placeholder" ng-if="!vm.log.image_url"></div>
+                <div ng-if="vm.view === 'img'" class="img-container">
+                    <img ng-src="{{vm.log.image_url}}" alt="{{vm.log.image_filename"}}/>
+                    <input type="file" id="dogPhoto" class="input__hidden" accept="{{vm.fileTypes}}" />
+                    <label ng-class="vm.log.image_url ? '' : 'placeholder'" for="dogPhoto">
+                        <span ng-if="!vm.log.image_url">
+                            <i class="fa fa-plus" aria-hidden="true"></i> 
+                            Choose a picture
+                        </span>
+                        <span ng-if="vm.log.image_url">Change the picture</span>
+                    </label>
                 </div>
                 <div ng-if="vm.view === 'foodChart'">
                     <div pie-chart data-options="vm.pieChart.food" data-series="vm.log.food"></div>
-                    <!-- <div id="foodChart"></div> -->
                 </div>
                 <div ng-if="vm.view==='exerciseChart'">
                     <div pie-chart data-options="vm.pieChart.exercise" data-series="vm.log.exercise"></div>

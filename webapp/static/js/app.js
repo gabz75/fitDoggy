@@ -6,10 +6,11 @@ define([
     'common/services/dialog/dialog',
     'common/services/httpService',
     'common/services/pubsub',
+    'common/factories/upload',
     'modules/home/home',
     'modules/details/details',
     'modules/log/log',
-    'modules/newDog/newDog'
+    'modules/updateDog/updateDog'
 ], function (angular) {
 
     'use strict';
@@ -21,10 +22,11 @@ define([
         'common.dialog',
         'common.pubsub',
         'common.service',
+        'common.upload',
         'home',
         'details',
         'log',
-        'newDog'
+        'updateDog'
     ])
         .config(appConfig);
 
@@ -45,8 +47,8 @@ define([
             controllerAs: 'vm'
         })
         .when('/dog/new', {
-            templateUrl: '/static/partials/newDog.html',
-            controller: 'newDogCtrl',
+            templateUrl: '/static/partials/updateDog.html',
+            controller: 'updateDogCtrl',
             controllerAs: 'vm'
         })
         .when('/dog/:dog', {
@@ -54,18 +56,14 @@ define([
             controller: 'detailsCtrl',
             controllerAs: 'vm'
         })
+        .when('/dog/:dog/update', {
+            templateUrl: '/static/partials/updateDog.html',
+            controller: 'updateDogCtrl',
+            controllerAs: 'vm'
+        })
         .otherwise({
             redirectTo: '/home'
         });
-
-        // $locationProvider.hashPrefix('#!');
-
-        // $locationProvider.html5Mode({
-        //     enabled: true,
-        //     requireBase: false
-        // });
-
-
     }
 
 });
