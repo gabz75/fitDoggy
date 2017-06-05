@@ -11,7 +11,6 @@ requirejs.config({
         'highcharts': '/static/node_modules/highcharts/highcharts',
         'lodash': '/static/node_modules/lodash/lodash',
         'moment': '/static/node_modules/moment/min/moment.min',
-        'rx': '/static/node_modules/rx/dist/rx.min',
         'ui-bootstrap': '/static/node_modules/angular-ui-bootstrap/dist/ui-bootstrap'
     },
     shim: {

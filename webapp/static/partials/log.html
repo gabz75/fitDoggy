@@ -27,7 +27,7 @@
             </div>
             <div class="thumbnail-container full-height">
                 <div ng-if="vm.view === 'img'" class="img-container">
-                    <img ng-src="{{vm.log.image_url}}" alt="{{vm.log.image_filename"}}/>
+                    <img ng-src="{{vm.log.image_url}}" alt="{{vm.log.image_filename}}"/>
                     <input type="file" id="dogPhoto" class="input__hidden" accept="{{vm.fileTypes}}" />
                     <label ng-class="vm.log.image_url ? '' : 'placeholder'" for="dogPhoto">
                         <span ng-if="!vm.log.image_url">

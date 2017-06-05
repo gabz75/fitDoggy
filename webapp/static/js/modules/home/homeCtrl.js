@@ -4,11 +4,11 @@ define([
 ], function (angular, moment) {
 	'use strict';
 
-	angular.module('home.controller', ['common.dialog', 'common.pubsub', 'home.service'])
+	angular.module('home.controller', ['common.dialog', 'home.service'])
 		.controller('homeCtrl', homeCtrl);
 
-	homeCtrl.$inject = ['$scope', 'dialog', 'pubsub', 'homeService'];
-	function homeCtrl($scope, dialog, pubsub, homeService) {
+	homeCtrl.$inject = ['$scope', 'dialog', 'homeService'];
+	function homeCtrl($scope, dialog, homeService) {
 		var vm = this;
 
 		vm.getDogs = getDogs;
@@ -16,7 +16,6 @@ define([
 		init();
 
 		function init() {
-			pubsub.initSubscriptions();
 			getDogs();
 			vm.date = moment().format('MMDDYYYY');
 		}

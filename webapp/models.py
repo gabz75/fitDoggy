@@ -169,5 +169,4 @@ class Food(db.Model):
             'serving': self._serving,
             'id': str(self.id)
         }
-# db.drop_all()
 db.create_all()
