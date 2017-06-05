@@ -1,16 +1,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_heroku import Heroku
 
 application = Flask(__name__, instance_relative_config=True)
+heroku = Heroku(application)
 
 application.config.from_object('webapp.settings') 
-application.url_map.strict_slashes = False
 
 db = SQLAlchemy(application)
 
-import webapp.app
-import webapp.models
-import webapp.exercise
-import webapp.food
-import webapp.log
-import webapp.dog
+import app
+import models
+import endpoints

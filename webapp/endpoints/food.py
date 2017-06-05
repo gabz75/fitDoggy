@@ -1,6 +1,7 @@
 from flask import request, jsonify
+
+from webapp.models import FoodLog, Food, Log
 from webapp import application, db
-from models import FoodLog, Food, Log
 from helpers import get_date
 
 import os
@@ -71,7 +72,7 @@ def add_food_log(log_id, log):
         food_item = {
             'amount': food_log._amount,
             'name': food._name,
-            'calories': food._calories * food_log._amount / food._serving,
+            'calories': round(food._calories * food_log._amount / food._serving),
             'foodId': food.id,
             'id': food_log.id
         }

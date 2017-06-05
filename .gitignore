@@ -3,7 +3,9 @@
 *.pyc
 /webapp/static/node_modules/*
 /webapp/static/img/tmp/*
-
+venv
+staticfiles
+.env
 # Package Files #
 *.jar
 *.war

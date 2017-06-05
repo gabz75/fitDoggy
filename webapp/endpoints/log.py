@@ -1,7 +1,8 @@
-from flask import request
 from werkzeug import secure_filename
+from flask import request
+
+from webapp.models import *
 from webapp import application, db
-from models import Log, ExerciseLog, FoodLog, Food, Exercise, Dog
 from helpers import *
 
 import json

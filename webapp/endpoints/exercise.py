@@ -1,6 +1,7 @@
 from flask import request, jsonify
+
+from webapp.models import ExerciseLog, Exercise, Log
 from webapp import application, db
-from models import ExerciseLog, Exercise, Log
 from helpers import get_date
 
 import os
@@ -81,7 +82,6 @@ def edit_exercise_log(log):
         exercise_log.exercise_id = log.get('exerciseId', exercise_log.exercise_id)
         db.session.add(exercise_log)
         db.session.commit()
-        print exercise_log.id
         return json.dumps(exercise_log.to_json())
     except Exception, e:
         raise e;
