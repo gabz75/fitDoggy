@@ -1,0 +1,42 @@
+{
+  "name": "fitdoggy",
+  "version": "1.0.0",
+  "description": "\"A weight tracking app for dogs\"",
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "mv node_modules webapp/static"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nhironaka/fitDog.git"
+  },
+  "keywords": [
+    "fitness_tracker",
+    "dog"
+  ],
+  "author": "Naomi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nhironaka/fitDog/issues"
+  },
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-animate": "^1.6.4",
+    "angular-route": "^1.6.4",
+    "angular-touch": "^1.6.4",
+    "angular-ui-bootstrap": "^2.5.0",
+    "bootstrap": "^3.3.7",
+    "domready": "^1.0.8",
+    "flat-ui": "^2.1.1",
+    "font-awesome": "^4.7.0",
+    "highcharts": "^5.0.11",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
+    "requirejs": "^2.3.3",
+    "requirejs-domready": "^2.0.3"
+  },
+  "engines": {
+    "node": "4.5.0"
+  },
+  "homepage": "https://github.com/nhironaka/fitDog#readme"
+}

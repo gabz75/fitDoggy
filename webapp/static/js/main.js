@@ -1,5 +1,5 @@
 requirejs.config({
-    baseUrl: '../static/js',
+    baseUrl: '/static/js',
     paths: {
         'angular': '/static/node_modules/angular/angular.min',
         'angular-animate': '/static/node_modules/angular-animate/angular-animate.min',
@@ -28,3 +28,5 @@ requirejs.config({
 
     deps: ['./bootstrap']
 });
+
+print 
