@@ -16,19 +16,16 @@ define([
 			var deferred = $q.defer(),
 				cached = cacheService.get(url, queryParams);
 			if (cached) {
+				console.log('Getting cache');
 				deferred.resolve(cached);
 			} else {
 				$http.post(url, queryParams).then(function (response) {
-					if (response.status !== 500) {
-						deferred.resolve(response.data);
-						cacheService.set(url, queryParams, response.data);
-					} else {
-						deferred.reject(response.data);
-					}
+					deferred.resolve(response.data);
+					cacheService.set(url, queryParams, response.data);
 				}, function (response) {
 					deferred.reject(response.data);
 				});
-			}		
+			}	
 			
 			return deferred.promise;
 		}

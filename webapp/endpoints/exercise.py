@@ -25,7 +25,7 @@ def add_new_exercise():
         activity = json_data.get('activity')
         description = json_data.get('description', '')
         similar = Exercise.query.filter(Exercise._name==activity, Exercise._description==description).first();
-        if (similar is None):
+        if similar is None:
             exercise = Exercise(activity, description)
             db.session.add(exercise)
             db.session.commit()
@@ -46,6 +46,7 @@ def update_exercise_log():
             log_date = get_date(request.json.get('date'))
             log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
             if log is None:
+                print 'log is none'
                 log = Log(log_date, dog_id)
                 db.session.add(log)
                 db.session.commit()

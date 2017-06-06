@@ -16,12 +16,10 @@ def get_log():
         log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
         if log is None:
             return json.dumps({})
-
         log_item = log.to_json()
         log_item.update({'food': get_food_log(log.id)})
         log_item.update({'exercise': get_exercise_log(log.id)})
         return json.dumps(log_item)
-
     except Exception, e:
         return json.dumps(str(e)), 500
 
@@ -88,31 +86,14 @@ def delete_log():
 @application.route('/log/update/image', methods=['POST'])
 def update_log_image():
     try:
-        img = request.files['img']
-        filename = None
-        url = None
-        if img and allowed_file(img.filename):
-            print 'here'
-            base_filename = secure_filename(img.filename).rsplit('.', 1)[0]
-            extension = secure_filename(img.filename).rsplit('.', 1)[1]
-            if not os.path.exists(application.config['UPLOAD_FOLDER']):
-                os.makedirs(application.config['UPLOAD_FOLDER'])
-            filename = base_filename + '.' + extension
-            url = os.path.join(application.config['UPLOAD_FOLDER'], filename)
-            index = 1
-            while os.path.exists(url):
-                filename = base_filename + '(' + str(index) + ').' + extension
-                url = os.path.join(application.config['UPLOAD_FOLDER'], filename)
-                index += 1
-            img.save(url)
-            url = os.path.join(application.config['UPLOAD_URL'], filename)
+        filename, url = save_image(request.files['img'])
         dog_id = request.form.get('dogId')
         log_date = get_date(request.form.get('date'))
         log_id = request.form.get('logId')
         if log_id is None:
             log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
         else:
-            log = Log.query.filter(Log.id==update.get('id')).first()
+            log = Log.query.filter(Log.id==log_id).first()
 
         if log is None:
             log = Log(log_date, dog_id, 0, image_filename=filename, image_url=url)
@@ -139,14 +120,14 @@ def update_log_weight():
         if log_id is None:
             log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
         else:
-            log = Log.query.filter(Log.id==update.get('id')).first()
+            log = Log.query.filter(Log.id==log_id).first()
 
         if log is None:
             log = Log(log_date, dog_id, request.json.get('weight', 0))
         else:
             log._weight = request.json.get('weight', log._weight)
 
-        log._dailyCalories = round(getMER(log._weight, dog._metric))
+        log._daily_calories = round(getMER(log._weight, dog._metric))
         db.session.add(log)
         db.session.commit()
         return json.dumps(log.to_json())
@@ -163,13 +144,12 @@ def update_log_duration():
         if log_id is None:
             log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
         else:
-            log = Log.query.filter(Log.id==update.get('id')).first()
+            log = Log.query.filter(Log.id==log_id).first()
 
         if log is None:
             log = Log(log_date, dog_id, total_duration=request.json.get('totalDuration', 0))
         else:
-            log._totalDuration = request.json.get('totalDuration', log._totalDuration)
-
+            log._total_duration = request.json.get('totalDuration', log._total_duration)
         db.session.add(log)
         db.session.commit()
         return json.dumps(log.to_json())
@@ -181,17 +161,17 @@ def update_log_duration():
 def update_log_calories():
     try:
         dog_id = request.json.get('dogId')
-        log_date = get_date(request.form.get('date'))
+        log_date = get_date(request.json.get('date'))
         log_id = request.json.get('logId')
         if log_id is None:
             log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
         else:
-            log = Log.query.filter(Log.id==update.get('id')).first()
+            log = Log.query.filter(Log.id==log_id).first()
 
         if log is None:
-            log = Log(log_date, dog_id, 0, total_calories=request.json.get('calories', 0))
+            log = Log(log_date, dog_id, 0, total_calories=request.json.get('totalCalories', 0))
         else:
-            log._totalCalories = request.json.get('totalCalories', log._totalCalories)
+            log._total_calories = request.json.get('totalCalories', log._total_calories)
 
         db.session.add(log)
         db.session.commit()

@@ -45,9 +45,9 @@ class Log(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     _date = db.Column(db.Date)
     _weight = db.Column(db.Float, default=None, nullable=True)
-    _totalDuration = db.Column(db.Integer)
-    _totalCalories = db.Column(db.Integer)
-    __dailyCalories = db.Column(db.Float, default=None, nullable=True)
+    _total_duration = db.Column(db.Integer, default=None)
+    _total_calories = db.Column(db.Integer, default=None)
+    _daily_calories = db.Column(db.Float, default=None)
     _image_filename = db.Column(db.String, default=None, nullable=True)
     _image_url = db.Column(db.String, default=None, nullable=True)
 
@@ -62,9 +62,9 @@ class Log(db.Model):
         self._date = date
         self.dog_id = dog_id
         self._weight = weight
-        self.__dailyCalories = daily_calories
-        self._totalCalories = total_calories
-        self._totalDuration = total_duration
+        self._daily_calories = daily_calories
+        self._total_calories = total_calories
+        self._total_duration = total_duration
         self._image_filename = image_filename
         self._image_url = image_url 
 
@@ -73,8 +73,9 @@ class Log(db.Model):
             'id': str(self.id),
             'date': self._date.strftime('%m/%d/%Y'),
             'weight': self._weight,
-            'totalCalories': self._totalCalories,
-            'totalDuration': self._totalDuration,
+            'dailyCalories': self._daily_calories,
+            'totalCalories': self._total_calories,
+            'totalDuration': self._total_duration,
             'image_filename': self._image_filename,
             'image_url': self._image_url
             
@@ -169,4 +170,5 @@ class Food(db.Model):
             'serving': self._serving,
             'id': str(self.id)
         }
+
 db.create_all()

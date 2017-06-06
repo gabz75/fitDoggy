@@ -14,14 +14,7 @@ define([
 
         function updateDog(dog) {
             dog.birthday = moment(dog.birthdate).format('MMDDYYYY');
-            if (!dog.id) {
-                return addNewDog(dog);
-            }
             return httpService.upload('/dog/update', dog);
-        }
-
-        function addNewDog(dog) {
-            return httpService.upload('/dog/new', dog);
         }
 
         function getDog(id) {

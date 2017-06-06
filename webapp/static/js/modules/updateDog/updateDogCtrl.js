@@ -1,7 +1,8 @@
 define([
     'angular',
-    'moment'
-], function (angular, moment) {
+    'moment',
+    'lodash'
+], function (angular, moment, lodash) {
     'use strict';
 
     angular.module('updateDog.controller', ['common.dialog', 'common.upload', 'updateDog.service'])
@@ -22,17 +23,13 @@ define([
         init();
 
         function init() {
-            if ($location.url().split('/').length > 2) {
+            if (_.last($location.url().split('/')) !== 'new') {
                 updateDogService.getDog().then(function (response) {
                     angular.merge(vm.dogData, response);
                     vm.dogData.birthdate = new Date(response.birthday);
-                })
+                });
             }
             angular.element(document.querySelector('#dogPhoto')).bind('change', uploadFile);    
-        }
-
-        function flowFileAdded(extension) {
-            return !!fileTypes[extension];
         }
 
         function updateDog() {
