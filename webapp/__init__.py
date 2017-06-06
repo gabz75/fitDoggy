@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_heroku import Heroku
 
-application = Flask(__name__, instance_relative_config=True)
+application = Flask(__name__)
 heroku = Heroku(application)
 
 application.config.from_object('webapp.settings') 

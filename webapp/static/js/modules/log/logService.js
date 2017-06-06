@@ -28,8 +28,9 @@ define([
 				id: id,
 				date: date
 			}).then(function (response) {
-				response.exercise = toObject(response.exercise);
-				response.food = toObject(response.food);
+                response = response || {};
+				response.exercise = toObject(response.exercise || {});
+				response.food = toObject(response.food || {});
 				return response;
 			});
 		}
@@ -127,24 +128,24 @@ define([
             if (type === 'exercise') {
                 return updateDuration(dogId, date, log);
             } else if (type === 'food') {
-                return updateDuration(dogId, date, log);
+                return updateCalories(dogId, date, log);
             }
         }
 
         function updateDuration(dogId, date, log) {
-            return httpService.upload('/log/update/duration', {
+            return httpService.post('/log/update/duration', {
                 dogId: dogId,
                 date: date,
-                totalCalories: log.totalCalories,
+                totalDuration: log.totalDuration,
                 logId: log.id
             });
         }
 
         function updateCalories(dogId, date, log) {
-            return httpService.upload('/log/update/calories', {
+            return httpService.post('/log/update/calories', {
                 dogId: dogId,
                 date: date,
-                totalDuration: log.totalDuration,
+                totalCalories: log.totalCalories,
                 logId: log.id
             });
         }
@@ -153,8 +154,8 @@ define([
             return httpService.post('/log/update/weight', {
                 dogId: dogId,
                 date: date,
-                weight: log.weight,
-                id: log.id
+                weight: log.weight || 0,
+                logId: log.id
             });
         }
 
@@ -163,7 +164,7 @@ define([
                 dogId: dogId,
                 date: date,
                 img: log.image,
-                id: log.id
+                logId: log.id
             });
         }
 

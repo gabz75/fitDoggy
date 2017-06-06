@@ -177,17 +177,14 @@ define([
 			}
 			logService.deleteLog(type, log.id).then(function () {
 				delete vm.log[type][n];
-				updateLog();
+				updateLog(type);
 			});
 		}
 
-		function updateLog() {
-			var noExercise = _.values(vm.log.exercise).length === 0,
-				noFood = _.values(vm.log.food).length === 0,
-				noWeight = !vm.log.weight;
-			if (noExercise && noFood && noWeight && vm.log.id) {
+		function updateLog(type) {
+			if (deleteableLog()) {
 				logService.deleteLog('log', vm.log.id);
-			} else if (vm.log.id) {
+			} else if (type && vm.log.id) {
 				logService.updateLog(type, dogId, currentDay, vm.log);
 			}
 		}
@@ -200,7 +197,9 @@ define([
 				if (type === 'exercise') {
 					calculateDuration(); 
 				}
-				logService.updateLog(type, dogId, currentDay, vm.log);
+				logService.updateLog(type, dogId, currentDay, vm.log).then(function (response) {
+					angular.merge(vm.log, response);
+				});
 			}, function (response) {
 				console.error(response);
 			});
@@ -233,11 +232,15 @@ define([
 		}
 		function saveWeight() {
 			delete vm.log.edit;
-			logService.updateWeight(dogId, currentDay, vm.log).then(function (response) {
-				angular.merge(vm.log, response);
-			});
-			if (moment(currentDay).isSame(today)) {
-				logService.updateDog(dogId, {weight: vm.log.weight});
+			if (deleteableLog()) {
+				logService.deleteLog('log', vm.log.id);
+			} else {
+				logService.updateWeight(dogId, currentDay, vm.log).then(function (response) {
+					angular.merge(vm.log, response);
+				});
+				if (moment(currentDay).isSame(today)) {
+					logService.updateDog(dogId, {weight: vm.log.weight});
+				}
 			}
 		}
 
@@ -269,6 +272,13 @@ define([
 			}, function (error) {
 				console.error(error);
 			});
+    	}
+
+    	function deleteableLog() {
+    		var noExercise = _.values(vm.log.exercise).length === 0,
+				noFood = _.values(vm.log.food).length === 0,
+				noWeight = !vm.log.weight;
+			return noExercise && noFood && noWeight && vm.log.id;
     	}
 	}
 });

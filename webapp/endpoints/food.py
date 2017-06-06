@@ -28,7 +28,6 @@ def add_new_food():
         food_name = json_data.get('food')
         calories = json_data.get('calories', 0)
         serving = json_data.get('serving', 0)
-        print food_name, calories, serving
         similar = Food.query.filter(Food._name==food_name, Food._calories==calories).first();
         if similar is None:
             food = Food(food_name, calories, serving)
@@ -52,12 +51,13 @@ def update_food_log():
             log_date = get_date(request.json.get('date'))
             log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
             if log is None:
+                print 'log is none'
                 log = Log(log_date, dog_id);
                 db.session.add(log)
                 db.session.commit()
             return add_food_log(log.id, food_log)
         else:
-            edit_food_log(food_log)
+            return edit_food_log(food_log)
 
     except Exception, e:
         raise e
@@ -68,29 +68,31 @@ def add_food_log(log_id, log):
         db.session.add(food_log)
         db.session.commit()
 
-        food = Food.query.filter(Food.id==log.get('foodId')).first()
-        food_item = {
-            'amount': food_log._amount,
-            'name': food._name,
-            'calories': round(food._calories * food_log._amount / food._serving),
-            'foodId': food.id,
-            'id': food_log.id
-        }
-        return json.dumps(food_item)
+        return json.dumps(get_food_item(log.get('foodId'), food_log))
     except Exception, e:
         raise e;
 
 def edit_food_log(log):
     try:
         food_log = FoodLog.query.filter_by(id=log.get('id')).first()
-        food_log._calories = log.get('calories', food_log._duration)
-        food_log._amount = log.get('amount', food_log._intensity)
+        food_log._amount = log.get('amount', food_log._amount)
         food_log.food_id = log.get('foodId', food_log.food_id)
         db.session.add(food_log)
         db.session.commit()
-        return json.dump(food_log.to_json())
+        
+        return json.dumps(get_food_item(log.get('foodId'), food_log))
     except Exception, e:
         raise e;
+
+def get_food_item(food_id, food_log):
+    food = Food.query.filter(Food.id==food_id).first()
+    return {
+        'amount': food_log._amount,
+        'name': food._name,
+        'calories': round(food._calories * food_log._amount / food._serving),
+        'foodId': food.id,
+        'id': food_log.id
+    }
 
 @application.route('/log/food/delete', methods=['POST'])
 def delete_food_log():

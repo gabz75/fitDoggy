@@ -1,6 +1,6 @@
 import os
 
-os.environ['DATABASE_URL'] = 'postgres://nuehhgwkydoikl:69e6342c9ea492093e50b4877e892dabbed87123ffe93a5d83a508a790879697@ec2-107-21-99-176.compute-1.amazonaws.com:5432/dchv40ikr6nqo4'
+os.environ['DATABASE_URL'] = 'postgres://kyfadrupdtfyxa:feaaa7ce89472b2e5ac17ed499f28af5d5ac01258e510687cb2e781d0e0143c4@ec2-174-129-41-23.compute-1.amazonaws.com:5432/d7qp8gj8vfidv1'
 SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 # Uploads

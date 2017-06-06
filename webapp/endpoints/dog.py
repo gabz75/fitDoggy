@@ -1,10 +1,9 @@
 from flask import request, render_template, send_file, jsonify
-from werkzeug import secure_filename
 from datetime import datetime
 
 from webapp import application, db
 from webapp.models import Dog, Log
-from helpers import *
+from helpers import get_date, save_image
 
 import os
 import json
@@ -42,23 +41,7 @@ def update_dog():
         current = json_data.get('current')
         goal = json_data.get('goal')
         date = datetime.now()
-        img = request.files['image']
-        filename = None
-        url = None
-        if img and allowed_file(img.filename):
-            base_filename = secure_filename(img.filename).rsplit('.', 1)[0]
-            extension = secure_filename(img.filename).rsplit('.', 1)[1]
-            if not os.path.exists(application.config['UPLOAD_FOLDER']):
-                os.makedirs(application.config['UPLOAD_FOLDER'])
-            filename = base_filename + '.' + extension
-            url = os.path.join(application.config['UPLOAD_FOLDER'], filename)
-            index = 1
-            while os.path.exists(url):
-                filename = base_filename + '(' + str(index) + ').' + extension
-                url = os.path.join(application.config['UPLOAD_FOLDER'], filename)
-                index += 1
-            img.save(url)
-            url = os.path.join(application.config['UPLOAD_URL'], filename)
+        filename, url = save_image(request.files.get('image'))
         if json_data.get('id') is None:
             dog = Dog(name, breed, birthday, metric, current, goal, date, filename, url)
         else:
@@ -108,8 +91,8 @@ def dog_data():
         for log in logs:
             timestamp = int(datetime.combine(log._date, datetime.min.time()).strftime('%s'))*1000
             weights.append([timestamp, log._weight])
-            foods.append([timestamp, log._totalCalories])
-            exercise.append([timestamp, log._totalDuration])
+            foods.append([timestamp, log._total_calories])
+            exercise.append([timestamp, log._total_duration])
             if log._image_url is not None:
                 image.append({
                     'url': log._image_url,

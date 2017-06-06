@@ -27,6 +27,4 @@ requirejs.config({
     },
 
     deps: ['./bootstrap']
-});
-
-print 
+}); 
