@@ -60,6 +60,7 @@ def update_dog():
         return json.dumps(dog.to_json())
 
     except Exception, e:
+        delete_image(filename)
         return json.dumps(str(e)), 500
 
 @application.route('/dog/delete', methods=['POST'])
@@ -67,7 +68,17 @@ def delete_dog():
     try:
         dog_id = request.json.get('id')
         dog = Dog.query.filter_by(id=dog_id).first()
-        
+
+        logs = Log.query.filter(Log.dog_id==dog_id).all()
+        for log in logs:
+            delete_image(log._image_filename)
+            exercise_logs = ExerciseLog.query.filter(ExerciseLog.log_id==log.id).all()
+            for exercise_log in exercise_logs:
+                db.session.delete(exercise_log)
+            food_logs = FoodLog.query.filter(FoodLog.log_id==log.id).all()
+            for food_log in food_logs:
+                db.session.delete(food_log)
+            db.session.delete(log)
         db.session.delete(dog)
         db.session.commit()
         return json.dumps({

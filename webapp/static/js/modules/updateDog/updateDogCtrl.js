@@ -58,7 +58,7 @@ define([
         function uploadFile(event) {
             vm.dogData.image = event.target.files[0];
             upload.readAsDataUrl(vm.dogData.image, vm).then(function(result) {
-                vm.dogData.image_url = result;
+                vm.dogData.imageUrl = result;
             });
         }
     }

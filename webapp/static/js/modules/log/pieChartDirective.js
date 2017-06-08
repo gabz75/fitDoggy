@@ -35,7 +35,6 @@ define([
 				formatted: (total - totalSoFar) + options.metric
 			});
 		}
-		console.log(options.series);
 		chart = Highcharts.chart('pieChart', pieChartOptions(options));
 			
 	}

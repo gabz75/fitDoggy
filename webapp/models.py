@@ -36,6 +36,8 @@ class Dog(db.Model):
             'goal': self._goal,
             'date': self._date.strftime('%m/%d/%Y'),
             'metric': self._metric,
+            'imageFilename': self._image_filename,
+            'imageUrl': self._image_url,
             'id': str(self.id)
         }
 
@@ -76,8 +78,8 @@ class Log(db.Model):
             'dailyCalories': self._daily_calories,
             'totalCalories': self._total_calories,
             'totalDuration': self._total_duration,
-            'image_filename': self._image_filename,
-            'image_url': self._image_url
+            'imageFilename': self._image_filename,
+            'imageUrl': self._image_url
             
         }
 

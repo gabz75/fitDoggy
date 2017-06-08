@@ -85,12 +85,13 @@ def delete_log():
 
 @application.route('/log/update/image', methods=['POST'])
 def update_log_image():
+    filename = None
     try:
-        filename, url = save_image(request.files['img'])
+        filename, url = save_image(request.files['image'])
         dog_id = request.form.get('dogId')
         log_date = get_date(request.form.get('date'))
         log_id = request.form.get('logId')
-        if log_id is None:
+        if log_id is None or str(log_id) == 'undefined':
             log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
         else:
             log = Log.query.filter(Log.id==log_id).first()
@@ -98,8 +99,8 @@ def update_log_image():
         if log is None:
             log = Log(log_date, dog_id, 0, image_filename=filename, image_url=url)
         else:
-            if url and log._image_url:
-                os.remove(os.path.join(application.config['UPLOAD_FOLDER'], log._image_filename))
+            if url and log._image_filename:
+                delete_image(log._image_filename)
             log._image_url = url or log._image_url
             log._image_filename = filename
 
@@ -108,7 +109,9 @@ def update_log_image():
         return json.dumps(log.to_json())
 
     except Exception, e:
-        raise e
+        if filename is not None:
+            delete_image(filename)
+        return json.dumps(str(e)), 500
 
 @application.route('/log/update/weight', methods=['POST'])
 def update_log_weight():

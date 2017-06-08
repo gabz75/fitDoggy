@@ -265,7 +265,7 @@ define([
 		function uploadFile(event) {
 			vm.log.image = event.target.files[0];
 			upload.readAsDataUrl(vm.log.image, vm).then(function(result) {
-				vm.log.image_url = result;
+				vm.log.imageUrl = result;
 			});
 			logService.updateImage(dogId, currentDay, vm.log).then(function (response) {
 				angular.merge(vm.log, response);

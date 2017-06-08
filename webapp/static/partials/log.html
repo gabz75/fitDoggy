@@ -27,14 +27,14 @@
             </div>
             <div class="thumbnail-container full-height">
                 <div ng-if="vm.view === 'img'" class="img-container">
-                    <img ng-src="{{vm.log.image_url}}" alt="{{vm.log.image_filename}}"/>
+                    <img ng-src="{{vm.log.imageUrl}}" alt="{{vm.log.imageFilename}}"/>
                     <input type="file" id="dogPhoto" class="input__hidden" accept="{{vm.fileTypes}}" />
-                    <label ng-class="vm.log.image_url ? '' : 'placeholder'" for="dogPhoto">
-                        <span ng-if="!vm.log.image_url">
+                    <label ng-class="vm.log.imageUrl ? '' : 'placeholder'" for="dogPhoto">
+                        <span ng-if="!vm.log.imageUrl">
                             <i class="fa fa-plus" aria-hidden="true"></i> 
                             Choose a picture
                         </span>
-                        <span ng-if="vm.log.image_url">Change the picture</span>
+                        <span ng-if="vm.log.imageUrl">Change the picture</span>
                     </label>
                 </div>
                 <div ng-if="vm.view === 'foodChart'">

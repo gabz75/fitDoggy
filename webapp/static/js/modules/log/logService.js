@@ -163,7 +163,7 @@ define([
             return httpService.upload('/log/update/image', {
                 dogId: dogId,
                 date: date,
-                img: log.image,
+                image: log.image,
                 logId: log.id
             });
         }
