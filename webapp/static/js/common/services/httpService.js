@@ -16,7 +16,6 @@ define([
 			var deferred = $q.defer(),
 				cached = cacheService.get(url, queryParams);
 			if (cached) {
-				console.log('Getting cache for ' + url);
 				deferred.resolve(cached);
 			} else {
 				$http.post(url, queryParams).then(function (response) {

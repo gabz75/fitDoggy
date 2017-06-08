@@ -79,8 +79,7 @@ class Log(db.Model):
             'totalCalories': self._total_calories,
             'totalDuration': self._total_duration,
             'imageFilename': self._image_filename,
-            'imageUrl': self._image_url
-            
+            'imageUrl': self._image_url            
         }
 
 class FoodLog(db.Model):

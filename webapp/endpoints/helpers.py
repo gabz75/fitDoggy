@@ -27,7 +27,7 @@ def get_date(string):
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1] in _ALLOWED_EXTENSIONS
+       filename.rsplit('.', 1)[1] in _ALLOWED_EXTENSIONS
 
 def save_image(img):
     filename = None
@@ -50,3 +50,4 @@ def save_image(img):
 def delete_image(filename):
     s3 = boto3.resource('s3')
     s3.Object(_S3_BUCKET, filename).delete()
+    

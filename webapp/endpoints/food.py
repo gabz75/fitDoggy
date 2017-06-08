@@ -51,6 +51,7 @@ def update_food_log():
             log_date = get_date(request.json.get('date'))
             log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
             if log is None:
+                print 'log is none'
                 log = Log(log_date, dog_id);
                 db.session.add(log)
                 db.session.commit()
