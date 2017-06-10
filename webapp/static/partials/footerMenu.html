@@ -1,0 +1,19 @@
+<div class="fullMenu__container">
+    <div ng-if="vm.showFullMenu" class="img__container" ng-mouseleave="vm.showFullMenu = false">
+        <img src="/static/img/pawprint.png" alt="navmenu">
+        <img class="img__link1" src="/static/img/pawprint1.png" ng-mouseover="vm.show = true" ng-mouseleave="vm.show = false">
+        <a ng-show="vm.show" class="link__link1" ng-click="vm.home()">Link</a>
+        <img class="img__account" src="/static/img/pawprint2.png" ng-mouseover="vm.showAccount = true" ng-mouseleave="vm.showAccount = false" ng-click="vm.account()">
+        <a ng-show="vm.showAccount" class="link__account" ng-click="vm.account()">
+            Account
+        </a>
+        <img class="img__logout" src="/static/img/pawprint3.png" ng-mouseover="vm.showLogout = true" ng-mouseleave="vm.showLogout = false" ng-click="vm.logout()">
+        <a ng-show="vm.showLogout" class="link__logout" ng-click="vm.logout()">Logout</a>
+        <img class="img__home" src="/static/img/pawprint5.png" ng-mouseover="vm.showHome = true" ng-mouseleave="vm.showHome = false">
+        <a ng-show="vm.showHome" class="link__home" ng-click="vm.home()">Home</a>
+    </div>
+</div>
+
+<a class="mini" ng-mouseover="vm.showFullMenu = true">
+    <i class="fa fa-paw" aria-hidden="true"></i>
+</a>

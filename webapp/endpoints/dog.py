@@ -1,4 +1,5 @@
-from flask import request, render_template, send_file, jsonify
+from flask import request, render_template, session, g
+from flask_login import current_user
 from datetime import datetime
 
 from webapp import application, db
@@ -23,7 +24,7 @@ def get_dog():
 def get_dogs():
     dogList = []
     try:
-        dogs = Dog.query.all()
+        dogs = Dog.query.filter(Dog.user_id==session.get('user_id'))
         for dog in dogs:
             dogList.append(dog.to_json())
         return json.dumps(dogList)
@@ -43,7 +44,7 @@ def update_dog():
         date = datetime.now()
         filename, url = save_image(request.files.get('image'))
         if json_data.get('id') is None:
-            dog = Dog(name, breed, birthday, metric, current, goal, date, filename, url)
+            dog = Dog(name, breed, birthday, metric, current, goal, date, g.user.id, filename, url)
         else:
             dog = Dog.query.filter_by(id=json_data.get('id')).first()
             dog._name = name or dog._name
@@ -68,7 +69,10 @@ def delete_dog():
     try:
         dog_id = request.json.get('id')
         dog = Dog.query.filter_by(id=dog_id).first()
-
+        if dog.user_id == '1':
+            return json.dumps({
+                'message': 'Cannot delete demo data.'    
+            })
         logs = Log.query.filter(Log.dog_id==dog_id).all()
         for log in logs:
             delete_image(log._image_filename)

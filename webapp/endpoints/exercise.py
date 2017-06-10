@@ -24,7 +24,7 @@ def add_new_exercise():
         json_data = request.json
         activity = json_data.get('activity')
         description = json_data.get('description', '')
-        similar = Exercise.query.filter(Exercise._name==activity, Exercise._description==description).first();
+        similar = Exercise.query.filter(Exercise._name==activity, Exercise._description==description).first()
         if similar is None:
             exercise = Exercise(activity, description)
             db.session.add(exercise)
@@ -46,7 +46,6 @@ def update_exercise_log():
             log_date = get_date(request.json.get('date'))
             log = Log.query.filter(Log.dog_id==dog_id, Log._date==log_date).first()
             if log is None:
-                print 'log is none'
                 log = Log(log_date, dog_id)
                 db.session.add(log)
                 db.session.commit()
@@ -73,7 +72,7 @@ def add_exercise_log(log_id, log):
         }
         return json.dumps(exercise_item)
     except Exception, e:
-        raise e;
+        raise e
 
 def edit_exercise_log(log):
     try:
@@ -85,7 +84,7 @@ def edit_exercise_log(log):
         db.session.commit()
         return json.dumps(exercise_log.to_json())
     except Exception, e:
-        raise e;
+        raise e
 
 @application.route('/log/exercise/delete', methods=['POST'])
 def delete_exercise_log():

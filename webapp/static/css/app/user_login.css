@@ -1,0 +1,17 @@
+.user_login.panel__fixed {
+    width: 400px;
+}
+.user_login .nav>li.active>a,
+.user_login .nav>li.active>a:hover {
+    background-color: #fff;
+    border: none; 
+}
+
+.user_login .nav>li>a {
+    background-color: #eee;
+    border: none; 
+}
+.user_login .form-control {
+    margin: 15px 0;
+}
+

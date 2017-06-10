@@ -1,12 +1,13 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_heroku import Heroku
+from flask_login import LoginManager
 
 application = Flask(__name__)
-heroku = Heroku(application)
+
+login_manager = LoginManager()
 
 application.config.from_object('webapp.settings') 
-
+login_manager.init_app(application)
 db = SQLAlchemy(application)
 
 import app

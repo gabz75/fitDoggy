@@ -1,8 +1,12 @@
+html {
+	height: 100%;
+}
 body {
-	background-image: url('/static/img/background.png');
-	font-family: 'PT Sans', sans-serif;
+	background: #c9e4f7;
+    background: -webkit-linear-gradient(bottom, #ebf5fc, #c9e4f7);
+    background: linear-gradient(to bottom, #ebf5fc, #c9e4f7);
+    font-family: 'PT Sans', sans-serif;
 	font-size: 12px;
-	position: absolute;
 	width: 100%;
 	height: 100%;
 }
@@ -11,9 +15,11 @@ label {
 }
 a {
 	color: #3498DB;
+	cursor: pointer;
 }
 a:hover {
 	color: #2980B9;
+	text-decoration: underline;
 }
 .p-0 {
 	padding: 0;
@@ -59,4 +65,8 @@ a:hover {
 }
 .full-width {
 	width: 100%!important;
+}
+.center {
+	margin-right: auto;
+	margin-left: auto;
 }

@@ -1,4 +1,7 @@
 from webapp import application, db
+from datetime import datetime, date, timedelta
+from random import randint
+from operator import eq
 
 class Dog(db.Model):
     __tablename__ = 'dog'
@@ -13,10 +16,12 @@ class Dog(db.Model):
     _date = db.Column(db.Date)
     _image_filename = db.Column(db.String, default=None, nullable=True)
     _image_url = db.Column(db.String, default=None, nullable=True)
-    
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', back_populates='dogs')
+
     logs = db.relationship('Log', back_populates='dog')
 
-    def __init__(self, _name, breed, birthday, metric, current, goal, date, image_filename=None, image_url=None):
+    def __init__(self, _name, breed, birthday, metric, current, goal, date, user_id, image_filename=None, image_url=None):
         self._name = _name
         self._breed = breed
         self._birthday = birthday
@@ -26,6 +31,7 @@ class Dog(db.Model):
         self._date = date
         self._image_filename = image_filename
         self._image_url = image_url 
+        self.user_id = user_id
 
     def to_json(self):
         return {
@@ -59,7 +65,6 @@ class Log(db.Model):
     dog_id = db.Column(db.Integer, db.ForeignKey('dog.id'))
     dog = db.relationship('Dog', back_populates='logs')
 
-
     def __init__(self, date, dog_id, weight=None, daily_calories=None, total_calories=None, total_duration=None, image_filename=None, image_url=None):
         self._date = date
         self.dog_id = dog_id
@@ -76,8 +81,8 @@ class Log(db.Model):
             'date': self._date.strftime('%m/%d/%Y'),
             'weight': self._weight,
             'dailyCalories': self._daily_calories,
-            'totalCalories': self._total_calories,
-            'totalDuration': self._total_duration,
+            'total_calories': self._total_calories,
+            'total_duration': self._total_duration,
             'imageFilename': self._image_filename,
             'imageUrl': self._image_url            
         }
@@ -171,5 +176,38 @@ class Food(db.Model):
             'serving': self._serving,
             'id': str(self.id)
         }
+
+class User(db.Model):
+    __tablename__ = 'user'
+
+    id = db.Column(db.Integer, primary_key = True)
+    _username = db.Column(db.String(32), index = True)
+    _password_hash = db.Column(db.String(128))
+    _email = db.Column(db.String(120), index=True, unique=True)
+
+    dogs = db.relationship('Dog', back_populates='user')
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        try:
+            return unicode(self.id)
+        except NameError:
+            return str(self.id)
+
+    def __init__(self, username, password_hash, email):
+        self._username = username
+        self._password_hash = password_hash
+        self._email = email
 
 db.create_all()

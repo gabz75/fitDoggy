@@ -1,0 +1,67 @@
+.fullMenu__container{
+    width: 100%;
+    position: absolute;
+    bottom: 50px;
+    height: 110px;
+}
+.fullMenu__container .img__container {
+    width: 109px;
+    height: 102px;
+    margin: auto;
+    position: relative;
+}
+.fullMenu__container .img__container a {
+    font-size: medium;
+}
+.link__link1 {
+    position: absolute;
+    top: 35px;
+    left: -25px;
+}
+.img__link1 {
+    position: absolute;
+    top: 34px;
+    left: 7px;
+}
+.link__account {
+    position: absolute;
+    top: 3px;
+    left: -37px;
+}
+.img__account {
+    position: absolute;
+    top: 7px;
+    left: 25px;
+}
+.link__logout {
+    position: absolute;
+    top: 3px;
+    right: -37px;
+}
+.img__logout {
+    position: absolute;
+    top: 7px;
+    right: 25px;
+}
+.link__home {
+    position: absolute;
+    bottom: 12px;
+    left: 35px;
+    color: #fff;
+}
+.img__home {
+    position: absolute;
+    bottom: 9px;
+    right: 22px;
+}
+.container__footer {
+    position: fixed;
+    text-align: center;
+    border-top: 1px solid #e1e1e1;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+}
+.container__footer a.mini {
+    font-size: 30px;
+}

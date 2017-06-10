@@ -1,0 +1,12 @@
+#exercise td,
+#food td {
+    vertical-align: middle!important;
+}
+#log .form-control {
+    height: 30px;
+    padding: 2px 8px;
+}
+#exercise .input-group-addon,
+#food .input-group-addon {
+    padding: 5px 12px;
+}

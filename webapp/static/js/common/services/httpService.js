@@ -4,7 +4,7 @@ define([
 ], function (angular, _) {
 	'use strict';
 
-	angular.module('common.service', ['common.service', 'common.cacheService'])
+	angular.module('common.service', ['common.cacheService'])
 		.service('httpService', httpService);
 
 	httpService.$inject = ['$q', '$http', 'cacheService'];

@@ -8,6 +8,9 @@
 	<link type="text/css" href="/static/node_modules/flat-ui/css/flat-ui.css" rel="stylesheet" />	
 	<link type="text/css" href="/static/css/app/app.css" rel="stylesheet" />
 	<link type="text/css" href="/static/css/app/modifiers.css" rel="stylesheet" />
+	<link type="text/css" href="/static/css/app/footer.css" rel="stylesheet" />
+	<link type="text/css" href="/static/css/app/user_login.css" rel="stylesheet" />
+	<link type="text/css" href="/static/css/app/log.css" rel="stylesheet" />
 	<script data-main="/static/js/main.js" src="/static/node_modules/requirejs/require.js"></script>
 	<base href="/"/>
 </head>
@@ -16,9 +19,7 @@
 		<div class="container__fixed" ng-view></div>
     </div>
     <div class="container__footer">
-		<a href="#!/home">
-			<i class="fa fa-paw" aria-hidden="true"></i>
-		</a>
+		<div footer-menu></div>
 	</div>
 </body>
 </html>
