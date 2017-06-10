@@ -83,8 +83,6 @@ define([
                 loggedIn = $cookies.getObject('user') || $cookies.getObject('demo');
             if (restricted && !loggedIn) {
                 $location.path('/user');
-            } else {
-                $location.path('/home');
             }
         });
         $rootScope.$on('$destroy', function () {
