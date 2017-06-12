@@ -71,7 +71,7 @@ define([
 			vm.date.current = currentDay,
 			vm.date.next = moment(currentDay, 'MMDDYYYY').add(1, 'day').format('MMDDYYYY')
 
-			$q.all([getDog(dogId), getLog(), getActivities(), getFoods()]).then(function () {
+			$q.all([getDog(), getLog(), getActivities(), getFoods()]).then(function () {
 				angular.element(document.querySelector('#dogPhoto')).bind('change', uploadFile);
 			});
 		}
@@ -107,8 +107,8 @@ define([
 			});
 		}
 
-		function getDog(dogId) {
-			return logService.getDog(dogId).then(function (response) {
+		function getDog() {
+			return logService.getDog().then(function (response) {
 				vm.dog = response;
 			});
 		}

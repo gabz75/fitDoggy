@@ -19,8 +19,6 @@ define([
 
 			bcrypt.hash(password, salt, function(err, hash) {
 				if (!err) {
-					console.log(hash);
-					return;
 					httpService.upload('/user/new', {
 						username: username,
 						password: hash,
@@ -42,8 +40,6 @@ define([
 			var deferred = $q.defer();
 			bcrypt.hash(password, salt, function (err, hash) {
 				if (!err) {
-					console.log(hash);
-					return;
 					httpService.upload('/user/login', {
 						username: username,
 						password: hash,
@@ -74,7 +70,7 @@ define([
 		function saveCookie(type, response) {
 			var cookieExp = new Date();
 			cookieExp.setDate(cookieExp.getDate() + 7);
-			$cookies.putObject(type, response, {expires: cookieExp});
+			$cookies.put(type, 'true', {expires: cookieExp});
 		}
 	}
 });

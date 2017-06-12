@@ -1,8 +1,8 @@
 from flask import request, jsonify
 
 from webapp.models import ExerciseLog, Exercise, Log
+from webapp.helpers import get_date
 from webapp import application, db
-from helpers import get_date
 
 import os
 import json

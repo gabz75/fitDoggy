@@ -7,7 +7,9 @@ define([
     'common/services/cache/cacheService',
     'common/services/dialog/dialog',
     'common/services/httpService',
+    'common/factories/breadcrumb',
     'common/factories/upload',
+    'common/factories/notification',
     'common/directives/footerMenu',
     'modules/home/home',
     'modules/details/details',
@@ -21,10 +23,12 @@ define([
     angular.module('app', [
         'ngRoute',
         'ngCookies',
+        'common.breadcrumb',
         'common.cache',
         'common.cacheService',
         'common.dialog',
         'common.footer',
+        'common.notification',
         'common.service',
         'common.upload',
         'details',
@@ -40,7 +44,7 @@ define([
     function appConfig($routeProvider, $locationProvider) {
         $routeProvider
         .when('/', {
-            redirectTo: '/user'
+            redirectTo: '/home'
         })
         .when('/user', {
             templateUrl: '/static/partials/login.html',
@@ -73,21 +77,20 @@ define([
             controllerAs: 'vm'
         })
         .otherwise({
-            redirectTo: '/user'
+            redirectTo: '/home'
         });
     }
     runApp.$inject = ['$rootScope', '$location', '$cookies'];
     function runApp($rootScope, $location, $cookies) {
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            var restricted = '$location.path()' !== '/user',
-                loggedIn = $cookies.getObject('user') || $cookies.getObject('demo');
+            var restricted = $location.path() !== '/user',
+                loggedIn = $cookies.get('user') || $cookies.get('demo');
             if (restricted && !loggedIn) {
                 $location.path('/user');
             }
         });
         $rootScope.$on('$destroy', function () {
             $cookies.remove('demo');
-            
         });
     }
 });

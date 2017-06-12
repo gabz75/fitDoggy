@@ -1,7 +1,5 @@
 .panel-container {
-    margin-top: -50px;
-    padding-top: 65px;
-    padding-bottom: 15px;
+    padding: 15px 0;
     overflow: auto;
     height: 100%!important;
 }
@@ -137,10 +135,40 @@
 }
 .gallery__thumbnail {
 	max-height: 200px;
-    width: 25%;
+    max-width: 50%;
     display: inline-block;
     overflow: hidden;
 }
 .gallery__thumbnail img {
 	width: 100%
+}
+.notification {
+    width: 250px;
+    opacity: 0.5;
+    display: block;
+    position: absolute;
+    padding: 15px;
+    margin: 5px;
+    font-size: larger;
+    font-weight: bold;
+    border-radius: 2px;
+}
+.notification.top {
+    top: 0;
+}
+.notification.right {
+    right: 0;
+}
+.notification.bottom {
+    bottom: 0;
+}
+.notification.left {
+    left: 0;
+}
+.notification.info {
+    background-color: #3498DB;
+    color: #2C3E50;
+}
+.notification.error {
+    background-color: #E74C3C;
 }

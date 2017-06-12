@@ -1,4 +1,6 @@
 from webapp import application
+from seed import demo
+
 import os
 def runserver():
     port = int(os.environ.get('PORT', 5000))
@@ -6,3 +8,5 @@ def runserver():
 
 if __name__ == '__main__':
     runserver()
+
+demo()

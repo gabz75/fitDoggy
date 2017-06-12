@@ -1,10 +1,11 @@
+from sqlalchemy import asc
 from flask import request, render_template, session, g
 from flask_login import current_user
 from datetime import datetime
 
 from webapp import application, db
 from webapp.models import Dog, Log
-from helpers import get_date, save_image
+from webapp.helpers import get_date, save_image
 
 import os
 import json
@@ -98,7 +99,7 @@ def dog_data():
         dog_id = request.json.get('id')
         start_date = request.json.get('startDate')
         end_date = request.json.get('endDate')
-        logs = Log.query.filter(Log.dog_id == dog_id, Log._date >= get_date(start_date), Log._date <= get_date(end_date))
+        logs = Log.query.filter(Log.dog_id == dog_id, Log._date >= get_date(start_date), Log._date <= get_date(end_date)).order_by(asc(Log._date)).all()
         weights = []
         foods = []
         exercise = []
@@ -108,8 +109,10 @@ def dog_data():
             weights.append([timestamp, log._weight])
             foods.append([timestamp, log._total_calories])
             exercise.append([timestamp, log._total_duration])
+            print log._image_url
             if log._image_url is not None:
                 image.append({
+                    'thumbnail_url': log._image_url + '-thumbnail',
                     'url': log._image_url,
                     'filename': log._image_filename
                 })

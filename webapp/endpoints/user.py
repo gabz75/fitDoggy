@@ -16,16 +16,22 @@ def login():
     password = request.form.get('password')
     remember = request.form.get('remember')
     user = User.query.filter(User._username==username).first()
+    if user is None:
+        return json.dumps({
+            'loggedIn': False,
+            'message': 'This user does not exist.'  
+        })
     if eq(user._password_hash, password):
         login_user(user, remember=remember)
         return json.dumps({
         	'loggedIn': True,
         })
     else:
-        print 'failed', eq(user._password_hash, password)
         return json.dumps({
-        	'loggedIn': False	
-    	})
+            'loggedIn': False,
+            'message': 'Password does not match.'  
+        })
+        
 
 @application.route('/user/new', methods=['POST'])
 def add_new_user():
@@ -62,11 +68,15 @@ def add_new_user():
 
 @application.route('/user/logout')
 def logout():
-    session.pop('logged_in', None)
-    logout_user()
-    return json.dumps({
-        'result': 'success'
-    })
+    try:
+        print session
+        session.pop('logged_in', None)
+        logout_user()
+        return json.dumps({
+            'result': 'success'
+        })
+    except Exception, e:
+        raise e
 
 @application.before_request
 def before():

@@ -1,7 +1,4 @@
-from webapp import application, db
-from datetime import datetime, date, timedelta
-from random import randint
-from operator import eq
+from webapp import db
 
 class Dog(db.Model):
     __tablename__ = 'dog'

@@ -2,8 +2,8 @@ from werkzeug import secure_filename
 from flask import request
 
 from webapp.models import *
+from webapp.helpers import *
 from webapp import application, db
-from helpers import *
 
 import json
 import os
@@ -88,6 +88,7 @@ def update_log_image():
     filename = None
     try:
         filename, url = save_image(request.files['image'])
+        print filename, url
         dog_id = request.form.get('dogId')
         log_date = get_date(request.form.get('date'))
         log_id = request.form.get('logId')

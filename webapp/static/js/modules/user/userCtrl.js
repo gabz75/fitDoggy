@@ -5,11 +5,11 @@ define([
 ], function (angular, moment, lodash) {
     'use strict';
 
-    angular.module('user.controller', ['user.service'])
+    angular.module('user.controller', ['common.notification', 'user.service'])
         .controller('userCtrl', userCtrl);
 
-    userCtrl.$inject = ['$location', 'userService'];
-    function userCtrl($location, userService) {
+    userCtrl.$inject = ['$location', 'Notification', 'userService'];
+    function userCtrl($location, Notification, userService) {
         var vm = this,
             currentView = 'login';
 
@@ -33,7 +33,15 @@ define([
 
         function login() {
             userService.login(vm.user.name, vm.user.password, vm.user.remember).then(function (response) {
-                $location.path('/home')
+                if (response.loggedIn) {
+                    $location.path('/home');
+                } else {
+                    Notification({
+                        message: response.message, 
+                        length: 5,
+                        status: response.status
+                    });
+                }
             }, function (error) {
                 console.error(error);
             });
@@ -41,7 +49,15 @@ define([
 
         function register() {
             userService.register(vm.user.name, vm.user.password, vm.user.email).then(function (user) {
-                $location.path('/home')
+                if (response.loggedIn) {
+                    $location.path('/home');
+                } else {
+                    Notification({
+                        message: response.message, 
+                        length: 5,
+                        status: response.status
+                    });
+                }
             }, function (error) {
                 console.error(error);
             });

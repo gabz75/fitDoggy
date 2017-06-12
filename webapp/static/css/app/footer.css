@@ -1,67 +1,66 @@
-.fullMenu__container{
-    width: 100%;
-    position: absolute;
-    bottom: 50px;
-    height: 110px;
-}
-.fullMenu__container .img__container {
-    width: 109px;
-    height: 102px;
-    margin: auto;
-    position: relative;
-}
-.fullMenu__container .img__container a {
-    font-size: medium;
-}
-.link__link1 {
-    position: absolute;
-    top: 35px;
-    left: -25px;
-}
-.img__link1 {
-    position: absolute;
-    top: 34px;
-    left: 7px;
-}
-.link__account {
-    position: absolute;
-    top: 3px;
-    left: -37px;
-}
-.img__account {
-    position: absolute;
-    top: 7px;
-    left: 25px;
-}
-.link__logout {
-    position: absolute;
-    top: 3px;
-    right: -37px;
-}
-.img__logout {
-    position: absolute;
-    top: 7px;
-    right: 25px;
-}
-.link__home {
-    position: absolute;
-    bottom: 12px;
-    left: 35px;
-    color: #fff;
-}
-.img__home {
-    position: absolute;
-    bottom: 9px;
-    right: 22px;
-}
 .container__footer {
     position: fixed;
-    text-align: center;
-    border-top: 1px solid #e1e1e1;
+    text-align: right;
     bottom: 0;
-    width: 100%;
-    height: 50px;
+    right: 0;
 }
-.container__footer a.mini {
-    font-size: 30px;
+.menu-container .mini {
+    min-height: 50px;
+    min-width: 50px;
+    transition: all 0.4s ease-in-out;
+    z-index: 15;
+    background-repeat: no-repeat;
+    background-position: 100%;
+    background-image: url("/static/img/pawprint.png");
+    background-size: 50px;
+}
+.menu-container .mini:hover {
+    background-image: url("/static/img/pawprint-full.png");
+    background-size: 250px;
+    min-height: 250px;
+    min-width: 250px;
+}
+.menu-container .link4 {
+    background-image: url("/static/img/pawprint-full4.png");
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 84px;
+    width: 91px;
+}
+.menu-container .link3 {
+    background-image: url("/static/img/pawprint-full3.png");
+    position: absolute;
+    top: 0;
+    right: 91px;
+    height: 93px;
+    width: 101px;
+}
+.menu-container .link0 {
+    background-image: url("/static/img/pawprint-full0.png");
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 93px;
+    width: 101px;
+}
+.menu-container a {
+    color: white;
+    font-size: 14px;
+    text-transform: lowercase;
+    line-height: 84px;
+    position: relative;
+}
+.menu-container .link4 a {
+    right: 25px;
+}
+.menu-container .link3 a{
+    right: 35px;
+}
+.menu-container .link0 a{
+    right: 60px;
+    bottom: 25px;
+}
+.menu-container a:hover {
+    text-decoration: underline;
 }
