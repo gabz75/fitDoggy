@@ -1,6 +1,6 @@
-<div ng-if="vm.loggedIn" ng-mouseleave="vm.hideFullMenu()">
-    <div class="mini" ng-mouseover="vm.showFullMenu()"></div>
-    <div ng-if="vm.fullMenu">
+<div ng-if="vm.loggedIn">
+    <div class="mini" ng-mouseover="vm.showFullMenu()" ng-class="vm.expanded ? 'expanded' : ''"></div>
+    <div ng-if="vm.fullMenu" ng-mouseleave="vm.hideFullMenu()">
         <div class="link4">
             <a href='/disclaimer'>disclaimer</a>
         </div>
@@ -8,7 +8,7 @@
             <a ng-click="vm.logout()">logout</a>
         </div>
         <div class="link0">
-            <a href="#!/{{vm.previous.url}}">{{vm.previous.label}}</a>
+            <a href="{{vm.previous.url}}">{{vm.previous.label}}</a>
         </div>
     </div>
 </div>

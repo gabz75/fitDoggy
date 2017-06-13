@@ -1,6 +1,7 @@
-from datetime import date
+import cStringIO as StringIO
+from datetime import date, datetime
 from operator import eq
-from random import randint
+from random import randint, choice
 from werkzeug import secure_filename
 from PIL import Image
 
@@ -37,42 +38,44 @@ def save_image(img):
     try:
         if img and allowed_file(img.filename):
             s3 = boto3.resource('s3')
-            bucket = s3.Bucket(_S3_BUCKET)
-            base_filename = secure_filename(img.filename).rsplit('.', 1)[0]
-            filename = base_filename
-            objs = list(bucket.objects.filter(Prefix=filename))
-            index = 1
-            while len(objs) > 0 and objs[0].key == filename:
-                filename = base_filename + '(' + str(index) + ')'
-                objs = list(bucket.objects.filter(Prefix=filename))
-                index += 1
-            print filename, url
-            thumbnail = Image.open(img)
-            img_w, img_h = img.size
-            thumbnail = thumbnail.crop(calculate_size(img_w, img_h))
+            base_filename = secure_filename(img.filename).rsplit('.', 1)[0] + datetime.now().isoformat()
+            extension = secure_filename(img.filename).rsplit('.', 1)[1]
+            filename = base_filename + '.' + extension
             s3.Object(_S3_BUCKET, filename).put(Body=img)
-            s3.Object(_S3_BUCKET, filename + '-thumbnail').put(Body=thumbnail)
+            
+            thumbnail = Image.open(img)
+            img_w, img_h = thumbnail.size
+            crop, aspect_ratio = calculate_size(img_w, img_h)
+            thumbnail = thumbnail.crop(crop).resize(aspect_ratio)
+            file = StringIO.StringIO()
+            thumbnail.save(file, format='PNG')
+            
+            s3.Object(_S3_BUCKET, base_filename + '-thumbnail.png').put(Body=file.getvalue())
             url = 'https://s3-us-west-1.amazonaws.com/' + _S3_BUCKET + '/' + filename
-        return filename, url
+        return base_filename, url
     except Exception, e:
         raise e
 
 def calculate_size(w, h):
-    aspect_ratios = [(1, 1), (2, 1)]
-    aspect_ratio = aspect_ratios[randint(0, 2)]
-    x1 = round(w / 2 - 50) if w > 50 else 0
-    y1 = round(h / 2 - 50) if h > 50 else 0
-    x2 = round(w / 2 + 50) if w > 50 else w
-    y2 = round(h / 2 + 50) if h > 50 else h
-    print x1, y1, x2, y2
-    return x1, y1, x2, y2
+    aspect_ratio = (1, 1) if w > h else (1, 2)
+    if w > h:
+        padding = h / 2;
+        x1 = w / 2 - padding
+        y1 = 0
+        x2 = w / 2 + padding
+        y2 = h
+    else:
+        x1, y1 = 0, 0
+        x2 = min(w, h / 2)
+        y2 = 2 * x2
+    return (x1, y1, x2, y2), tuple([250 * t for t in aspect_ratio])
+
+
 
 def delete_image(filename):
     s3 = boto3.resource('s3')
     s3.Object(_S3_BUCKET, filename).delete()
     s3.Object(_S3_BUCKET, filename + '-thumbnail').delete()
     return True
-
-
 
     

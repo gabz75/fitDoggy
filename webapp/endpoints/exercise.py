@@ -31,10 +31,14 @@ def add_new_exercise():
             db.session.commit()
             return json.dumps(exercise.to_json())
         return json.dumps({
-                'message': 'You already have an activity called ' + activity + '.'    
+                'message': 'You already have an activity called ' + activity + '.',
+                'status': 'info'
             })
     except Exception, e:
-        return json.dumps(str(e))
+        return json.dumps({
+            'message': str(e),
+            'status': 'error'
+        }), 500
 
 @application.route('/log/exercise/update', methods=['POST'])
 def update_exercise_log():
@@ -54,7 +58,10 @@ def update_exercise_log():
             return edit_exercise_log(exercise_log)
 
     except Exception, e:
-        return json.dumps(str(e)), 500
+        return json.dumps({
+            'message': str(e),
+            'status': 'error'
+        }), 500
 
 def add_exercise_log(log_id, log):
     try:
@@ -95,8 +102,12 @@ def delete_exercise_log():
         db.session.delete(exercise_log)
         db.session.commit()
         return json.dumps({
-            'message': 'Successfully deleted'
+            'message': 'Successfully deleted',
+            'status': 'success'
         })
 
     except Exception, e:
-        return json.dumps(str(e))
+        return json.dumps({
+            'message': str(e),
+            'status': 'error'
+        }), 500

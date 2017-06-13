@@ -21,7 +21,10 @@ def get_log():
         log_item.update({'exercise': get_exercise_log(log.id)})
         return json.dumps(log_item)
     except Exception, e:
-        return json.dumps(str(e)), 500
+        return json.dumps({
+            'message': str(e),
+            'status': 'error'
+        }), 500
 
 def get_food_log(log_id):
     foods = []
@@ -31,6 +34,7 @@ def get_food_log(log_id):
             if log.log_id is None:
                 db.session.delete(log)
                 db.session.commit()
+                return
             food = Food.query.filter(Food.id==log.food_id).first()
             foods.append({
                 'amount': log._amount,
@@ -59,7 +63,6 @@ def get_exercise_log(log_id):
                 'id': log.id
             })
         return exercises
-
     except Exception, e:
         raise e
 
@@ -77,18 +80,21 @@ def delete_log():
         db.session.delete(log)
         db.session.commit()
         return json.dumps({
-            'message': 'Successfully deleted'
+            'message': 'Successfully deleted',
+            'status': 'success'
         })
 
     except Exception, e:
-        return json.dumps(str(e)), 500
+        return json.dumps({
+            'message': str(e),
+            'status': 'error'
+        }), 500
 
 @application.route('/log/update/image', methods=['POST'])
 def update_log_image():
     filename = None
     try:
         filename, url = save_image(request.files['image'])
-        print filename, url
         dog_id = request.form.get('dogId')
         log_date = get_date(request.form.get('date'))
         log_id = request.form.get('logId')
@@ -110,9 +116,13 @@ def update_log_image():
         return json.dumps(log.to_json())
 
     except Exception, e:
+        print str(e)
         if filename is not None:
             delete_image(filename)
-        return json.dumps(str(e)), 500
+        return json.dumps({
+            'message': str(e),
+            'status': 'error'
+        }), 500
 
 @application.route('/log/update/weight', methods=['POST'])
 def update_log_weight():
@@ -137,7 +147,10 @@ def update_log_weight():
         return json.dumps(log.to_json())
 
     except Exception, e:
-        return json.dumps(str(e)), 500
+        return json.dumps({
+            'message': str(e),
+            'status': 'error'
+        }), 500
 
 @application.route('/log/update/duration', methods=['POST'])
 def update_log_duration():
@@ -157,9 +170,11 @@ def update_log_duration():
         db.session.add(log)
         db.session.commit()
         return json.dumps(log.to_json())
-
     except Exception, e:
-        return json.dumps(str(e)), 500
+        return json.dumps({
+            'message': str(e),
+            'status': 'error'
+        }), 500
 
 @application.route('/log/update/calories', methods=['POST'])
 def update_log_calories():
@@ -180,6 +195,8 @@ def update_log_calories():
         db.session.add(log)
         db.session.commit()
         return json.dumps(log.to_json())
-
     except Exception, e:
-        return json.dumps(str(e)), 500
+        return json.dumps({
+            'message': str(e),
+            'status': 'error'
+        }), 500

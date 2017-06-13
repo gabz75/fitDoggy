@@ -13,12 +13,13 @@ class Dog(db.Model):
     _date = db.Column(db.Date)
     _image_filename = db.Column(db.String, default=None, nullable=True)
     _image_url = db.Column(db.String, default=None, nullable=True)
+    _thumbnail_url = db.Column(db.String, default=None, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', back_populates='dogs')
 
     logs = db.relationship('Log', back_populates='dog')
 
-    def __init__(self, _name, breed, birthday, metric, current, goal, date, user_id, image_filename=None, image_url=None):
+    def __init__(self, _name, breed, birthday, metric, current, goal, date, user_id, image_filename=None, image_url=None, thumbnail_url=None):
         self._name = _name
         self._breed = breed
         self._birthday = birthday
@@ -27,7 +28,8 @@ class Dog(db.Model):
         self._goal = goal
         self._date = date
         self._image_filename = image_filename
-        self._image_url = image_url 
+        self._image_url = image_url
+        self._thumbnail_url = thumbnail_url
         self.user_id = user_id
 
     def to_json(self):
@@ -41,6 +43,7 @@ class Dog(db.Model):
             'metric': self._metric,
             'imageFilename': self._image_filename,
             'imageUrl': self._image_url,
+            'thumbnailUrl': self._thumbnail_url,
             'id': str(self.id)
         }
 
@@ -55,14 +58,14 @@ class Log(db.Model):
     _daily_calories = db.Column(db.Float, default=None)
     _image_filename = db.Column(db.String, default=None, nullable=True)
     _image_url = db.Column(db.String, default=None, nullable=True)
-
+    _thumbnail_url = db.Column(db.String, default=None, nullable=True)
     food_logs = db.relationship('FoodLog', back_populates='log')
     exercise_logs = db.relationship('ExerciseLog', back_populates='log')
 
     dog_id = db.Column(db.Integer, db.ForeignKey('dog.id'))
     dog = db.relationship('Dog', back_populates='logs')
 
-    def __init__(self, date, dog_id, weight=None, daily_calories=None, total_calories=None, total_duration=None, image_filename=None, image_url=None):
+    def __init__(self, date, dog_id, weight=None, daily_calories=None, total_calories=None, total_duration=None, image_filename=None, image_url=None, thumbnail_url=None):
         self._date = date
         self.dog_id = dog_id
         self._weight = weight
@@ -70,7 +73,8 @@ class Log(db.Model):
         self._total_calories = total_calories
         self._total_duration = total_duration
         self._image_filename = image_filename
-        self._image_url = image_url 
+        self._image_url = image_url
+        self._thumbnail_url = thumbnail_url
 
     def to_json(self):
         return {
@@ -81,7 +85,8 @@ class Log(db.Model):
             'total_calories': self._total_calories,
             'total_duration': self._total_duration,
             'imageFilename': self._image_filename,
-            'imageUrl': self._image_url            
+            'imageUrl': self._image_url,
+            'thumbnailUrl': self._thumbnail_url           
         }
 
 class FoodLog(db.Model):

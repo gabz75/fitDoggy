@@ -135,12 +135,9 @@
 }
 .gallery__thumbnail {
 	max-height: 200px;
-    max-width: 50%;
+    max-width: 25%;
     display: inline-block;
     overflow: hidden;
-}
-.gallery__thumbnail img {
-	width: 100%
 }
 .notification {
     width: 250px;

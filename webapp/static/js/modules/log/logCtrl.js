@@ -5,11 +5,11 @@ define([
 ], function (angular, moment, lodash) {
 	'use strict';
 
-	angular.module('log.controller', ['common.cache', 'common.dialog', 'common.upload', 'log.service', 'log.formFactory'])
+	angular.module('log.controller', ['common.cache', 'common.dialog', 'common.notification', 'common.upload', 'log.service', 'log.formFactory'])
 		.controller('logCtrl', logCtrl);
 
-	logCtrl.$inject = ['$location', '$timeout', '$q', 'Cache', 'dialog', 'upload', 'logService', 'logFormFactory'];
-	function logCtrl($location, $timeout, $q, Cache, dialog, upload, logService, logFormFactory) {
+	logCtrl.$inject = ['$location', '$timeout', '$q', 'Cache', 'dialog', 'Notification', 'upload', 'logService', 'logFormFactory'];
+	function logCtrl($location, $timeout, $q, Cache, dialog, Notification, upload, logService, logFormFactory) {
 		var vm = this,
 			counts = {},
 			cache = {},
@@ -70,10 +70,11 @@ define([
 			vm.date.prev = moment(currentDay, 'MMDDYYYY').subtract(1, 'day').format('MMDDYYYY');
 			vm.date.current = currentDay,
 			vm.date.next = moment(currentDay, 'MMDDYYYY').add(1, 'day').format('MMDDYYYY')
-
-			$q.all([getDog(), getLog(), getActivities(), getFoods()]).then(function () {
+			$q.all([getLog(), getDog()]).then(function () {
 				angular.element(document.querySelector('#dogPhoto')).bind('change', uploadFile);
 			});
+			getActivities(); 
+			getFoods();
 		}
 
 		function notInFuture(date) {
@@ -103,12 +104,15 @@ define([
 				counts.exercise = _.keys(vm.log.exercise).length;
 				counts.food = _.keys(vm.log.food).length;
 			}, function (error) {
-				console.error(error);
+				Notification({
+					message: error.message,
+					status: error.status
+				});
 			});
 		}
 
 		function getDog() {
-			return logService.getDog().then(function (response) {
+			return logService.getDog(dogId).then(function (response) {
 				vm.dog = response;
 			});
 		}
@@ -148,7 +152,10 @@ define([
 				}
 				logService.addNew(type, modalVM.item).then(function (response) {
 					if (response.message) {
-						console.error(response.message);
+						Notification({
+							message: response.message,
+							status: response.status
+						});
 					} 
 				});
 			}
@@ -200,8 +207,13 @@ define([
 				logService.updateLog(type, dogId, currentDay, vm.log).then(function (response) {
 					angular.merge(vm.log, response);
 				});
-			}, function (response) {
-				console.error(response);
+			}, function (error) {
+				if (error.message) {
+					Notification({
+						message: error.message,
+						status: error.status
+					});
+				} 
 			});
 		}
 
@@ -268,9 +280,21 @@ define([
 				vm.log.imageUrl = result;
 			});
 			logService.updateImage(dogId, currentDay, vm.log).then(function (response) {
-				angular.merge(vm.log, response);
+				if (!response.message) {
+					angular.merge(vm.log, response);
+				} else {
+					Notification({
+						message: response.message,
+						status: response.status
+					});
+				}
 			}, function (error) {
-				console.error(error);
+				if (response.message) {
+					Notification({
+						message: error.message,
+						status: error.status
+					});
+				} 
 			});
     	}
 

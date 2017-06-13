@@ -20,7 +20,6 @@ def demo_user():
         user = User('demo', 'demo', 'example@example.com')
         db.session.add(user)
         db.session.commit()
-        print 'User id is ' + str(user.id)
     return user
 
 def demo_exercise():
@@ -31,12 +30,10 @@ def demo_exercise():
         run = Exercise('Run', '4 mph')
         db.session.add(run)
         db.session.commit()
-        print 'Run id is ' + str(run.id)
     if walk is None:
         walk = Exercise('Walk', '2 mph')
         db.session.add(walk)
         db.session.commit()
-        print 'Walk id is ' + str(walk.id)
     return run, walk
 
 def demo_food():
@@ -46,7 +43,6 @@ def demo_food():
         food = Food('Blue - Chicken and Brown Rice Recipe', 378, 8)
         db.session.add(food)
         db.session.commit()
-        print 'Food id is ' + str(food.id)
     return food
 
 def demo_dog(user_id):
@@ -56,11 +52,11 @@ def demo_dog(user_id):
     weight = 25
     goal_weight = 30
     birthday = datetime.strptime('07012016', '%m%d%Y')
-    filename = 'Pluto'
-    url = 'https://s3-us-west-1.amazonaws.com/fitdoggy-data/Pluto.jpg'
+    filename = 'Pluto.jpg'
+    url = '/static/img/demo/Pluto.jpg'
+    thumbnail_url = '/static/img/demo/Pluto-thumbnail.jpg'
     if dog is None:
-        dog = Dog('Pluto', 'Lab Mix', birthday, 'lb', weight, goal_weight, creation_date.date(), user_id, filename, url)
-        print 'Dog id is new'
+        dog = Dog('Pluto', 'Lab Mix', birthday, 'lb', weight, goal_weight, creation_date.date(), user_id, filename, url, thumbnail_url)
     else:
         dog._name = 'Pluto'
         dog._breed = 'Lab Mix'
@@ -85,13 +81,11 @@ def demo_logs(dog, food, run, walk):
     calories = randint(400, 600)
     for log in logs:
         daily_calories = round(getMER(weight, dog._metric))
-        filename = None
-        url = None
-        filename = 'Pluto' + str(index)
-        url = 'https://s3-us-west-1.amazonaws.com/fitdoggy-data/Pluto' + str(index) + '.jpg'
+        filename = 'Pluto' + str(index) + '.jpg'
+        url = 'static/img/demo/' + filename
+        thumbnail_url = 'static/img/demo/Pluto' + str(index) + '-thumbnail.jpg'
         if log is None:
-            log = Log(d, dog.id, weight, daily_calories, calories, None, filename, url)
-            print 'log is new'
+            log = Log(d, dog.id, weight, daily_calories, calories, None, filename, url, thumbnail_url)
 
             db.session.add(log)
             db.session.commit()
@@ -132,5 +126,4 @@ def demo_logs(dog, food, run, walk):
         weight += randint(-1, 1)
         index += 1
         calories += randint(10, 50)
-    print len(ExerciseLog.query.all())
     return logs

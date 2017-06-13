@@ -7,14 +7,21 @@
 .menu-container .mini {
     min-height: 50px;
     min-width: 50px;
-    transition: all 0.4s ease-in-out;
+    transition: all 0.3s ease-in-out;
     z-index: 15;
     background-repeat: no-repeat;
     background-position: 100%;
     background-image: url("/static/img/pawprint.png");
     background-size: 50px;
 }
-.menu-container .mini:hover {
+.menu-container .menu {
+    height: 250px;
+    width: 250px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.menu-container .mini.expanded {
     background-image: url("/static/img/pawprint-full.png");
     background-size: 250px;
     min-height: 250px;

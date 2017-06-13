@@ -36,7 +36,8 @@ def add_new_food():
             return json.dumps(food.to_json())
 
         return json.dumps({
-            'message': 'You already have a food called ' + food_name + '.'    
+            'message': 'You already have a food called ' + food_name + '.',
+            'status': 'success'
         })
     except Exception, e:
         return json.dumps(str(e)), 500
@@ -60,7 +61,10 @@ def update_food_log():
             return edit_food_log(food_log)
 
     except Exception, e:
-        raise e
+        return json.dumps({
+            'message': str(e),
+            'status': 'error'
+        }), 500
 
 def add_food_log(log_id, log):
     try:
@@ -103,7 +107,8 @@ def delete_food_log():
         db.session.delete(food_log)
         db.session.commit()
         return json.dumps({
-            'message': 'Successfully deleted'
+            'message': 'Successfully deleted',
+            'status': 'success'
         })
 
     except Exception, e:

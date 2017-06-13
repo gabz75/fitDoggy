@@ -18,12 +18,9 @@ define([
                 console.error('Message is required');
                 return;
             }
-            if (!options.$scope) {
-                console.error('Scope is required');
-                return;
-            }
             options.status = options.status || 'info';
             options.position = options.position || 'top right';
+            options.length = options.length || 4;
             var id = 'notification' + index,
                 notif = '' +
                     '<div id="' + id + '" class="notification ' + options.status + ' ' + options.position + '" >' +
@@ -32,7 +29,7 @@ define([
             notifications[index] = notif;
             angular.element(document.querySelector('body')).append(notif);
             var notifElem = angular.element(document.querySelector('#' + id));
-            if (options.length) {
+            if (options.length !== 0) {
                 $timeout(function () {
                     notifElem.remove();
                 }, options.length * 1000);

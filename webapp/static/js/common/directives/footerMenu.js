@@ -40,15 +40,17 @@ define([
         }
 
         function showFullMenu() {
+            vm.expanded = true;
             $timeout(function () {
                 vm.fullMenu = true;
-            }, 400);
+            }, 300);
         }
 
         function hideFullMenu() {
             $timeout(function () {
                 vm.fullMenu = false;
-            }, 400);
+                vm.expanded = false;
+            }, 350);
         }
     }
 

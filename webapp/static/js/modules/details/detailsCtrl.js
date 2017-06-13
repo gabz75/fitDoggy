@@ -46,9 +46,10 @@ define([
 			detailsService.getDog(dogId).then(function (response) {
 				vm.dog = response;
 				vm.images = [{
-					'filename': response.filename,
-					'url': response.url
-				}] || [];
+					'filename': response.imageFilename,
+					'url': response.imageUrl,
+					'thumbnailUrl': response.thumbnailUrl
+				}];
 				vm.chartTypes[0].title = 'Weight (' + vm.dog.metric + ')';
 				getChartData().then(function (data) {
 					vm.images = _.concat(data[3], vm.images);

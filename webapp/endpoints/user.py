@@ -19,17 +19,19 @@ def login():
     if user is None:
         return json.dumps({
             'loggedIn': False,
-            'message': 'This user does not exist.'  
+            'message': 'This user does not exist.',
+            'status': 'error'  
         })
     if eq(user._password_hash, password):
         login_user(user, remember=remember)
         return json.dumps({
-        	'loggedIn': True,
+        	'loggedIn': True
         })
     else:
         return json.dumps({
             'loggedIn': False,
-            'message': 'Password does not match.'  
+            'message': 'Password does not match.',
+            'status': 'error'
         })
         
 
@@ -41,15 +43,18 @@ def add_new_user():
     	email = request.form.get('email')
     	if username is None: 
     		return json.dumps({
-    			'message': 'A username is required'
+    			'message': 'A username is required',
+                'status': 'info'
     		})
     	elif password is None:
     		return json.dumps({
-    			'message': 'A password is required'
+    			'message': 'A password is required',
+                'status': 'info'
     		})
     	elif email is None:
     		return json.dumps({
-    			'message': 'An email is required'
+    			'message': 'An email is required',
+                'status': 'info'
     		})
         user = User.query.filter(User._email==email).first()
         if user is None:
@@ -57,14 +62,19 @@ def add_new_user():
            db.session.add(user)
            db.session.commit(user)
            return json.dumps({
-                'message': 'Successfully registered.'
+                'message': 'Successfully registered.',
+                'status': 'success'
             })
         else:
             return json.dumps({
-                'message': 'A user with this email exists'
+                'message': 'A user with this email exists',
+                'status': 'error'
             })
     except Exception, e:
-        raise e
+        return json.dumps({
+            'message': str(e),
+            'status': 'error'
+        }), 500
 
 @application.route('/user/logout')
 def logout():
@@ -76,7 +86,10 @@ def logout():
             'result': 'success'
         })
     except Exception, e:
-        raise e
+        return json.dumps({
+            'message': str(e),
+            'status': 'error'
+        }), 500
 
 @application.before_request
 def before():
