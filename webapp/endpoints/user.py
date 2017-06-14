@@ -76,7 +76,7 @@ def add_new_user():
             'status': 'error'
         }), 500
 
-@application.route('/user/logout')
+@application.route('/user/logout', methods=['POST'])
 def logout():
     try:
         print session

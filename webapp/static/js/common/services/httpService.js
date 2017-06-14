@@ -7,8 +7,8 @@ define([
 	angular.module('common.service', ['common.cacheService', 'common.notification'])
 		.service('httpService', httpService);
 
-	httpService.$inject = ['$q', '$http', 'cacheService'];
-	function httpService($q, $http, cacheService) {
+	httpService.$inject = ['$q', '$http', 'cacheService', 'Notification'];
+	function httpService($q, $http, cacheService, Notification) {
 		this.post = post;
 		this.upload = upload;
 
@@ -19,8 +19,21 @@ define([
 				deferred.resolve(cached);
 			} else {
 				$http.post(url, queryParams).then(function (response) {
-					deferred.resolve(response.data);
-					cacheService.set(url, queryParams, response.data);
+					if (!response.data) {
+						Notification({
+							message: 'System error',
+							status: 'error'
+						})
+					} else if (response.data && (response.data.message && response.data.status !== 'success')) {
+						Notification({
+							message: response.data.message,
+							status: response.data.status
+						});
+						deferred.reject(response.data);
+					} else {
+						deferred.resolve(response.data);
+						cacheService.set(url, queryParams, response.data);
+					}
 				}, function (response) {
 					deferred.reject(response.data);
 				});

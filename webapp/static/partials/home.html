@@ -1,8 +1,15 @@
-<div class="panel panel-default transparent">
+<div class="panel panel-default m-0">
+	<ul class="pager full-width m-0">
+        <li class="previous">
+            <a class="col-sm-4 l-align" href="#!/home">
+                FitDoggy
+            </a>
+        </li>
+    </ul>
 	<div class="panel-body">
-		<div class="col-sm-6 slideshow">
+		<div class="col-sm-6 full-height slideshow">
 			<div class="image__container">
-				<img class="transition" ng-animate-swap="vm.slideshow" ng-src="{{vm.slideshow.thumbnailUrl}}" alt="{{vm.slideshow.imageFilename}}"/>
+				<img class="transition thumbnail" ng-animate-swap="vm.slideshow" ng-src="{{vm.slideshow.thumbnailUrl}}" alt="{{vm.slideshow.imageFilename}}"/>
 			</div>
 		</div>
 		<div class="col-sm-6 home-pills">
@@ -14,10 +21,10 @@
 			</div>
 			<div class="home-pill">
 				<a href="#!/dog/new"><i class="fa fa-plus" aria-hidden="true"></i> Add a new dog</a>
-			</div>				
+			</div>
 		</div>
 	</div>
-	<div class="hidden">
-		<img ng-repeat="image in vm.images" ng-source={{image.thumbnailUrl}} />
-	</div>
+</div>
+<div class="hidden">
+	<img ng-repeat="image in vm.images" ng-source={{image.thumbnailUrl}} />
 </div>

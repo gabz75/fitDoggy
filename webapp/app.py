@@ -1,5 +1,4 @@
 from webapp import application
-from seed import demo
 
 import os
 def runserver():
@@ -8,5 +7,3 @@ def runserver():
 
 if __name__ == '__main__':
     runserver()
-
-demo()

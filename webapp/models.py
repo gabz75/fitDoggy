@@ -1,4 +1,5 @@
 from webapp import db
+from seed import demo
 
 class Dog(db.Model):
     __tablename__ = 'dog'
@@ -213,3 +214,5 @@ class User(db.Model):
         self._email = email
 
 db.create_all()
+demo()
+

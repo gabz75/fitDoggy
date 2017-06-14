@@ -59,6 +59,7 @@ define([
 						yAxis: vm.chartType.label,
 						series: data[vm.chartType.value] || []
 					}));
+					
 				})
 			});
 		}

@@ -8,7 +8,10 @@
             <a ng-click="vm.logout()">logout</a>
         </div>
         <div class="link2">
-            <a ng-click="vm.home()">home</a>
+            <a ng-href="{{vm.link2.url}}">{{vm.link2.label}}</a>
+        </div>
+        <div class="link1" ng-if="vm.previous.url !=='#!/home'">
+            <a ng-href="#!/home">home</a>
         </div>
         <div class="link0">
             <a href="{{vm.previous.url}}">{{vm.previous.label}}</a>

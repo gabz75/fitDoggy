@@ -15,6 +15,7 @@ define([
         vm.fileTypes = '.jpeg, .jpg, .png, .gif, image/jpeg, image/pjpeg, image/jpeg, image/pjpeg, image/png, image/gif';
         vm.updateDog = updateDog;
         vm.deletePhoto = deletePhoto;
+        vm.cancelChanges = cancelChanges;
         vm.dogData = {
             metric: 'lb'
         };
@@ -39,6 +40,15 @@ define([
                 }, function (error) {
                     dialog.error(error);
                 });
+            }
+        }
+
+        function cancelChanges() {
+            if (_.last($location.url().split('/')) === 'new') {
+                $location.path('/home');
+            } else {
+                var path = $location.path().match(/\/dog\/\d+/)[0];
+                $location.path(path);
             }
         }
 

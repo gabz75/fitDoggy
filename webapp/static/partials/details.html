@@ -1,9 +1,11 @@
-<div class="panel panel-default panel__fixed">
-	<div class="panel-heading">
-		<h5 class="p-0 m-0">
-			<a href="#!/dog/{{vm.dog.id}}/date/{{vm.date}}">{{vm.dog.name}}</a>
-		</h5>
-	</div>
+<div class="panel panel-default m-0">
+	<ul class="pager full-width m-0">
+        <li class="current">
+            <a class="c-align col-sm-offset-4 col-sm-4" href="#!/dog/{{vm.dog.id}}/date/{{vm.date}}">
+            	{{vm.dog.name}}
+            </a>
+        </li>
+    </ul>
 	<div class="panel-body">
 		<ul class="nav nav-tabs">
 			<li class="active" ng-repeat="chartType in vm.chartTypes">

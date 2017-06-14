@@ -51,6 +51,14 @@
     height: 93px;
     width: 93px;
 }
+.menu-container .link1 {
+    background-image: url("/static/img/pawprint-full1.png");
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 93px;
+    width: 93px;
+}
 .menu-container .link0 {
     background-image: url("/static/img/pawprint-full0.png");
     position: absolute;
@@ -73,6 +81,9 @@
     right: 35px;
 }
 .menu-container .link2 a{
+    right: 40px;
+}
+.menu-container .link1 a{
     right: 31px;
 }
 .menu-container .link0 a{

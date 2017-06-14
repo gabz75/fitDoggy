@@ -1,7 +1,7 @@
 define([
     'angular',
-    'lodash'
-], function (angular, _) {
+    'moment'
+], function (angular, moment) {
     'use strict';
 
     angular.module('common.footer', ['common.service', 'common.breadcrumb'])
@@ -12,19 +12,16 @@ define([
     function footerMenuCtrl($rootScope, $location, $cookies, $timeout, httpService, breadcrumb) {
         var vm = this;
         vm.logout = logout;
-        vm.home = home;
         vm.showFullMenu = showFullMenu;
         vm.hideFullMenu = hideFullMenu;
-
         init();
 
         function init() {
-            vm.loggedIn = $cookies.getObject('user') || $cookies.getObject('demo');
-            vm.previous = breadcrumb.getPrevious();
+            vm.link2 = {}
+            setState();
 
             $rootScope.$on('$locationChangeSuccess', function () {
-                vm.loggedIn = $cookies.getObject('user') || $cookies.getObject('demo');
-                vm.previous = breadcrumb.getPrevious();
+                setState();
             });
         }
 
@@ -33,10 +30,6 @@ define([
                 $cookies.remove('demo');
                 $cookies.remove('user');
             });
-        }
-
-        function home() {
-            $location.path('/home');
         }
 
         function showFullMenu() {
@@ -51,6 +44,41 @@ define([
                 vm.fullMenu = false;
                 vm.expanded = false;
             }, 350);
+        }
+
+        function setState() {
+            vm.loggedIn = $cookies.getObject('user') || $cookies.getObject('demo');
+            vm.previous = breadcrumb.getPrevious();
+            var path = $location.path().match(/\/dog\/(\d)(\/date\/(\d+))?/),
+                previousDogId = vm.dogId;
+            if (path) {
+                vm.dogId = path[1];
+                vm.logDate = path[3];
+                if (previousDogId !== vm.dogId) {
+                    httpService.post('/dog', {
+                        id: vm.dogId
+                    }).then(function (response) {
+                        vm.dog = response;
+                        setCurrentDogUrl();
+                    });
+                } else {
+                    setCurrentDogUrl();
+                }
+            } else {
+                delete vm.dogId;
+                delete vm.logDate;
+                vm.link2 = {};
+            }
+        }
+
+        function setCurrentDogUrl() {
+            if (vm.logDate) {
+                vm.link2.label = vm.dog.name;
+                vm.link2.url = '#!/dog/' + vm.dog.id +'/';
+            }  else {
+                vm.link2.label = 'Log';
+                vm.link2.url = '#!/dog/' + vm.dog.id +'/date/' + moment().format('MMDDYYYY');
+            }
         }
     }
 
