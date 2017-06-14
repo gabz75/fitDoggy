@@ -1,13 +1,23 @@
-<div class="panel panel-default panel__fixed">
+<div class="panel panel-default transparent">
 	<div class="panel-body">
-	<ul class="nav nav-pills nav-stacked">
-		<li ng-repeat="dog in vm.dogs" class="nav-pills__pill__baird-point">
-			<a href="#!/dog/{{dog.id}}/date/{{vm.date}}">{{dog.name}}</a>
-		</li>
-		<li class="nav-pills__pill__outlined">
-			<a href="#!/dog/new"><i class="fa fa-plus" aria-hidden="true"></i> Add a new dog</a>
-		</li>
-	</ul>	
+		<div class="col-sm-6 slideshow">
+			<div class="image__container">
+				<img class="transition" ng-animate-swap="vm.slideshow" ng-src="{{vm.slideshow.thumbnailUrl}}" alt="{{vm.slideshow.imageFilename}}"/>
+			</div>
+		</div>
+		<div class="col-sm-6 home-pills">
+			<div class="home-pill" ng-repeat="dog in vm.dogs">
+				<a href="#!/dog/{{dog.id}}/date/{{vm.date}}">
+					<img ng-src="{{dog.thumbnailUrl}}" alt="{{dog.imageFilename}}"/>
+					{{dog.name}}
+				</a>
+			</div>
+			<div class="home-pill">
+				<a href="#!/dog/new"><i class="fa fa-plus" aria-hidden="true"></i> Add a new dog</a>
+			</div>				
+		</div>
 	</div>
-	
+	<div class="hidden">
+		<img ng-repeat="image in vm.images" ng-source={{image.thumbnailUrl}} />
+	</div>
 </div>

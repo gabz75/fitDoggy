@@ -46,7 +46,7 @@ def save_image(img):
             thumbnail = Image.open(img)
             img_w, img_h = thumbnail.size
             crop, aspect_ratio = calculate_size(img_w, img_h)
-            thumbnail = thumbnail.crop(crop).resize(aspect_ratio)
+            thumbnail = thumbnail.crop(crop)
             file = StringIO.StringIO()
             thumbnail.save(file, format='PNG')
             
@@ -68,7 +68,7 @@ def calculate_size(w, h):
         x1, y1 = 0, 0
         x2 = min(w, h / 2)
         y2 = 2 * x2
-    return (x1, y1, x2, y2), tuple([250 * t for t in aspect_ratio])
+    return (x1, y1, x2, y2)
 
 
 

@@ -56,7 +56,7 @@ define([
 					chart = Highcharts.chart('linechart', lineChartOptions({
 						title: 'Change In ' + vm.chartType.label,
 						subtitle: vm.startDate.format('MM/DD/YYYY') + ' to ' + vm.endDate.format('MM/DD/YYYY'),
-						yAxis: 'Weight (' + vm.dog.metric + ')',
+						yAxis: vm.chartType.label,
 						series: data[vm.chartType.value] || []
 					}));
 				})
@@ -136,7 +136,7 @@ define([
 			chart.update(lineChartOptions({
 				title: 'Change In ' + vm.chartType.label,
 				subtitle: vm.startDate.format('MM/DD/YYYY') + ' to ' + vm.endDate.format('MM/DD/YYYY'),
-				yAxis: 'Weight (' + vm.dog.metric + ')',
+				yAxis: vm.chartType.title,
 				series: response[vm.chartType.value] || []
 			}));
 		}

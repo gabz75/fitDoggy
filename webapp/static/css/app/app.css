@@ -1,15 +1,9 @@
 .panel-container {
-    padding: 15px 0;
     overflow: auto;
     height: 100%!important;
 }
 .container__fixed {
-	max-width: 650px;
 	margin: auto;
-}
-.panel__fixed {
-	position: relative;
-	margin: 50px auto;
 }
 .form__fixed {
 	margin: auto;
@@ -29,16 +23,6 @@
 }
 .form-group__icon__link {
 	padding-left: 10px;
-}
-
-.nav-pills__pill__outlined {
-	border-radius: 4px;
-	border: 1px solid #2C3E50;
-}
-.nav-pills>li>a{
-	color: #2C3E50;
-	border-radius: 4px;
-	text-align: center;
 }
 
 .thumbnail-container {	
@@ -130,9 +114,6 @@
 .pager li>a:active {
 	background-color: #2980B9;
 }
-.panel-body {
-	background-color: white;
-}
 .gallery__thumbnail {
 	max-height: 200px;
     max-width: 25%;
@@ -168,4 +149,50 @@
 }
 .notification.error {
     background-color: #E74C3C;
+}
+.panel.transparent {
+    background-color: transparent!important;
+}
+.user_login {
+    padding: 0!important;
+}
+.slideshow .image__container {
+    margin: auto;
+    width: 540px;
+    height: 540px;
+    
+}
+.slideshow img {
+    transition: 0.5s opacity;
+    width: 100%;
+}
+.home-pills {
+    background-color: #fff;
+    margin-top: -15px;
+    padding: 15px 0;
+    height: 100%;
+}
+
+.home-pill {
+    padding: 0 15px;
+    width: 50%;
+    float: left;
+    height: 105px;
+}
+.home-pill a {
+    float: left;
+    color: #2C3E50;
+    line-height: 80px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #2C3E50;
+    height: 105px;
+    margin-right: 15px;
+    width: 100%;
+}
+.home-pill img {
+    max-height: 85px;
+}
+.home-pill a:hover {
+    background-color: #F7F7F9;
 }

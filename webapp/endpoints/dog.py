@@ -141,3 +141,25 @@ def dog_data():
             'message': str(e),
             'status': 'error'
         }), 500
+
+@application.route('/dog/slideshow', methods=['POST'])
+def dog_slideshow():
+    try:
+        images = []
+        dogs = Dog.query.filter(Dog.user_id==session.get('user_id'))
+        for dog in dogs:
+            logs = Log.query.filter(Log.dog_id==dog.id).limit(5)
+            for log in logs:
+                if log._image_url is not None:
+                    images.append({
+                        'thumbnailUrl': log._thumbnail_url,
+                        'url': log._image_url,
+                        'filename': log._image_filename
+                    })
+        return json.dumps(images)
+
+    except Exception, e:
+        return json.dumps({
+            'message': str(e),
+            'status': 'error'
+        }), 500

@@ -9,13 +9,14 @@ define([
 	homeService.$inject = ['httpService'];
 	function homeService(httpService) {
 		this.getDogs = getDogs;
+		this.getSlideshow = getSlideshow;
 
 		function getDogs() {
-			return httpService.post('/dog/all', {}).then(function (response) {
-				return response;
-			}, function (error) {
-				console.error(error)
-			});
+			return httpService.post('/dog/all', {});
+		}
+
+		function getSlideshow() {
+			return httpService.post('/dog/slideshow', {});
 		}
 	}
 });

@@ -10,3 +10,6 @@
 #food .input-group-addon {
     padding: 5px 12px;
 }
+.pager li.current>a:hover {
+    background-color: #3498DB;
+}

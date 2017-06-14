@@ -66,9 +66,8 @@ define([
 			counts.activity = 0;
 			cache.food = new Cache();
 			cache.exercise = new Cache();
-			
 			vm.date.prev = moment(currentDay, 'MMDDYYYY').subtract(1, 'day').format('MMDDYYYY');
-			vm.date.current = currentDay,
+			vm.date.current = moment(currentDay, 'MMDDYYYY').format('MM/DD/YYYY'),
 			vm.date.next = moment(currentDay, 'MMDDYYYY').add(1, 'day').format('MMDDYYYY')
 			$q.all([getLog(), getDog()]).then(function () {
 				angular.element(document.querySelector('#dogPhoto')).bind('change', uploadFile);
@@ -98,7 +97,7 @@ define([
 		}
 
 		function getLog() {
-			return logService.getLog(dogId, vm.date.current).then(function (response) {
+			return logService.getLog(dogId, currentDay).then(function (response) {
 				vm.log = response;
 				vm.pieChart.food.total = response.dailyCalories;
 				counts.exercise = _.keys(vm.log.exercise).length;
