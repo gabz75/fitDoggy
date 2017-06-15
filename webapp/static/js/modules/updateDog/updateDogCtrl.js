@@ -36,7 +36,9 @@ define([
         function updateDog() {
             if (!invalidData()) {
                 updateDogService.updateDog(vm.dogData).then(function (response) {
-                    $location.path('/dog/' + response.id + '/date/' + moment().format('MMDDYYYY'))
+                    if (response.id) {
+                        $location.path('/dog/' + response.id + '/date/' + moment().format('MMDDYYYY'))
+                    }
                 }, function (error) {
                     dialog.error(error);
                 });

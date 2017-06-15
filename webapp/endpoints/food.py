@@ -33,7 +33,11 @@ def add_new_food():
             food = Food(food_name, calories, serving)
             db.session.add(food)
             db.session.commit()
-            return json.dumps(food.to_json())
+            return json.dumps({
+                'message': 'Successfully added' + food_name,
+                'status': 'success',
+                'food': food.to_json()
+            })
 
         return json.dumps({
             'message': 'You already have a food called ' + food_name + '.',

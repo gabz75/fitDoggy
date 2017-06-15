@@ -7,17 +7,14 @@ import os
 import json
 
 @login_manager.user_loader
-def load_user(username):
-    return User.query.filter(User._username==username).first()
+def load_user(user_id):
+    return User.query.filter(User.id==user_id).first()
 
 @application.route('/user/login', methods=['POST'])
 def login():
     username = request.form.get('username')
     password = request.form.get('password')
     remember = request.form.get('remember')
-    # for u in User.query.all():
-    #     if u._username != 'demo':
-    #         db.session.delete(u)
     user = User.query.filter(User._username==username).first()
     if user is None:
         return json.dumps({
@@ -25,7 +22,6 @@ def login():
             'message': 'This user does not exist.',
             'status': 'error'  
         })
-    print username, password, user._password_hash
     if bcrypt.check_password_hash(user._password_hash, password):
         login_user(user, remember=remember)
         return json.dumps({
@@ -60,7 +56,6 @@ def add_new_user():
     			'message': 'An email is required',
                 'status': 'info'
     		})
-        print username, password, email
         user = User.query.filter(User._email==email).first()
         if user is None:
     	   user = User(username, bcrypt.generate_password_hash(password), email)
@@ -98,4 +93,5 @@ def logout():
 
 @application.before_request
 def before():
-    g.user = current_user
+    if current_user.is_authenticated:
+        g.user = current_user.get_id()

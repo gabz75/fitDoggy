@@ -4,12 +4,12 @@ define([
 ], function (angular, moment) {
 	'use strict';
 
-	angular.module('home.controller', ['common.dialog', 'home.service'])
+	angular.module('home.controller', ['home.service'])
 		.animation('.transition', transition)
 		.controller('homeCtrl', homeCtrl);
 
-	homeCtrl.$inject = ['$scope', '$interval', 'dialog', 'homeService'];
-	function homeCtrl($scope, $interval, dialog, homeService) {
+	homeCtrl.$inject = ['$scope', '$interval', 'homeService'];
+	function homeCtrl($scope, $interval, homeService) {
 		var vm = this;
 
 		vm.getDogs = getDogs;
@@ -29,7 +29,6 @@ define([
 			homeService.getDogs().then(function (response) {
 				vm.dogs = response;
 			}, function (error) {
-				dialog.error(error);
 				vm.dogs = [];
 			});
 		}

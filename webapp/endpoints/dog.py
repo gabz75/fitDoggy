@@ -5,7 +5,7 @@ from datetime import datetime
 
 from webapp import application, db
 from webapp.models import Dog, Log
-from webapp.helpers import get_date, save_image
+from webapp.helpers import *
 
 import os
 import json
@@ -40,6 +40,12 @@ def get_dogs():
 
 @application.route('/dog/update', methods=['POST'])
 def update_dog():
+    filename = None
+    if g.user is None:
+        return json.dumps({
+            'message': 'You must be logged in',
+            'status': 'error'
+        }), 500
     try:
         json_data = request.form
         name = json_data.get('name')
@@ -51,9 +57,9 @@ def update_dog():
         date = datetime.now()
         filename, url = save_image(request.files.get('image'))
         if json_data.get('id') is None:
-            dog = Dog(name, breed, birthday, metric, current, goal, date, g.user.id, filename, url)
+            dog = Dog(name, breed, birthday, metric, current, goal, date, g.user, filename, url)
         else:
-            dog = Dog.query.filter_by(id=json_data.get('id')).first()
+            dog = Dog.query.filter(Dog.id==json_data.get('id')).first()
             dog._name = name or dog._name
             dog._breed = breed or dog._breed
             dog._birthday = birthday or dog._birthday

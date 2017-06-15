@@ -102,11 +102,6 @@ define([
 				vm.pieChart.food.total = response.dailyCalories;
 				counts.exercise = _.keys(vm.log.exercise).length;
 				counts.food = _.keys(vm.log.food).length;
-			}, function (error) {
-				Notification({
-					message: error.message,
-					status: error.status
-				});
 			});
 		}
 

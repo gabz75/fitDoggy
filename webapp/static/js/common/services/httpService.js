@@ -19,12 +19,12 @@ define([
 				deferred.resolve(cached);
 			} else {
 				$http.post(url, queryParams).then(function (response) {
-					if (!response.data) {
+					if (!response || !response.data) {
 						Notification({
 							message: 'System error',
 							status: 'error'
-						})
-					} else if (response.data && (response.data.message && response.data.status !== 'success')) {
+						});
+					} else if (response.data && response.data.message && response.data.status !== 'success') {
 						Notification({
 							message: response.data.message,
 							status: response.data.status
@@ -35,10 +35,13 @@ define([
 						cacheService.set(url, queryParams, response.data);
 					}
 				}, function (response) {
+					Notification({
+						message: response.data.message,
+						status: response.data.status
+					});
 					deferred.reject(response.data);
 				});
 			}	
-			
 			return deferred.promise;
 		}
 
@@ -57,6 +60,10 @@ define([
 			}).then(function (response) {
 				return response.data;
 			}, function (response) {
+				Notification({
+					message: response.data.message,
+					status: response.data.status
+				});
 				return response.data;
 			});
 		}

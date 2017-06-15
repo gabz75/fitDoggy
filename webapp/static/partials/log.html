@@ -1,7 +1,7 @@
 <div class="panel panel-default m-0">
     <ul class="pager full-width m-0">
         <li class="previous">
-            <a class="col-md-4 l-align" href="#!/dog/{{vm.dog.id}}/date/{{vm.date.prev}}">
+            <a class="col-lg-4 l-align" href="#!/dog/{{vm.dog.id}}/date/{{vm.date.prev}}">
                 <span>
                     <i class="fui-arrow-left"></i>
                     Previous
@@ -9,19 +9,19 @@
             </a>
         </li>
         <li class="current">
-            <a class="c-align col-md-4" href="#!/dog/{{vm.dog.id}}/">
+            <a class="c-align col-lg-4" href="#!/dog/{{vm.dog.id}}/">
                 {{vm.date.current}}
             </a>
         </li>
         <li class="next" ng-if="vm.notInFuture(vm.date.next)">
-            <a class="col-md-4 r-align" href="#!/dog/{{vm.dog.id}}/date/{{vm.date.next}}">
+            <a class="col-lg-4 r-align" href="#!/dog/{{vm.dog.id}}/date/{{vm.date.next}}">
                 Next
                 <i class="fui-arrow-right"></i>
             </a>
         </li>
     </ul>
     <div id="log" class="panel-body full-height row">
-        <div class="chart-container col-md-4">
+        <div class="chart-container col-lg-6">
             <div class="chart-container__nav left" ng-click="vm.prev()">
                 <i class="fa fa-chevron-left" aria-hidden="true"></i>
             </div>
@@ -34,7 +34,9 @@
                             <i class="fa fa-plus" aria-hidden="true"></i> 
                             Choose a picture
                         </span>
-                        <span ng-if="vm.log.imageUrl">Change the picture</span>
+                        <span ng-if="vm.log.imageUrl" class="text-info">
+                            <i class="fa fa-refresh" aria-hidden="true"></i> Change 
+                        </span>
                     </label>
                 </div>
                 <div ng-if="vm.view === 'foodChart'">
@@ -48,8 +50,8 @@
                 <i class="fa fa-chevron-right" aria-hidden="true"></i>
             </div>
         </div>
-        <div class="info-container col-md-8">
-        <div class="col-md-12">
+        <div class="info-container col-lg-6">
+        <div class="col-lg-12">
             <label>Current Weight</label>
             <div ng-if="!vm.log.edit" ng-click="vm.editWeight()">
                 {{vm.log.weight || '-'}} {{vm.dog.metric}}
@@ -59,7 +61,7 @@
                 <div class="input-group-addon">{{vm.dog.metric}}</div>
             </div>
         </div>
-        <div class="col-md-12">
+        <div class="col-lg-12">
             <label>Exercise</label>
             <table class="table table-hover table-sm table-bordered table-responsive">
                 <thead>
@@ -72,7 +74,7 @@
                 </thead>
                 <tbody id="exercise">
                     <tr ng-repeat="exercise in vm.log.exercise track by $index" id="exercise{{$index}}">
-                        <td class="col-md-4" scope="row">
+                        <td class="col-lg-4" scope="row">
                             <div ng-if="!vm.log.exercise[$index].edited">
                                 {{exercise.name}}{{exercise.description ? ', ' + exercise.description : ''}}
                             </div>
@@ -84,7 +86,7 @@
                                 </select>
                             </div>
                         </td>
-                        <td class="col-md-3">
+                        <td class="col-lg-3">
                             <div ng-if="!vm.log.exercise[$index].edited">
                                 {{exercise.duration}}
                             </div>
@@ -93,7 +95,7 @@
                                 <div class="input-group-addon">min</div>
                             </div>
                         </td>
-                        <td class="col-md-3">
+                        <td class="col-lg-3">
                             <div ng-if="!vm.log.exercise[$index].edited">
                                 {{exercise.intensity}}
                             </div>
@@ -103,7 +105,7 @@
                                 </select>
                             </div>
                         </td>
-                        <td class="col-md-2 r-align form-group__icon">
+                        <td class="col-lg-2 r-align form-group__icon">
                             <span ng-if="!vm.log.exercise[$index].edited">
                                 <a class="form-group__icon__link" ng-click="vm.editLog('exercise', $index)" >
                                     <i class="fa fa-pencil" aria-hidden="true"></i>
@@ -137,7 +139,7 @@
                     </a>
                 </div>
         </div>
-        <div class="col-md-12">
+        <div class="col-lg-12">
             <label>Food</label>
             <table class="table table-hover table-bordered table-responsive">
                 <thead>
@@ -150,7 +152,7 @@
                 </thead>
                 <tbody id="food">
                     <tr ng-repeat="food in vm.log.food">
-                        <td class="col-md-4" scope="row">
+                        <td class="col-lg-4" scope="row">
                             <span ng-if="!vm.log.food[$index].edited">
                                 {{food.name}}
                             </span>
@@ -162,7 +164,7 @@
                                 </select>
                             </span>
                         </td>
-                        <td class="col-md-3">
+                        <td class="col-lg-3">
                             <span ng-if="!vm.log.food[$index].edited">
                                 {{food.amount}}
                             </span>
@@ -173,10 +175,10 @@
                                 </div>
                             </span>
                         </td>
-                        <td class="col-md-3">
+                        <td class="col-lg-3">
                             {{food.calories}}
                         </td>
-                        <td class="col-md-2 r-align form-group__icon">
+                        <td class="col-lg-2 r-align form-group__icon">
                             <span ng-if="!vm.log.food[$index].edited">
                                 <a class="form-group__icon__link" ng-click="vm.editLog('food', $index)" >
                                     <i class="fa fa-pencil" aria-hidden="true"></i>

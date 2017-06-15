@@ -1,4 +1,6 @@
 from webapp import application
+from flask import g
+from flask_login import current_user
 
 import os
 def runserver():

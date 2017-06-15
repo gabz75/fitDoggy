@@ -60,7 +60,7 @@ define([
 						series: data[vm.chartType.value] || []
 					}));
 					
-				})
+				});
 			});
 		}
 

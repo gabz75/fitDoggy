@@ -33,7 +33,7 @@ def allowed_file(filename):
        filename.rsplit('.', 1)[1] in _ALLOWED_EXTENSIONS
 
 def save_image(img):
-    filename = None
+    base_filename = None
     url = None
     try:
         if img and allowed_file(img.filename):
@@ -73,6 +73,8 @@ def calculate_size(w, h):
 
 
 def delete_image(filename):
+    if filename is None:
+        return True
     s3 = boto3.resource('s3')
     s3.Object(_S3_BUCKET, filename).delete()
     s3.Object(_S3_BUCKET, filename + '-thumbnail').delete()

@@ -29,11 +29,15 @@ def add_new_exercise():
             exercise = Exercise(activity, description)
             db.session.add(exercise)
             db.session.commit()
-            return json.dumps(exercise.to_json())
-        return json.dumps({
-                'message': 'You already have an activity called ' + activity + '.',
-                'status': 'info'
+            return json.dumps({
+                'message': 'Successfully added' + activity,
+                'status': 'success',
+                'exercise': exercise.to_json()
             })
+        return json.dumps({
+            'message': 'You already have an activity called ' + activity + '.',
+            'status': 'info'
+        })
     except Exception, e:
         return json.dumps({
             'message': str(e),

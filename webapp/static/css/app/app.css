@@ -28,9 +28,9 @@
 
 .thumbnail-container {	
 	font-size: large;
-	height: 350px; 
+	height: 100%; 
 	position: relative;
-    width: 350px;
+    width: 100%;
     margin: auto;
 }
 .thumbnail-container__label {
@@ -76,12 +76,13 @@
 }
 .chart-container__nav {
     z-index: 5;
-    width: 100px;
+    width: 10%;
     height: 100%;
     position: absolute; 
     top: 0px;
     padding: 15px;
     line-height: 400px
+    color: #999;
 }
 .chart-container__nav.left {
     text-align: left;

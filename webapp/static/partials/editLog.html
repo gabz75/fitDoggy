@@ -23,7 +23,7 @@
             </div>    
             <div class="form-group">
                 <label for="dogWeight" class="form-group__label">Current Weight</label>
-                <div class="input-group col-md-4">
+                <div class="input-group col-lg-4">
                     <input type="number" class="form-control" id="dogWeight" ng-model="vm.log.weight" min="0">
                     <div class="input-group-addon">{{vm.dog.metric}}</div>
                 </div>
@@ -32,7 +32,7 @@
             <div class="form-group m-0" id="exercises">
                 <label class="form-group__label">Exercise</label>
                 <div class="row" id="exercise0">
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <label>Activity</label>
                         <select class="select-primary select-block form-control" ng-model="vm.log.exercise[0].exerciseId">
                             <option value="" disabled selected>&nbsp;</option>
@@ -41,14 +41,14 @@
                             </option>
                         </select>
                     </div>
-                    <div class="col-md-4 p-l-0">
+                    <div class="col-lg-4 p-l-0">
                         <label>Duration</label>
                         <div class="input-group">
                             <input type="number" class="form-control" ng-model="vm.log.exercise[0].duration" min="0">
                             <div class="input-group-addon">min</div>
                         </div>
                     </div>
-                    <div class="col-md-3 p-l-0">
+                    <div class="col-lg-3 p-l-0">
                         <label>Intensity</label>
                         <div class="input-group-btn">
                             <select class="select-primary select-block form-control" ng-model="vm.log.exercise[0].intensity">
@@ -56,7 +56,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-1 p-l-0">
+                    <div class="col-lg-1 p-l-0">
                         <label>&nbsp;</label>
                         <button class="form-control btn btn-primary" role="button" type="submit" ng-click="vm.deleteExercise(0)">
                             <i class="fa fa-minus" aria-hidden="true"></i>
@@ -75,7 +75,7 @@
             <div class="form-group m-0" id="foods">
                 <label class="form-group__label">Food</label>
                 <div class="row" id="food0">
-                    <div class="col-md-7">
+                    <div class="col-lg-7">
                         <label>Item</label>
                         <select class="select-primary select-block form-control" ng-model="vm.log.food[0].foodId">
                             <option value="" disabled selected>&nbsp;</option>
@@ -84,14 +84,14 @@
                             </option>
                         </select>
                     </div>
-                    <div class="col-md-4 p-l-0">
+                    <div class="col-lg-4 p-l-0">
                         <label>Amount</label>
                         <div class="input-group">
                             <input type="number" class="form-control" ng-model="vm.log.food[0].amount" min="0">
                             <div class="input-group-addon">oz</div>
                         </div>
                     </div>
-                    <div class="col-md-1 p-l-0">
+                    <div class="col-lg-1 p-l-0">
                         <label>&nbsp;</label>
                         <button class="form-control btn btn-primary" role="button" type="submit" ng-click="vm.deleteFood(0)">
                             <i class="fa fa-minus" aria-hidden="true"></i>
@@ -107,7 +107,7 @@
                     </a>
                 </div>
             </div>
-            <div class="form-group col-md-offset-4 col-md-4">
+            <div class="form-group col-lg-offset-4 col-lg-4">
                 <button class="form-control btn btn-success" role="button" type="submit" ng-click="vm.addLog()">Submit</button>
             </div>
         </form>

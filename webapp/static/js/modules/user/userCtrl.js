@@ -1,8 +1,6 @@
 define([
-    'angular',
-    'moment',
-    'lodash'
-], function (angular, moment, lodash) {
+    'angular'
+], function (angular) {
     'use strict';
 
     angular.module('user.controller', ['common.notification', 'user.service'])
@@ -33,17 +31,14 @@ define([
 
         function login() {
             userService.login(vm.user.name, vm.user.password, vm.user.remember).then(function (response) {
-                if (response.status === 'success') {
+                if (response.loggedIn) {
                     $location.path('/home');
                 } else {
                     Notification({
                         message: response.message, 
-                        length: 5,
                         status: response.status
                     });
                 }
-            }, function (error) {
-                console.error(error);
             });
         }
 
@@ -58,13 +53,14 @@ define([
                         status: response.status
                     });
                 }
-            }, function (error) {
-                console.error(error);
             });
         }
 
         function reset() {
-            console.log('This feature has not been implemented yet');
+            Notification({
+                message: 'This feature has not been implemented yet', 
+                status: 'info'
+            });
         }
 
         function demo() {
