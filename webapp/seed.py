@@ -1,6 +1,6 @@
 from sqlalchemy import desc
 from datetime import datetime, date, timedelta
-from webapp import db
+from webapp import db, bcrypt
 from random import randint
 from helpers import getMER
 
@@ -17,7 +17,7 @@ def demo_user():
     from models import User
     user = User.query.filter(User._username=='demo').first()
     if user is None:
-        user = User('demo', 'demo', 'example@example.com')
+        user = User('demo', bcrypt.generate_password_hash('demo'), 'example@example.com')
         db.session.add(user)
         db.session.commit()
     return user

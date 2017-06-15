@@ -1,18 +1,19 @@
 <div class="panel panel-default m-0">
 	<ul class="pager full-width m-0">
         <li class="previous">
-            <a class="col-sm-4 l-align" href="#!/home">
+            <a class="col-md-4 l-align" href="#!/home">
                 FitDoggy
             </a>
         </li>
     </ul>
 	<div class="panel-body">
-		<div class="col-sm-6 full-height slideshow">
+		<div class="col-md-6 full-height slideshow" ng-if="vm.images.length > 0">
 			<div class="image__container">
 				<img class="transition thumbnail" ng-animate-swap="vm.slideshow" ng-src="{{vm.slideshow.thumbnailUrl}}" alt="{{vm.slideshow.imageFilename}}"/>
 			</div>
 		</div>
-		<div class="col-sm-6 home-pills">
+		<div class="col-md-6 home-pills" ng-class="vm.images.length === 0 ? 'col-md-offset-3' : ''">
+            <h4 ng-if="vm.images.length === 0">Welcome</h4>
 			<div class="home-pill" ng-repeat="dog in vm.dogs">
 				<a href="#!/dog/{{dog.id}}/date/{{vm.date}}">
 					<img ng-src="{{dog.thumbnailUrl}}" alt="{{dog.imageFilename}}"/>

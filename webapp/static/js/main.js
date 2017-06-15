@@ -7,7 +7,6 @@ requirejs.config({
         'angular-notify': '/static/node_modules/angular-notify/dist/angular-notify.min',
         'angular-route': '/static/node_modules/angular-route/angular-route.min',
         'angular-touch': '/static/node_modules/angular-touch/angular-touch.min',
-        'bcrypt': '/static/node_modules/bcryptjs/dist/bcrypt.min',
         'dateformat': '/static/node_modules/dateformat/lib/dateformat',
         'domReady': '/static/node_modules/requirejs-domready/domReady',
         'highcharts': '/static/node_modules/highcharts/highcharts',
@@ -25,9 +24,6 @@ requirejs.config({
         'ui-bootstrap': {
            deps: ['angular'],
            exports: 'ui-bootstrap'
-        },
-        'bcrypt': {
-           deps: ['angular']
         },
         'angular-cookies': {
            deps: ['angular']

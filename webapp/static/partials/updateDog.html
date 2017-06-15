@@ -1,6 +1,13 @@
-<div class="panel panel-default panel__fixed">
+<div class="panel panel-default m-0">
+    <ul class="pager full-width m-0">
+        <li class="previous">
+            <a class="col-md-4 l-align" href="#!/home">
+                FitDoggy
+            </a>
+        </li>
+    </ul>
     <div class="panel-body">
-        <form role="form" name="dogInfo">
+        <form role="form" name="dogInfo" class="col-md-offset-3 col-md-6">
             <div class="row">
                 <div class="form-group">
                     <div class="thumbnail-container full-height">
@@ -10,7 +17,7 @@
                     </div>
                     <div class="thumbnail-container__label">
                         <input type="file" id="dogPhoto" class="input__hidden" accept="{{vm.fileTypes}}" />
-                        <label ng-class="vm.dogData.imageUrl ? 'col-xs-6 r-align p-0' : 'placeholder'" for="dogPhoto">
+                        <label ng-class="vm.dogData.imageUrl ? 'col-md-6 r-align p-0' : 'placeholder'" for="dogPhoto">
                             <span ng-if="!vm.dogData.imageUrl">
                                 <i class="fa fa-plus" aria-hidden="true"></i> 
                                  Choose a picture
@@ -19,13 +26,13 @@
                                 <i class="fa fa-refresh" aria-hidden="true"></i> Change 
                             </span>
                         </label>
-                        <span ng-if="vm.dogData.imageUrl" class="col-xs-6 text-danger image__delete p-0" ng-click="vm.deletePhoto()">
+                        <span ng-if="vm.dogData.imageUrl" class="col-md-6 text-danger image__delete p-0" ng-click="vm.deletePhoto()">
                             &nbsp;<i class="fa fa-trash-o" aria-hidden="true"></i> Remove
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12">
+            <div class="col-md-12">
                 <div class="form-group">
                     <label for="dogName">Name</label>
                     <input class="form-control" type="text" id="dogName" placeholder="Enter your dog's name" ng-model="vm.dogData.name" ng-change="vm.warning.name=false" />
@@ -43,10 +50,10 @@
                 <div class="form-group">
                     <label for="dogCurrent">Current Weight</label>
                     <div class="row">
-                        <div class="col-xs-10">
+                        <div class="col-md-10">
                             <input class="form-control " type="number" id="dogCurrent" ng-model="vm.dogData.current" ng-change=" vm.warning.current=false" />
                         </div>
-                        <div class="col-xs-2">
+                        <div class="col-md-2">
                             <select class="form-control" ng-model="vm.dogData.metric" >
                                 <option value="kg">kg</option>
                                 <option value="lb">lb</option>
@@ -65,10 +72,10 @@
                         Please enter your dog's goal weight
                     </div>
                 </div>
-                <div class="form-group col-xs-offset-2 col-xs-4">
+                <div class="form-group col-md-offset-2 col-md-4">
                     <button class="form-control btn btn-secondary" role="button" type="submit" ng-click="vm.cancelChanges()">Cancel</button>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-md-4">
                     <button class="form-control btn btn-primary" role="button" type="submit" ng-click="vm.updateDog()">Submit</button>
                 </div>
             </div>

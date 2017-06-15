@@ -76,6 +76,9 @@ define([
             controller: 'updateDogCtrl',
             controllerAs: 'vm'
         })
+        .when('/disclaimer', {
+            templateUrl: '/static/partials/disclaimer.html'
+        })
         .otherwise({
             redirectTo: '/home'
         });

@@ -33,7 +33,7 @@ define([
 
         function login() {
             userService.login(vm.user.name, vm.user.password, vm.user.remember).then(function (response) {
-                if (response.loggedIn) {
+                if (response.status === 'success') {
                     $location.path('/home');
                 } else {
                     Notification({
@@ -48,8 +48,8 @@ define([
         }
 
         function register() {
-            userService.register(vm.user.name, vm.user.password, vm.user.email).then(function (user) {
-                if (response.loggedIn) {
+            userService.register(vm.user.name, vm.user.password, vm.user.email).then(function (response) {
+                if (response.status === 'success') {
                     $location.path('/home');
                 } else {
                     Notification({

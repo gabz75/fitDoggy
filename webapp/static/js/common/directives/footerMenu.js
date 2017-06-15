@@ -29,6 +29,7 @@ define([
             httpService.post('/user/logout', {}).then(function () {
                 $cookies.remove('demo');
                 $cookies.remove('user');
+                $location.path('/user');
             });
         }
 

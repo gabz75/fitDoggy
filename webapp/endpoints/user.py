@@ -1,7 +1,7 @@
 from flask import request, session, g
 from flask_login import login_user, logout_user, current_user
 from webapp.models import User
-from webapp import application, login_manager
+from webapp import *
 from operator import eq
 import os
 import json
@@ -15,6 +15,9 @@ def login():
     username = request.form.get('username')
     password = request.form.get('password')
     remember = request.form.get('remember')
+    # for u in User.query.all():
+    #     if u._username != 'demo':
+    #         db.session.delete(u)
     user = User.query.filter(User._username==username).first()
     if user is None:
         return json.dumps({
@@ -22,7 +25,8 @@ def login():
             'message': 'This user does not exist.',
             'status': 'error'  
         })
-    if eq(user._password_hash, password):
+    print username, password, user._password_hash
+    if bcrypt.check_password_hash(user._password_hash, password):
         login_user(user, remember=remember)
         return json.dumps({
         	'loggedIn': True
@@ -38,7 +42,7 @@ def login():
 @application.route('/user/new', methods=['POST'])
 def add_new_user():
     try:
-    	username = request.form.get('user')
+    	username = request.form.get('username')
     	password = request.form.get('password')
     	email = request.form.get('email')
     	if username is None: 
@@ -56,11 +60,12 @@ def add_new_user():
     			'message': 'An email is required',
                 'status': 'info'
     		})
+        print username, password, email
         user = User.query.filter(User._email==email).first()
         if user is None:
-    	   user = User(username, password, email)
+    	   user = User(username, bcrypt.generate_password_hash(password), email)
            db.session.add(user)
-           db.session.commit(user)
+           db.session.commit()
            return json.dumps({
                 'message': 'Successfully registered.',
                 'status': 'success'
@@ -79,11 +84,11 @@ def add_new_user():
 @application.route('/user/logout', methods=['POST'])
 def logout():
     try:
-        print session
         session.pop('logged_in', None)
         logout_user()
         return json.dumps({
-            'result': 'success'
+            'status': 'success',
+            'message': 'Logged out'
         })
     except Exception, e:
         return json.dumps({
