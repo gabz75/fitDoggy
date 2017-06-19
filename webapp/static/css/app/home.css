@@ -1,0 +1,46 @@
+.home-pills {
+    margin: 15px auto;
+    padding: 15px 0;
+    display: inline-block;
+}
+.home-pill {
+    padding: 0 15px;
+    display: inline;
+}
+.home-pill a {
+    padding: 10px;
+    vertical-align: middle;
+    border-radius: 16px;
+    margin-bottom: 15px;
+    color: #4392F1;
+    background: #FEFFFE;
+}
+.home-hero {
+    color: #FEFFFE;
+    text-align: center;
+    background: #4392F1;
+    background: -webkit-linear-gradient(to right, #ff9068, #fd746c);
+    background: linear-gradient(to right, #4392F1, #1ABC9C);
+    height: 75%;
+    display: block;
+}
+.home-hero__body {
+    top: 30%;
+    position: relative;
+}
+.quotation__container {
+    vertical-align: top;
+}
+.quotation__container .icon {
+    opacity: 0.5;
+    display: inline-block;
+    position: absolute;
+}
+.quotation {
+    display: inline-block;
+    word-break: break-word;
+}
+.home-content {
+    background-color: #FEFFFE;
+}
+

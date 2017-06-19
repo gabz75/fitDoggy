@@ -56,7 +56,6 @@ def get_exercise_log(log_id):
             exercise = Exercise.query.filter(Exercise.id==log.exercise_id).first()
             exercises.append({
                 'duration': log._duration,
-                'intensity': log._intensity,
                 'name': exercise._name,
                 'description': exercise._description,
                 'exerciseId': exercise.id,

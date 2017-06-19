@@ -134,5 +134,9 @@ define([
                     .append($compile(template)($scope));
             }
         }
+
+        function lightbox() {
+            
+        }
 	}
 });

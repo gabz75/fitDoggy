@@ -1,31 +1,32 @@
-<div class="panel panel-default m-0">
-	<ul class="pager full-width m-0">
-        <li class="previous">
-            <a class="col-lg-4 l-align" href="#!/home">
-                FitDoggy
-            </a>
-        </li>
-    </ul>
-	<div class="panel-body">
-		<div class="col-lg-6 full-height slideshow" ng-if="vm.images.length > 0">
-			<div class="image__container">
-				<img class="transition thumbnail" ng-animate-swap="vm.slideshow" ng-src="{{vm.slideshow.thumbnailUrl}}" alt="{{vm.slideshow.imageFilename}}"/>
-			</div>
-		</div>
-		<div class="col-lg-6 home-pills" ng-class="vm.images.length === 0 ? 'col-lg-offset-3' : ''">
-            <h4 ng-if="vm.images.length === 0">Welcome</h4>
-			<div class="home-pill" ng-repeat="dog in vm.dogs">
-				<a href="#!/dog/{{dog.id}}/date/{{vm.date}}">
-					<img ng-src="{{dog.thumbnailUrl}}" alt="{{dog.imageFilename}}"/>
-					{{dog.name}}
-				</a>
-			</div>
-			<div class="home-pill">
-				<a href="#!/dog/new"><i class="fa fa-plus" aria-hidden="true"></i> Add a new dog</a>
-			</div>
-		</div>
-	</div>
+<div class="col-md-12 home-hero">
+    <div class="home-hero__body">
+        <h1>Welcome Back</h1>
+        <h4 class="quotation__container col-md-12">
+            <div class="icon">
+                <i class="fa fa-quote-left fa-3x" aria-hidden="true"></i>
+            </div>
+            <div class="quotation">
+                <span>{{vm.quote.quote}}<br>--{{vm.quote.author}}</span>
+            </div>
+        </h4>
+        <div class="home-pills">
+            <div class="home-pill" ng-repeat="dog in vm.dogs">
+                <a href="#!/dog/{{dog.id}}/date/{{vm.date}}">
+                   {{dog.name}}
+               </a>
+           </div>
+           <div class="home-pill">
+                <a href="#!/dog/new">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Add a new dog
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="hidden">
-	<img ng-repeat="image in vm.images" ng-source={{image.thumbnailUrl}} />
+<div class="home-content col-md-12">
+    <div ng-if="vm.images.length">
+        <h4 ng-if="vm.images.length > 0">Recently Added Photos</h4>
+        <img class="thumbnail col-md-3" ng-repeat="image in vm.images" ng-src="{{image.thumbnailUrl}}" alt="{{image.imageFilename}}"/>
+    </div>
+    <h4 ng-if="vm.images.length === 0">No images yet...</h4>
 </div>

@@ -1,4 +1,4 @@
-<div class="panel panel-default user_login">
+<div class="panel panel-default user_login col-md-4 col-md-offset-4">
     <ul class="nav nav-tabs nav-justified">
         <li ng-class="vm.activeView('login')">
             <a ng-click="vm.setView('login')">
@@ -22,7 +22,6 @@
                 <div class="form-group center">
                         <input type="text" class="form-control" placeholder="username" ng-model="vm.user.name"/>
                         <input class="form-control" placeholder="password" ng-model="vm.user.password" type="password"/>
-                        
                 </div>
                 <div class="form-check">
                     <label class="form-check-label">

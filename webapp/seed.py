@@ -105,7 +105,7 @@ def demo_logs(dog, food, run, walk):
         duration = randint(10, 100)
         run_log = ExerciseLog.query.filter(ExerciseLog.exercise_id==run.id, ExerciseLog.log_id==log.id).first()
         if run_log is None:
-            run_log = ExerciseLog(duration, 'Moderate', run.id, log.id)
+            run_log = ExerciseLog(duration, run.id, log.id)
         db.session.add(run_log)
         db.session.commit()
         total_duration = duration
@@ -113,7 +113,7 @@ def demo_logs(dog, food, run, walk):
         duration = randint(10, 100)
         walk_log = ExerciseLog.query.filter(ExerciseLog.exercise_id==walk.id, ExerciseLog.log_id==log.id).first()
         if walk_log is None:
-            walk_log = ExerciseLog(duration, 'Moderate', walk.id, log.id)
+            walk_log = ExerciseLog(duration, walk.id, log.id)
         db.session.add(walk_log)
         db.session.commit()
         total_duration += duration

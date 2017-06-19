@@ -4,92 +4,38 @@
     bottom: 0;
     right: 0;
 }
-.menu-container .mini {
+.menu-container .menu {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: rotate(-45deg);
     min-height: 50px;
     min-width: 50px;
     transition: all 0.3s ease-in-out;
-    z-index: 15;
+    z-index: 10;
     background-repeat: no-repeat;
-    background-position: 100%;
     background-image: url("/static/img/pawprint.png");
+}
+.menu-container .menu.minimized {
+    transition: all 0.3s ease-in-out;
     background-size: 50px;
 }
-.menu-container .menu {
-    height: 250px;
-    width: 250px;
+.menu-container .menu.minimized:hover,
+.menu-container .menu.expanded  {
+    transition: all 0.3s ease-in-out;
+    transform: scale(5);
+}
+.menu-container .full-menu {
+    z-index: 15;
     position: absolute;
     bottom: 0;
     right: 0;
-}
-.menu-container .mini.expanded {
-    background-image: url("/static/img/pawprint-full.png");
-    background-size: 250px;
-    min-height: 250px;
-    min-width: 250px;
-}
-.menu-container .link4 {
-    background-image: url("/static/img/pawprint-full4.png");
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 84px;
-    width: 91px;
-}
-.menu-container .link3 {
-    background-image: url("/static/img/pawprint-full3.png");
-    position: absolute;
-    top: 0;
-    right: 91px;
-    height: 93px;
-    width: 101px;
-}
-.menu-container .link2 {
-    background-image: url("/static/img/pawprint-full2.png");
-    position: absolute;
-    top: 57px;
-    left: 0;
-    height: 93px;
-    width: 93px;
-}
-.menu-container .link1 {
-    background-image: url("/static/img/pawprint-full1.png");
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 93px;
-    width: 93px;
-}
-.menu-container .link0 {
-    background-image: url("/static/img/pawprint-full0.png");
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    height: 93px;
-    width: 101px;
-}
-.menu-container a {
-    color: white;
-    font-size: 14px;
-    text-transform: lowercase;
-    line-height: 84px;
-    position: relative;
-}
-.menu-container .link4 a {
-    right: 25px;
-}
-.menu-container .link3 a{
-    right: 35px;
-}
-.menu-container .link2 a{
-    right: 40px;
-}
-.menu-container .link1 a{
-    right: 31px;
-}
-.menu-container .link0 a{
-    right: 60px;
-    bottom: 25px;
+    transform: rotate(-45deg);
 }
 .menu-container a:hover {
     text-decoration: underline;
+}
+.menu-container text {
+    font-size: large;
+    fill: #1D2B4F;
 }

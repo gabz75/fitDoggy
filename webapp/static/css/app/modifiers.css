@@ -2,24 +2,35 @@ html {
 	height: 100%;
 }
 body {
-	background: #c9e4f7;
-    background: -webkit-linear-gradient(bottom, #ebf5fc, #c9e4f7);
-    background: linear-gradient(to bottom, #ebf5fc, #c9e4f7);
-    font-family: 'PT Sans', sans-serif;
+	font-family: 'PT Sans', sans-serif;
 	font-size: 12px;
 	width: 100%;
 	height: 100%;
+	overflow: hidden;
 }
 label {
 	line-height: 1.9;
 }
 a {
-	color: #3498DB;
+	color: #FEFFFE;
 	cursor: pointer;
 }
 a:hover {
-	color: #2980B9;
+	color: #4392F1;
 	text-decoration: underline;
+}
+form {
+	background-color: #FEFFFE;
+}
+.bg {
+	background: #4392F1;
+    background: -webkit-linear-gradient(to right, #ff9068, #fd746c);
+    background: linear-gradient(to right, #4392F1, #1ABC9C);
+}
+.no-bg {
+	background: none;
+	background-color: transparent;
+	border: none;
 }
 .p-0 {
 	padding: 0;
@@ -38,6 +49,9 @@ a:hover {
 }
 .m-0 {
 	margin: 0;
+}
+.m-t-50 {
+	margin-top: 50px;
 }
 .pull-left {
 	float: left!important;
@@ -72,4 +86,7 @@ a:hover {
 }
 .hidden {
 	display: none;
+}
+.fixed {
+	position: fixed!important;
 }

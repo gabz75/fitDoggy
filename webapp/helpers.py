@@ -55,6 +55,7 @@ def save_image(img):
         return base_filename, url
     except Exception, e:
         raise e
+    return None, None
 
 def calculate_size(w, h):
     aspect_ratio = (1, 1) if w > h else (1, 2)

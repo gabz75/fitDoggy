@@ -148,8 +148,8 @@ def dog_data():
             'status': 'error'
         }), 500
 
-@application.route('/dog/slideshow', methods=['POST'])
-def dog_slideshow():
+@application.route('/dog/images', methods=['POST'])
+def dog_images():
     try:
         images = []
         dogs = Dog.query.filter(Dog.user_id==session.get('user_id'))

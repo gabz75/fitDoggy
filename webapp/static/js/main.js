@@ -7,9 +7,11 @@ requirejs.config({
         'angular-notify': '/static/node_modules/angular-notify/dist/angular-notify.min',
         'angular-route': '/static/node_modules/angular-route/angular-route.min',
         'angular-touch': '/static/node_modules/angular-touch/angular-touch.min',
+        'bootstrap': '/static/node_modules/bootstrap/dist/js/bootstrap.min',
         'dateformat': '/static/node_modules/dateformat/lib/dateformat',
         'domReady': '/static/node_modules/requirejs-domready/domReady',
         'highcharts': '/static/node_modules/highcharts/highcharts',
+        'jquery': '/static/node_modules/jquery/dist/jquery.min',
         'lodash': '/static/node_modules/lodash/lodash',
         'moment': '/static/node_modules/moment/min/moment.min',
         'ui-bootstrap': '/static/node_modules/angular-ui-bootstrap/dist/ui-bootstrap'
@@ -27,8 +29,11 @@ requirejs.config({
         },
         'angular-cookies': {
            deps: ['angular']
-        } 
+        },
+        'bootstrap' : { 
+            'deps' :['jquery'] 
+        }
     },
 
-    deps: ['./bootstrap']
+    deps: ['./init']
 }); 

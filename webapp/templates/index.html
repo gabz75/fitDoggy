@@ -7,19 +7,22 @@
 	<link type="text/css" href="/static/node_modules/highcharts/css/highcharts.css" rel="stylesheet" />
 	<link type="text/css" href="/static/node_modules/flat-ui/css/flat-ui.css" rel="stylesheet" />	
 	<link type="text/css" href="/static/css/app/app.css" rel="stylesheet" />
-	<link type="text/css" href="/static/css/app/modifiers.css" rel="stylesheet" />
-	<link type="text/css" href="/static/css/app/footer.css" rel="stylesheet" />
-	<link type="text/css" href="/static/css/app/user_login.css" rel="stylesheet" />
+	<link type="text/css" href="/static/css/app/home.css" rel="stylesheet" />
 	<link type="text/css" href="/static/css/app/log.css" rel="stylesheet" />
+	<link type="text/css" href="/static/css/app/modifiers.css" rel="stylesheet" />
+	<link type="text/css" href="/static/css/app/navigation.css" rel="stylesheet" />
+	<link type="text/css" href="/static/css/app/user_login.css" rel="stylesheet" />
 	<script data-main="/static/js/main.js" src="/static/node_modules/requirejs/require.js"></script>
 	<base href="/"/>
 </head>
 <body>
-    <div class="panel-container col-lg-6 col-lg-offset-3">
-		<div class="container__fixed" ng-view></div>
-    </div>
-    <div class="container__footer">
-		<div footer-menu class="menu-container"></div>
+	<div nav-bar data-dog="selectedDog"></div>
+	<div ng-if="!selectedDog" class="full-height bg container-body" ng-view></div>
+	<div ng-if="selectedDog" class="full-height">
+        <div class="container-body full-height">
+	        <div side-bar data-dog="selectedDog" class="sidebar full-height col-md-2 p-0 bg"></div>
+        	<div ng-view class="content full-height pull-right col-md-10"></div>
+        </div>
 	</div>
 </body>
 </html>

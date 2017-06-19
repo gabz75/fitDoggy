@@ -106,19 +106,19 @@ define([
 		}
 
 		function getDog() {
-			return logService.getDog(dogId).then(function (response) {
-				vm.dog = response;
+			vm.dog = logService.getDog(dogId).then(function (response) {
+				return response;
 			});
 		}
 
 		function getActivities() {
-			return logService.getActivities().then(function (response) {
-				vm.activities = response;
+			vm.activities = logService.getActivities().then(function (response) {
+				return response;
 			});
 		}
 		function getFoods() {
-			return logService.getFoods().then(function (response) {
-				vm.foods = response;
+			vm.foods = logService.getFoods().then(function (response) {
+				return response;
 			});
 		}
 

@@ -69,13 +69,12 @@ def update_exercise_log():
 
 def add_exercise_log(log_id, log):
     try:
-        exercise_log = ExerciseLog(log.get('duration', 0), log.get('intensity', ''), log.get('exerciseId'), log_id)
+        exercise_log = ExerciseLog(log.get('duration', 0), log.get('exerciseId'), log_id)
         db.session.add(exercise_log)
         db.session.commit()
         exercise = Exercise.query.filter(Exercise.id==exercise_log.exercise_id).first()
         exercise_item = {
             'duration': exercise_log._duration,
-            'intensity': exercise_log._intensity,
             'name': exercise._name,
             'description': exercise._description,
             'exerciseId': exercise.id,
@@ -89,7 +88,6 @@ def edit_exercise_log(log):
     try:
         exercise_log = ExerciseLog.query.filter_by(id=log.get('id')).first()
         exercise_log._duration = log.get('duration', exercise_log._duration)
-        exercise_log._intensity = log.get('intensity', exercise_log._intensity)
         exercise_log.exercise_id = log.get('exerciseId', exercise_log.exercise_id)
         db.session.add(exercise_log)
         db.session.commit()

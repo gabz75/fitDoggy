@@ -1,28 +1,35 @@
 define([
 	'angular',
 	'moment'
-], function (angular, moment) {
+	], function (angular, moment) {
 	'use strict';
 
 	angular.module('home.controller', ['home.service'])
-		.animation('.transition', transition)
 		.controller('homeCtrl', homeCtrl);
 
-	homeCtrl.$inject = ['$scope', '$interval', 'homeService'];
-	function homeCtrl($scope, $interval, homeService) {
+	homeCtrl.$inject = ['$scope', '$window', 'homeService'];
+	function homeCtrl($scope, $window, homeService) {
 		var vm = this;
 
 		vm.getDogs = getDogs;
+		vm.logout = logout;
 
 		init();
 
 		function init() {
 			getDogs();
-			homeService.getSlideshow().then(function (response) {
+			homeService.getImages().then(function (response) {
 				vm.images = response;
-				slideshow();
 			});
+			vm.quote = homeService.getQuote();
 			vm.date = moment().format('MMDDYYYY');
+			angular.element($window).on('scroll', function() {
+				if (this.pageYOffset >= 50) {
+					vm.scrolled = true;
+				} else {
+					vm.scrolled = false;
+				}
+			});
 		}
 
 		function getDogs() {
@@ -33,29 +40,9 @@ define([
 			});
 		}
 
-		function slideshow() {
-			var index = 0,
-				length = vm.images.length;
-			vm.slideshow = vm.images[index];
-				
-			$interval(function () {
-				index++;
-				if (index == length) {
-					index = 0;
-				}
-				vm.slideshow = vm.images[index];
-			}, 3000);
-			
+		function logout() {
+			homeService.logout();
 		}
 	}
 
-	function transition() {
-		return {
-			leave: function(element, done) {
-				element[0].style.opacity = 0;
-				setTimeout(done, 1500);
-			}
-		}
-	}
-	
 });

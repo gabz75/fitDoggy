@@ -105,7 +105,11 @@ define([
         }
 
         function deleteLog(type, id) {
-            if (type === 'exercise') {
+            if (!id) {
+                var deferred = $q.defer();
+                deferred.resolve();
+                return deferred.promise;
+            } else if (type === 'exercise') {
                 return httpService.post('/log/exercise/delete', {
                     id: id
                 }); 
@@ -117,11 +121,7 @@ define([
                 return httpService.post('/log/delete', {
                     id: id
                 });
-            } else {
-                var deferred = $q.defer();
-                deferred.resolve();
-                return deferred.promise;
-            }
+            } 
         }
 
         function updateLog(type, dogId, date, log) {

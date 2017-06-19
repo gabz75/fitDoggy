@@ -83,8 +83,8 @@ class Log(db.Model):
             'date': self._date.strftime('%m/%d/%Y'),
             'weight': self._weight,
             'dailyCalories': self._daily_calories,
-            'total_calories': self._total_calories,
-            'total_duration': self._total_duration,
+            'totalCalories': self._total_calories,
+            'totalDuration': self._total_duration,
             'imageFilename': self._image_filename,
             'imageUrl': self._image_url,
             'thumbnailUrl': self._thumbnail_url           
@@ -119,16 +119,14 @@ class ExerciseLog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     _duration = db.Column(db.Float)
-    _intensity = db.Column(db.String(128))
 
     exercise_id = db.Column(db.Integer, db.ForeignKey('exercise.id'))
 
     log_id = db.Column(db.Integer, db.ForeignKey('log.id'))
     log = db.relationship('Log', back_populates='exercise_logs')
 
-    def __init__(self, duration, intensity, exercise_id, log_id):
+    def __init__(self, duration, exercise_id, log_id):
         self._duration = duration
-        self._intensity = intensity
         self.exercise_id = exercise_id
         self.log_id = log_id
 
@@ -136,7 +134,6 @@ class ExerciseLog(db.Model):
         return {
             'id': str(self.id),
             'duration': self._duration,
-            'intensity': self._intensity,
             'exerciseId': self.exercise_id,
             'logId': self.log_id
         }
@@ -215,4 +212,3 @@ class User(db.Model):
 
 db.create_all()
 demo()
-

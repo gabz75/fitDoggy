@@ -1,0 +1,21 @@
+<button type="button" class="sidebar-toggle collapsed" ng-click="vm.toggle()">
+    <span ng-if="!vm.collapsed" >
+        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+    </span>
+    <span ng-if="vm.collapsed">
+        <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+    </span>
+</button>
+<div class="sidebar-collapse full-height" id="sidebar">
+    <ul class="list-group" ng-class="vm.collapsed ? 'collapse' : 'collapsed'">
+        <li class="list-group-item list-group-item-header">
+            <a ng-click="vm.expand(vm.dog)">{{vm.dog.name}}</a>
+        </li>
+        <li class="list-group-item" ng-if="vm.expanded[vm.dog.name]" ng-class="vm.activeTab(vm.dog.id, 'overview')">
+            <a href="#!/dog/{{vm.dog.id}}">Overview</a>
+        </li>
+        <li class="list-group-item" ng-if="vm.expanded[vm.dog.name]" ng-class="vm.activeTab(vm.dog.id, 'log')">
+            <a href="#!/dog/{{vm.dog.id}}/date/{{vm.date}}" ng-class="vm.active">Today</a>
+        </li>
+    </ul>
+</div>

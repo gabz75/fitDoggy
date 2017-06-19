@@ -10,7 +10,8 @@ define([
     'common/factories/breadcrumb',
     'common/factories/upload',
     'common/factories/notification',
-    'common/directives/footerMenu',
+    'common/directives/navBar',
+    'common/directives/sideBar',
     'modules/home/home',
     'modules/details/details',
     'modules/log/log',
@@ -27,9 +28,10 @@ define([
         'common.cache',
         'common.cacheService',
         'common.dialog',
-        'common.footer',
+        'common.navBar',
         'common.notification',
         'common.service',
+        'common.sideBar',
         'common.upload',
         'details',
         'home',
@@ -83,13 +85,24 @@ define([
             redirectTo: '/home'
         });
     }
-    runApp.$inject = ['$rootScope', '$location', '$cookies'];
-    function runApp($rootScope, $location, $cookies) {
+    runApp.$inject = ['$rootScope', '$location', '$cookies', '$http'];
+    function runApp($rootScope, $location, $cookies, $http) {
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             var restricted = $location.path() !== '/user',
                 loggedIn = $cookies.get('user') || $cookies.get('demo');
             if (restricted && !loggedIn) {
                 $location.path('/user');
+            }
+            var dog = $location.path().match(/\/dog\/(\d+)/);
+            if (dog && dog[1]) {
+                $rootScope.dogs = $http.post('/dog/all', {}).then(function (response) {
+                    $rootScope.selectedDog = _.find(response, function (dog) {
+                        return dog.id === dog[1];
+                    })[0];
+                    return response;
+                });
+            } else {
+                $rootScope.selectedDog = void 0;
             }
         });
         $rootScope.$on('$destroy', function () {
