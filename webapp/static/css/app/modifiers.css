@@ -59,6 +59,9 @@ form {
 .pull-right {
 	float: right!important;
 }
+.pull-none {
+	float: none!important;
+}
 .no-border {
 	border: none;
 }

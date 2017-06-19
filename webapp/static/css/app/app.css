@@ -140,8 +140,7 @@
 .container-body .content {
     padding: 65px 15px 15px 15px;
     margin-top: -50px;
-    position: absolute;
-    right: 0;
+    overflow: auto;
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {

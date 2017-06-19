@@ -20,8 +20,8 @@
 	<div ng-if="!selectedDog" class="full-height bg container-body" ng-view></div>
 	<div ng-if="selectedDog" class="full-height">
         <div class="container-body full-height">
-	        <div side-bar data-dog="selectedDog" class="sidebar full-height col-md-2 p-0"></div>
-        	<div ng-view class="content full-height pull-right col-md-10"></div>
+	        <div side-bar data-dog="selectedDog" class="sidebar full-height pull-left bg p-0"></div>
+        	<div ng-view class="content full-height pull-none"></div>
         </div>
 	</div>
 </body>

@@ -105,6 +105,7 @@
     .sidebar-toggle.collapsed {
         display: block;
         text: #4392F1;
-        position: absolute;
+        position: relative;
+        top: 50%;
     }
 }
