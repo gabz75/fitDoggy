@@ -1,5 +1,5 @@
-.home-nav,
-.home-nav__fixed {
+.home-nav__inverted,
+.home-nav {
     width: 100%;
     top: 0;
     left: 0;
@@ -7,11 +7,15 @@
     overflow: hidden;
     border-radius: 0!important;
 }
-.home-nav {
+.home-nav__fixed {
     position: fixed;
 }
-.home-nav a,
-.home-nav__fixed a{
+.home-nav__inverted {
+    background-color: #FEFFFE;
+    box-shadow: 0 3px 4px 0 rgba(0,0,0,0.14);
+}
+.home-nav__inverted a,
+.home-nav a {
     font-size: 14px!important;
     text-transform: uppercase!important;
     font-weight: 500!important;
@@ -20,36 +24,17 @@
     line-height: 50px!important;
     padding: 0 5px!important;
 }
-.home-nav a {
-    color: #FEFFFE!important;
+.home-nav__inverted a {
+    color: #4392F1!important;
 }
 .navbar .nav > li > a:hover,
 .navbar .nav > li > a:active {
     text-decoration: underline;
 }
-.home-nav__fixed {
-    background-color: #FEFFFE;
-    box-shadow: 0 3px 4px 0 rgba(0,0,0,0.14);
-}
-.home-nav__fixed a,
-.home-nav__fixed a:hover,
-.home-nav__fixed a:active {
-    color: #4392F1 !important;
-}
-.home-nav .icon {
-    display: none;
-}
-.home-nav .right {
-    position: absolute;
-    right: 0;
-    display: inline-block;
-}
-.home-nav__group {
-    display: inline;
-    position: absolute;
-}
-.home-nav__group.right {
-    right: 0;
+.home-nav a,
+.home-nav a:hover,
+.home-nav a:active {
+    color: #FEFFFE !important;
 }
 .list-group-item {
     border: 0;
@@ -59,10 +44,14 @@
     padding-left: 15px;
     color: #FEFFFE;
 }
-.list-group-item.active {
-    background-color: transparent;
+.list-group-item.active,
+.list-group-item.active:active,
+.list-group-item.active:hover {
+    background-color: #FEFFFE;
+    border: none;
 }
 .list-group-item.active a {
+    color: #4392F1;
     font-weight: 600;
     letter-spacing: 1px;
     text-decoration: underline;

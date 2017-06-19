@@ -18,7 +18,6 @@ define([
 			today;
 
 		vm.fileTypes = '.jpeg, .jpg, .png, .gif, image/jpeg, image/pjpeg, image/jpeg, image/pjpeg, image/png, image/gif';
-		vm.date = {};
 		vm.intensities = ['Light', 'Moderate', 'Hard'];
 		vm.views = ['img', 'foodChart', 'exerciseChart'];
 		vm.view = vm.views[0];
@@ -66,9 +65,6 @@ define([
 			counts.activity = 0;
 			cache.food = new Cache();
 			cache.exercise = new Cache();
-			vm.date.prev = moment(currentDay, 'MMDDYYYY').subtract(1, 'day').format('MMDDYYYY');
-			vm.date.current = moment(currentDay, 'MMDDYYYY').format('MM/DD/YYYY'),
-			vm.date.next = moment(currentDay, 'MMDDYYYY').add(1, 'day').format('MMDDYYYY')
 			$q.all([getLog(), getDog()]).then(function () {
 				angular.element(document.querySelector('#dogPhoto')).bind('change', uploadFile);
 			});

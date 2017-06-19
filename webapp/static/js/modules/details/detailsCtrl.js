@@ -38,6 +38,7 @@ define([
 		vm.setType = setType;
 		vm.confirmDelete = confirmDelete;
 		vm.updateDog = updateDog;
+		vm.lightbox = lightbox;
 		init();
 
 		function init() {
@@ -120,7 +121,7 @@ define([
 	                cssClass: 'btn-primary',
 	                actionCallback: deleteDog
 	            }]
-			})
+			});
 		}
 
 		function deleteDog() {
@@ -144,6 +145,17 @@ define([
 
 		function updateDog() {
             $location.path('/dog/' + vm.dog.id + '/update');
+		}
+
+		function lightbox(image) {
+			dialog.popup({
+				templateUrl: '/static/js/common/services/dialog/lightbox.html',
+				controller: 'lightbox',
+				size: 'lg'
+			}, {
+				images: vm.images,
+				current: image
+			});
 		}
 	}
 });

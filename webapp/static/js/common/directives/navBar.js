@@ -15,6 +15,7 @@ define([
         vm.displayType = displayType;
         vm.toggle = toggle;
         vm.logout = logout;
+        vm.notInFuture = notInFuture;
 
         init();
 
@@ -27,9 +28,9 @@ define([
         function displayType() {
             var path = $location.path();
             if (path.match(/\/home/)) {
-                return 'home-nav';
+                return 'home-nav home-nav__fixed';
             } else if (path.match(/\/dog/)) {
-                return 'home-nav__fixed';
+                return 'home-nav__inverted';
             } else if (path.match(/\/disclaimer/)) {
                 return 'home-nav bg';
             } else {
@@ -47,6 +48,10 @@ define([
                 $cookies.remove('user');
                 $location.path('/user');
             });
+        }
+
+        function notInFuture(date) {
+            return moment(date, 'MMDDYYYY').isSameOrBefore(today);
         }
     }
 

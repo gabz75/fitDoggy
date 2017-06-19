@@ -28,7 +28,7 @@
 	<div class="gallery col-md-12">
 		<label>Gallery</label><br>
 		<div class="gallery__thumbnail pull-left" ng-repeat="image in vm.images">
-			<img ng-src="{{image.thumbnailUrl}}" alt="{{image.filename}}" class="img-thumbnail" />
+			<img ng-src="{{image.thumbnailUrl}}" alt="{{image.filename}}" ng-click="vm.lightbox(image)" class="img-thumbnail" />
 		</div>
 	</div>
 	<div class="row">

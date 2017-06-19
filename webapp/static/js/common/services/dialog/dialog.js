@@ -37,6 +37,8 @@ define([
 
             if (!_modalOptions.controller) {
                 _modalOptions.controller = modalController(_modalResolve);
+            } else if (_modalOptions.controller === 'lightbox') {
+                _modalOptions.controller = lightbox(_modalResolve);
             }
 
             return $uibModal.open(_modalOptions);
@@ -135,8 +137,54 @@ define([
             }
         }
 
-        function lightbox() {
+        function lightbox(_modalResolve) {
+            return function ($uibModalInstance, $scope, $compile) {
+                var vm = this,
+                    totalImages = _modalResolve.images.length;
+                vm.close = close;
+                vm.images = _modalResolve.images;
+                vm.current = _modalResolve.current;
+                vm.currentView = currentView;
+                vm.nextView = nextView;
+                vm.prevView = prevView;
+                vm.currentIndex = 0;
+                init();
+
+                function init() {
+                    _.forEach(vm.images, function (img, index) {
+                        if (img.filename === vm.current.filename) {
+                            vm.currentIndex = index;
+                            console.log(index);
+                            return;
+                        }
+                    });   
+                }
+                
+                function currentView(img) {
+                    return vm.current.filename !== img;
+                }
+
+                function nextView(img) {
+                    vm.currentIndex++;
+                    if (vm.currentIndex === totalImages) {
+                        vm.currentIndex = 0;
+                    }
+                    vm.current = vm.images[vm.currentIndex];
+                }
+
+                function prevView(img) {
+                    vm.currentIndex--;
+                    if (vm.currentIndex < 0) {
+                        vm.currentIndex = totalImages - 1;
+                    }
+                    vm.current = vm.images[vm.currentIndex];
+                }
             
+
+                function close(actionCallback) {
+                    $uibModalInstance.close();
+                }
+            }
         }
 	}
 });

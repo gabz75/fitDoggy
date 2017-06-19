@@ -1,0 +1,17 @@
+<div class="modal-header">
+        <button type="button" class="close" ng-click="vm.close()">&times;</button>
+</div>
+<div class="modal-body lightbox">
+    <div class="chart-container">
+        <div class="chart-container__nav left" ng-click="vm.prevView()">
+            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        </div>
+        <div class="thumbnail-container full-height" ng-repeat="image in vm.images">
+            <img class="thumbnail" ng-hide="vm.currentView(image.filename)" ng-src="{{image.url}}" alt="{{image.filename}}" />
+        </div>
+        <div class="chart-container__nav right" ng-click="vm.nextView()">
+            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+

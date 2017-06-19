@@ -15,7 +15,14 @@
             <a href="#!/dog/{{vm.dog.id}}">Overview</a>
         </li>
         <li class="list-group-item" ng-if="vm.expanded[vm.dog.name]" ng-class="vm.activeTab(vm.dog.id, 'log')">
-            <a href="#!/dog/{{vm.dog.id}}/date/{{vm.date}}" ng-class="vm.active">Today</a>
+            <a href="#!/dog/{{vm.dog.id}}/date/{{vm.date.prev}}">
+                <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+            </a>
+
+            <a href="#!/dog/{{vm.dog.id}}/date/{{vm.date.current}}" ng-class="vm.active">Today</a>
+            <a href="#!/dog/{{vm.dog.id}}/date/{{vm.date.next}}" ng-if="vm.notInFuture(vm.date.next)"">
+                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+            </a>
         </li>
     </ul>
 </div>
