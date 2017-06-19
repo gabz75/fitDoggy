@@ -1,13 +1,13 @@
-<button type="button" class="sidebar-toggle collapsed" ng-click="vm.toggle()">
-    <span ng-if="!vm.collapsed" >
+<button type="button" class="sidebar-toggle" ng-click="vm.toggle()" ng-class="vm.collapsed ? 'bg' : 'collapsed'">
+    <span ng-if="vm.collapsed" >
         <i class="fa fa-angle-double-right" aria-hidden="true"></i>
     </span>
-    <span ng-if="vm.collapsed">
+    <span ng-if="!vm.collapsed">
         <i class="fa fa-angle-double-left" aria-hidden="true"></i>
     </span>
 </button>
 <div class="sidebar-collapse full-height" id="sidebar">
-    <ul class="list-group" ng-class="vm.collapsed ? 'collapse' : 'collapsed'">
+    <ul class="list-group full-height bg" ng-class="vm.collapsed ? 'collapse' : 'collapsed'">
         <li class="list-group-item list-group-item-header">
             <a ng-click="vm.expand(vm.dog)">{{vm.dog.name}}</a>
         </li>
@@ -24,5 +24,6 @@
                 <i class="fa fa-angle-double-right" aria-hidden="true"></i>
             </a>
         </li>
+        <li class="list-group-item">&nbsp;</li>
     </ul>
 </div>

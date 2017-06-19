@@ -85,26 +85,59 @@ define([
             redirectTo: '/home'
         });
     }
-    runApp.$inject = ['$rootScope', '$location', '$cookies', '$http'];
-    function runApp($rootScope, $location, $cookies, $http) {
+    runApp.$inject = ['$rootScope', '$location', '$cookies', '$http', '$q'];
+    function runApp($rootScope, $location, $cookies, $http, $q) {
+        var images = [],
+            thumbnails = [],
+            loggedIn,
+            init;
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            var restricted = $location.path() !== '/user',
-                loggedIn = $cookies.get('user') || $cookies.get('demo');
+            var restricted = $location.path() !== '/user';
+            loggedIn = $cookies.get('user') || $cookies.get('demo');
             if (restricted && !loggedIn) {
                 $location.path('/user');
+                init = false;
+                return;
             }
+            if (loggedIn && !init) {
+                console.log('init');
+                initUser();
+            }
+            selectDog();
+        });
+
+        function initUser() {
+            $rootScope.dogs = $http.post('/dog/all', {});
+            $http.post('/dog/images', {}).then(function (response) {
+                for (var i = 0; i < response.length; i++) {
+                    var full = new Image(),
+                        thumbnail = new Image();
+                    full.src = response[i].url;
+                    thumbnail.src = response[i].thumbnailUrl;
+                    images.push(full);
+                    thumbnails.push(thumbnail);
+                }
+            });
+            init = true;
+        }
+
+        function selectDog() {
             var dog = $location.path().match(/\/dog\/(\d+)/);
-            if (dog && dog[1]) {
-                $rootScope.dogs = $http.post('/dog/all', {}).then(function (response) {
-                    $rootScope.selectedDog = _.find(response, function (dog) {
-                        return dog.id === dog[1];
-                    })[0];
-                    return response;
-                });
+            console.log(dog);
+            if (dog && dog.length > 1 && dog[1]) {
+
+                if (!$rootScope.selectedDog || $rootScope.selectedDog.id !== dog[1]){
+                    $q.when($rootScope.dogs).then(function (response) {
+                        console.log(response);
+                        $rootScope.selectedDog = _.find(response, function (dog) {
+                            return dog.id === dog[1];
+                        })[0];
+                    });
+                }
             } else {
                 $rootScope.selectedDog = void 0;
             }
-        });
+        }
         $rootScope.$on('$destroy', function () {
             $cookies.remove('demo');
         });

@@ -17,10 +17,10 @@
 </head>
 <body>
 	<div nav-bar data-dog="selectedDog"></div>
-	<div ng-if="!selectedDog" class="full-height bg container-body" ng-view></div>
+	<div ng-if="!selectedDog" class="full-height container-home" ng-view></div>
 	<div ng-if="selectedDog" class="full-height">
         <div class="container-body full-height">
-	        <div side-bar data-dog="selectedDog" class="sidebar full-height pull-left bg p-0"></div>
+	        <div side-bar data-dog="selectedDog" class="sidebar full-height pull-left p-0"></div>
         	<div ng-view class="content full-height pull-none"></div>
         </div>
 	</div>

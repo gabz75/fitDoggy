@@ -63,7 +63,7 @@ define([
         }
 
         function deletePhoto() {
-            vm.dogData.image_url = void 0;
+            vm.dogData.url = void 0;
         }
 
         

@@ -23,10 +23,12 @@
         </div>
     </div>
 </div>
-<div class="home-content col-md-12">
+<div class="gallery col-md-12">
     <div ng-if="vm.images.length">
         <h4 ng-if="vm.images.length > 0">Recently Added Photos</h4>
-        <img class="thumbnail col-md-3" ng-repeat="image in vm.images" ng-src="{{image.thumbnailUrl}}" alt="{{image.imageFilename}}"/>
+        <div class="gallery__thumbnail" ng-repeat="image in vm.images">
+            <img ng-src="{{image.thumbnailUrl}}" alt="{{image.imageFilename}}" class="img-thumbnail" />
+        </div>
     </div>
     <h4 ng-if="vm.images.length === 0">No images yet...</h4>
 </div>

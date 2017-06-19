@@ -154,7 +154,7 @@ def dog_images():
         images = []
         dogs = Dog.query.filter(Dog.user_id==session.get('user_id'))
         for dog in dogs:
-            logs = Log.query.filter(Log.dog_id==dog.id).limit(5)
+            logs = Log.query.filter(Log.dog_id==dog.id)
             for log in logs:
                 if log._image_url is not None:
                     images.append({

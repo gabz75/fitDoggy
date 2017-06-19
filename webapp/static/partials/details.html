@@ -1,42 +1,39 @@
-
-<div class="chart-container col-md-12">
-	<ul class="nav nav-tabs">
-		<li class="active" ng-repeat="chartType in vm.chartTypes">
-			<a data-toggle="tab" ng-click="vm.setType(chartType)">{{chartType.label}}</a>
-		</li>
-	</ul>
-	<div class="chart-container__nav left" ng-click="vm.prev()" ng-if="vm.hasPrev()">
-		<i class="fa fa-chevron-left" aria-hidden="true"></i>
-	</div>
-	<div class="col-md-12">
-		<div id="linechart"></div>
-	</div>
-	<div class="chart-container__nav right" ng-click="vm.next()" ng-if="vm.hasNext()">
-		<i class="fa fa-chevron-right" aria-hidden="true"></i>
-	</div>
-</div>
-<div class="chart-container__footer col-md-12">
-	{{vm.instructions}}
-</div>
-<div class="info-container col-md-12">
-	<div class="row">
-		<label>Current Weight:</label><br>
-		{{vm.dog.current}}<br>
-		<label>Goal Weight:</label><br>
-		{{vm.dog.goal}}
-	</div>
-	<div class="gallery col-md-12">
-		<label>Gallery</label><br>
-		<div class="gallery__thumbnail pull-left" ng-repeat="image in vm.images">
-			<img ng-src="{{image.thumbnailUrl}}" alt="{{image.filename}}" ng-click="vm.lightbox(image)" class="img-thumbnail" />
+<div class="details-container">
+	<div class="log-container chart">
+		<ul class="nav nav-tabs">
+			<li class="active" ng-repeat="chartType in vm.chartTypes">
+				<a data-toggle="tab" ng-click="vm.setType(chartType)">{{chartType.label}}</a>
+			</li>
+		</ul>
+		<div class="chart-container__nav left" ng-click="vm.prev()" ng-if="vm.hasPrev()">
+			<i class="fa fa-chevron-left" aria-hidden="true"></i>
+		</div>
+		<div class="col-xs-12">
+			<div id="linechart"></div>
+		</div>
+		<div class="chart-container__nav right" ng-click="vm.next()" ng-if="vm.hasNext()">
+			<i class="fa fa-chevron-right" aria-hidden="true"></i>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-md-offset-8 col-md-2">
-			<button class="btn btn-info" ng-click="vm.updateDog()"><i class="fa fa-pencil-o" aria-hidden="true"></i>Update</button>
+	<div class="chart-container__footer">
+		{{vm.instructions}}
+	</div>
+	<div class="log-container">
+		<div class="col-xs-12">
+			<label>Current Weight:</label><br>
+			{{vm.dog.current}}<br>
+			<label>Goal Weight:</label><br>
+			{{vm.dog.goal}}
 		</div>
-		<div class="col-md-2">
-			<button class="btn btn-danger" ng-click="vm.confirmDelete()"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
+		<div class="gallery col-xs-12">
+			<label>Gallery</label><br>
+			<div class="gallery__thumbnail" ng-repeat="image in vm.images">
+				<img ng-src="{{image.thumbnailUrl}}" alt="{{image.filename}}" ng-click="vm.lightbox(image)" class="img-thumbnail" />
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<button class="btn btn-info col-xs-2" ng-click="vm.updateDog()"><i class="fa fa-pencil-o" aria-hidden="true"></i>Update</button>
+			<button class="btn btn-danger col-xs-2" ng-click="vm.confirmDelete()"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
 		</div>
 	</div>
 </div>

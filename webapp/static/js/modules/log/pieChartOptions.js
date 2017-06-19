@@ -10,7 +10,7 @@ define([
         return function (options) {
             return {
                 chart: {
-                    height: 350,
+                    height: '50%',
                     plotShadow: false,
                     type: 'pie'
                 },

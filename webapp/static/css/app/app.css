@@ -17,25 +17,15 @@
 .form-group__icon__link {
 	padding-left: 10px;
 }
-
-.thumbnail-container {	
-	font-size: large;
-	height: 100%; 
-	position: relative;
-    width: 100%;
-    margin: auto;
-}
 .thumbnail-container__label {
 	width: 350px;
     margin: auto;
 }
-.img-container img {
-	position: relative;
-	display: block;
-	margin: auto;
-	max-width: 100%;
-    max-height: 350px;
+.content-container img {
+    max-height: 450px;
     overflow: auto;
+    display: inherit;
+    margin: auto;
 }
 .input__hidden {
 	width: 0.1px;
@@ -52,9 +42,16 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     cursor: pointer;
+    
+}
+.input__hidden + label {
     overflow: hidden;
     text-align: center;
     width: 100%;
+}
+.image__delete {
+    width: 50%;
+    text-align: left;
 }
 .input__hidden + label.placeholder {
     background-color: #f5f5f5;
@@ -65,26 +62,43 @@
     margin: auto;
     display: block;
 }
-.chart-container {
-	height: 50%;
-	position: relative;
+.input__hidden + label.change {
+    display: inline-block;
+    width: 50%;
+    text-align: right;
+    float: left;
+}
+.log-container {
+    overflow: auto;
+    padding: 15px;
+}
+.log-container.chart {
+    height: 500px;
+}
+.content-container {
+    float: left;
+    margin: auto;
+    width: 100%;
 }
 .chart-container__nav {
     z-index: 5;
-    width: 10%;
-    height: 100%;
-    position: absolute; 
-    top: 50%;
-    padding: 15px;
+    width: 35px;
     color: #999;
+    height: 500px;
+    position: absolute;
 }
-.chart-container__nav.left {
-    text-align: left;
-    left: 0px;
+.chart-container__nav i {
+    position: absolute;
+    top: 50%;
+}
+.chart-container__nav.left i {
+    left: 0;
 }
 .chart-container__nav.right {
-    text-align: right;
-    right: 0px;
+    right: 0;
+}
+.chart-container__nav.right i {
+    right: 0;
 }
 .chart-container__footer {
 	text-align: right;
@@ -132,18 +146,25 @@
     background-color: #D6878B;
     color: #FEFFFE;
 }
-.container-body {
-    border-left: 1px solid rgba(0,0,0,0.14) !important;
+.container-home {
     overflow: auto;
 }
+.container-body {
+    overflow: hidden;
+}
 .container-body .content {
-    padding: 65px 15px 15px 15px;
-    margin-top: -50px;
+    border-left: 1px solid rgba(0,0,0,0.14) !important;
     overflow: auto;
+    margin-top: -50px;
+    padding-top: 50px;
 }
 .lightbox img {
     margin: auto;
     display: block;
+}
+.details-container {
+    margin-top: -50px;
+    padding-top: 50px;
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {

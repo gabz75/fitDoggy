@@ -50,9 +50,6 @@ form {
 .m-0 {
 	margin: 0;
 }
-.m-t-50 {
-	margin-top: 50px;
-}
 .pull-left {
 	float: left!important;
 }
@@ -92,4 +89,7 @@ form {
 }
 .fixed {
 	position: fixed!important;
+}
+.text-success {
+	color: #1ABC9C;
 }

@@ -37,11 +37,12 @@
     color: #FEFFFE !important;
 }
 .list-group-item {
+    text-align: center;
     border: 0;
     background-color: transparent;
+    width: 150px;
 }
 .list-group-item a {
-    padding-left: 15px;
     color: #FEFFFE;
 }
 .list-group-item.active,
@@ -66,35 +67,47 @@
 .list-group-item:first-child {
     border-radius: 0!important;
 }
+.list-group-item:first-child {
+    border-bottom: 1px solid #FEFFFE;
+}
+.list-group-item:first-child a:hover {
+    text-decoration: none!important;
+}
 .list-group-item:last-child {
     height: 100%;
 }
-.sidebar-toggle {
+.sidebar {
+    position: relative;
+    left: 0;
+    z-index: 50;
     float: left;
+}
+.sidebar-toggle {
     padding: 9px 10px;
-    background-color: transparent;
-    background-image: none;
-    border: 1px solid transparent;
     border-radius: 4px;
+    position: fixed;
+    border: none;
     top: 50%;
-    right: 0;
     color: #FEFFFE;
     z-index: 50;
+    line-height: 50px;
 }
 .sidebar-toggle.collapsed {
-    display: none;
+    background-color: transparent;
+    left: 125px;
 }
-@media (min-width: 992px) and (max-width: 1199px) {
-    .sidebar-collapse .list-group {
-        display: none;
+.sidebar-collapse .list-group {
+    animation-name: toggleSidebar;
+    animation-duration: 0.3s;
+}
+.sidebar-collapse .list-group.collapse {
+    animation-direction: reverse;
+}
+@keyframes toggleSidebar {
+    from {
+        transform: translateX(-150px);
     }
-    .sidebar-collapse .list-group.collapse {
-        display: block;
-    }
-    .sidebar-toggle.collapsed {
-        display: block;
-        text: #4392F1;
-        position: relative;
-        top: 50%;
+    to {
+        transform: translateX(0);
     }
 }
