@@ -72,6 +72,10 @@
     margin: auto;
     width: 100%;
 }
+.chart-container {
+    padding: 15px;
+    position: relative;
+}
 .chart-container__footer {
 	text-align: right;
 	color: #999;
@@ -121,13 +125,16 @@
 .container-body .content {
     border-left: 1px solid rgba(0,0,0,0.14) !important;
     overflow: auto;
-    margin-top: -50px;
-    padding-top: 50px;
+    margin-bottom: -50px;
+    padding-bottom: 50px;
 }
 .lightbox img {
     margin: auto;
     display: block;
 }
+/*.details-container {
+    padding: 50px 0;
+}*/
 .details-container button {
     margin-right: 15px;
 }

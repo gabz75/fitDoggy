@@ -1,30 +1,28 @@
 <form role="form" name="dogInfo" class="full-height">
-    <div class="row log_container chart">
-        <div class="form-group log-container chart">
-            <div class="thumbnail-container">
-                <div class="content-container">
-                    <div class="img-container">
-                        <img ng-src="{{vm.dogData.imageUrl}}" alt="{{vm.dogData.imageFilename}}" />
-                    </div>
-                    <input type="file" id="dogPhoto" class="input__hidden" accept="{{vm.fileTypes}}" />
-                    <label ng-class="vm.dogData.imageUrl ? 'change' : 'placeholder'" for="dogPhoto">
-                        <span ng-if="!vm.dogData.imageUrl">
-                            <i class="fa fa-plus" aria-hidden="true"></i> 
-                            Choose a picture
-                        </span>
-                        <span ng-if="vm.dogData.imageUrl" class="text-info">
-                            <i class="fa fa-refresh" aria-hidden="true"></i> Change 
-                        </span>
-                        
-                    </label>
-                    <span ng-if="vm.dogData.imageUrl" class="text-danger image__delete p-0" ng-click="vm.deletePhoto()">
-                        &nbsp;<i class="fa fa-trash-o" aria-hidden="true"></i> Remove
-                    </span>
+    <div class="form-group chart-container col-xs-6">
+        <div class="thumbnail-container">
+            <div class="content-container">
+                <div class="img-container">
+                    <img ng-src="{{vm.dogData.imageUrl}}" alt="{{vm.dogData.imageFilename}}" />
                 </div>
+                <input type="file" id="dogPhoto" class="input__hidden" accept="{{vm.fileTypes}}" />
+                <label ng-class="vm.dogData.imageUrl ? 'change' : 'placeholder'" for="dogPhoto">
+                    <span ng-if="!vm.dogData.imageUrl">
+                        <i class="fa fa-plus" aria-hidden="true"></i> 
+                        Choose a picture
+                    </span>
+                    <span ng-if="vm.dogData.imageUrl" class="text-info">
+                        <i class="fa fa-refresh" aria-hidden="true"></i> Change 
+                    </span>
+                    
+                </label>
+                <span ng-if="vm.dogData.imageUrl" class="text-danger image__delete p-0" ng-click="vm.deletePhoto()">
+                    &nbsp;<i class="fa fa-trash-o" aria-hidden="true"></i> Remove
+                </span>
             </div>
         </div>
     </div>
-    <div class="col-md-12">
+    <div class="col-xs-6 chart-container">
         <div class="form-group">
             <label for="dogName">Name</label>
             <input class="form-control" type="text" id="dogName" placeholder="Enter your dog's name" ng-model="vm.dogData.name" ng-change="vm.warning.name=false" />

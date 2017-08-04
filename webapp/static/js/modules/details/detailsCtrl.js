@@ -31,10 +31,6 @@ define([
 		}];
 		vm.date = today.format('MMDDYYYY');
 		vm.chartType = vm.chartTypes[0];
-		vm.next = next;
-		vm.hasNext = hasNext;
-		vm.prev = prev;
-		vm.hasPrev = hasPrev;
 		vm.setType = setType;
 		vm.confirmDelete = confirmDelete;
 		vm.updateDog = updateDog;
@@ -76,29 +72,7 @@ define([
 				});
 			}
 		}
-
-		function next() {
-			vm.incr++;
-			getChartData().then(function (response) {
-				updateChart(response);
-			});
-		}
-
-		function hasNext() {
-			return moment(today).add(vm.incr + 1, 'year').isSameOrBefore(today);
-		}
-
-		function prev() {
-			vm.incr--;
-			getChartData().then(function (response) {
-				updateChart(response);
-			});
-		}
-
-		function hasPrev() {
-			return moment(today).add(vm.incr - 1, 'year').isSameOrAfter(moment(vm.dog.date, 'MM/DD/YYYY'));
-		}
-
+		
 		function getChartData() {
 			var startOfYear = moment(today).add(vm.incr, 'year').startOf('year'),
 				endOfYear = moment(today).add(vm.incr, 'year').endOf('year'),
