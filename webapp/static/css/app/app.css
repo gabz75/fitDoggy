@@ -132,11 +132,16 @@
     margin: auto;
     display: block;
 }
-/*.details-container {
-    padding: 50px 0;
-}*/
-.details-container button {
-    margin-right: 15px;
+.user_login {
+    padding: 0;
+    top: 25%;
+}
+.user_login .nav>li>a {
+    text-decoration: none;
+    background-color: #eee;
+}
+.user_login .nav>li.active>a{
+    background-color: #FEFFFE;
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
