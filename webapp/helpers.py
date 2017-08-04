@@ -71,8 +71,6 @@ def calculate_size(w, h):
         y2 = 2 * x2
     return (x1, y1, x2, y2)
 
-
-
 def delete_image(filename):
     if filename is None:
         return True

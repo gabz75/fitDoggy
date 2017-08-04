@@ -160,7 +160,9 @@ def dog_images():
                     images.append({
                         'thumbnailUrl': log._thumbnail_url,
                         'url': log._image_url,
-                        'filename': log._image_filename
+                        'filename': log._image_filename,
+                        'date': log._date.strftime('%m%d%Y'),
+                        'dogId': dog.id
                     })
         return json.dumps(images)
 

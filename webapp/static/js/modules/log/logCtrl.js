@@ -14,30 +14,31 @@ define([
 			counts = {},
 			cache = {},
 			currentDay,
-			dogId,
 			today;
 
 		vm.fileTypes = '.jpeg, .jpg, .png, .gif, image/jpeg, image/pjpeg, image/jpeg, image/pjpeg, image/png, image/gif';
 		vm.intensities = ['Light', 'Moderate', 'Hard'];
-		vm.views = ['img', 'foodChart', 'exerciseChart'];
+		vm.viewLabel = {
+			'img': '',
+			'foodChart': 'Daily Caloric Intake',
+			'exerciseChart': 'Daily Exercise'
+		}
+		vm.views = _.keys(vm.viewLabel);
 		vm.view = vm.views[0];
 		vm.pieChart = {
 			food: {
-				title: 'Daily Caloric Intake',
 				collect: 'calories',
 				name: 'Food',
 				metric: 'cal'
 			},
 			exercise: {
-				title: 'Daily Exercise',
 				collect: 'duration',
 				name: 'Activity',
 				metric: 'min'
 			}
 		};
-		vm.notInFuture = notInFuture;
+		vm.currentDay = '';
 		vm.calculateCalories = calculateCalories;
-		
 		vm.editLog = editLog;
 		vm.cancelLog = cancelLog;
 		vm.saveLog = saveLog;
@@ -54,13 +55,17 @@ define([
 
 		function init() {
 			currentDay = $location.url().split('/')[4];
-			dogId = $location.url().split('/')[2];
+			vm.dogId = $location.url().split('/')[2];
 			today = moment();
 			
 			if (!notInFuture(currentDay)) {
-				$location.path('/dog/' + dogId + '/date/' + today.format('MMDDYYYY'));
+				$location.path('/dog/' + vm.dogId + '/date/' + today.format('MMDDYYYY'));
 			}
-
+			vm.currentDay = moment(currentDay, 'MMDDYYYY').format('MMMM D, YYYY');
+			vm.date = {
+                prev: moment(currentDay, 'MMDDYYYY').subtract(1, 'day').format('MMDDYYYY'),
+                next: moment(currentDay, 'MMDDYYYY').add(1, 'day').format('MMDDYYYY')
+            };
 			counts.food = 0;
 			counts.activity = 0;
 			cache.food = new Cache();
@@ -93,7 +98,7 @@ define([
 		}
 
 		function getLog() {
-			return logService.getLog(dogId, currentDay).then(function (response) {
+			return logService.getLog(vm.dogId, currentDay).then(function (response) {
 				vm.log = response;
 				vm.pieChart.food.total = response.dailyCalories;
 				counts.exercise = _.keys(vm.log.exercise).length;
@@ -102,7 +107,7 @@ define([
 		}
 
 		function getDog() {
-			vm.dog = logService.getDog(dogId).then(function (response) {
+			vm.dog = logService.getDog(vm.dogId).then(function (response) {
 				return response;
 			});
 		}
@@ -182,19 +187,19 @@ define([
 			if (deleteableLog()) {
 				logService.deleteLog('log', vm.log.id);
 			} else if (type && vm.log.id) {
-				logService.updateLog(type, dogId, currentDay, vm.log);
+				logService.updateLog(type, vm.dogId, currentDay, vm.log);
 			}
 		}
 
 		function saveLog(type, index) {
-			logService.saveLog(type, dogId, currentDay, vm.log[type][index]).then(function (response) {
+			logService.saveLog(type, vm.dogId, currentDay, vm.log[type][index]).then(function (response) {
 				delete vm.log[type][index].edited;
 				delete vm.log[type][index].new;
 				vm.log[type][index] = response;
 				if (type === 'exercise') {
 					calculateDuration(); 
 				}
-				logService.updateLog(type, dogId, currentDay, vm.log).then(function (response) {
+				logService.updateLog(type, vm.dogId, currentDay, vm.log).then(function (response) {
 					angular.merge(vm.log, response);
 				});
 			}, function (error) {
@@ -226,22 +231,24 @@ define([
 		function capitalize(string) {
 			return string.charAt(0).toUpperCase() + string.slice(1);
 		}
+		
 		function editWeight() {
 			vm.log.edit = true;
 			$timeout(function () {
 				document.querySelector('#weight').focus();
 			});
 		}
+
 		function saveWeight() {
 			delete vm.log.edit;
 			if (deleteableLog()) {
 				logService.deleteLog('log', vm.log.id);
 			} else {
-				logService.updateWeight(dogId, currentDay, vm.log).then(function (response) {
+				logService.updateWeight(vm.dogId, currentDay, vm.log).then(function (response) {
 					angular.merge(vm.log, response);
 				});
 				if (moment(currentDay).isSame(today)) {
-					logService.updateDog(dogId, {weight: vm.log.weight});
+					logService.updateDog(vm.dogId, {weight: vm.log.weight});
 				}
 			}
 		}
@@ -269,7 +276,7 @@ define([
 			upload.readAsDataUrl(vm.log.image, vm).then(function(result) {
 				vm.log.imageUrl = result;
 			});
-			logService.updateImage(dogId, currentDay, vm.log).then(function (response) {
+			logService.updateImage(vm.dogId, currentDay, vm.log).then(function (response) {
 				if (!response.message) {
 					angular.merge(vm.log, response);
 				} else {

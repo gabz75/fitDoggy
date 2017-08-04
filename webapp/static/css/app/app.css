@@ -23,7 +23,6 @@
 }
 .content-container img {
     max-height: 450px;
-    overflow: auto;
     display: inherit;
     margin: auto;
 }
@@ -68,45 +67,13 @@
     text-align: right;
     float: left;
 }
-.log-container {
-    overflow: auto;
-    padding: 15px;
-}
-.log-container.chart {
-    height: 500px;
-}
 .content-container {
     float: left;
     margin: auto;
     width: 100%;
 }
-.chart-container__nav {
-    z-index: 5;
-    width: 35px;
-    color: #999;
-    height: 500px;
-    position: absolute;
-}
-.chart-container__nav i {
-    position: absolute;
-    top: 50%;
-}
-.chart-container__nav.left i {
-    left: 0;
-}
-.chart-container__nav.right {
-    right: 0;
-}
-.chart-container__nav.right i {
-    right: 0;
-}
 .chart-container__footer {
 	text-align: right;
-	color: #999;
-}
-.thumbnail-container .chart-container__nav {
-	line-height: 350px
-	text-align: center;
 	color: #999;
 }
 .gallery__thumbnail {

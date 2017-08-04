@@ -19,26 +19,25 @@ define([
         vm.expand = expand;
         vm.toggle = toggle;
         vm.collapsed = false;
-        vm.notInFuture = notInFuture;
-
         init();
 
         function init() {
-            setLogDates();
+            vm.today = moment(currentDay, 'MMDDYYYY').format('MMDDYYYY'),
             vm.dog = $scope.dog;
             vm.expanded[vm.dog.name] = true;
-            $scope.$on('$locationChangeSuccess', setLogDates);
         }
 
         function activeTab(dogId, tab) {
-            var logPath = $location.path().match(/\/dog\/(\d+)\/date\//),
-                isLog = logPath && logPath[1] == dogId && tab === 'log',
-                overviewPath = $location.path().match(/\/dog\/(\d+)$/),
-                isOverview =  overviewPath && overviewPath[1] == dogId && tab === 'overview';
-            if (isOverview || isLog) {
+            var path = $location.path().match(/\/dog\/(\d+)(\/\w*)?/);
+            if (!path || path.length < 2 || path[1] !== dogId) {
+                return void 0;
+            } 
+            var isLog = tab === 'log' && path[2] === '/date',
+                isOverview = tab === 'overview' && !path[2],
+                isCalendar = tab === 'calendar' && path[2] === '/calendar';
+            if (isOverview || isLog || isCalendar) {
                 return 'active';
             }
-            return void 0;
         }
 
         function expand(dog) {
@@ -47,25 +46,6 @@ define([
 
         function toggle() {
             vm.collapsed = !vm.collapsed;
-        }
-
-        function setLogDates() {
-            var logDate = $location.path().match(/\/dog\/\d+\/date\/(\d+)/);
-            if (logDate && logDate[1]) {
-                currentDay = logDate[1];
-            } else {
-                currentDay = currentDay || moment().format('MMDDYYYY');
-            }
-            vm.activeLogDate = moment().isSame(moment(currentDay, 'MMDDYYYY')) ? 'Today' : moment(currentDay, 'MMDDYYYY').format('MM/DD/YYYY');
-            vm.date = {
-                prev: moment(currentDay, 'MMDDYYYY').subtract(1, 'day').format('MMDDYYYY'),
-                current: moment(currentDay, 'MMDDYYYY').format('MMDDYYYY'),
-                next: moment(currentDay, 'MMDDYYYY').add(1, 'day').format('MMDDYYYY')
-            };
-        }
-
-        function notInFuture(date) {
-            return moment(date, 'MMDDYYYY').isSameOrBefore(moment());
         }
     }
 

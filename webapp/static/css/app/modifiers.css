@@ -24,7 +24,7 @@ form {
 }
 .bg {
 	background: #4392F1;
-    background: -webkit-linear-gradient(to right, #ff9068, #fd746c);
+    background: -webkit-linear-gradient(to right, #4392F1, #1ABC9C);
     background: linear-gradient(to right, #4392F1, #1ABC9C);
 }
 .no-bg {

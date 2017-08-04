@@ -12,16 +12,18 @@
             <a ng-click="vm.expand(vm.dog)">{{vm.dog.name}}</a>
         </li>
         <li class="list-group-item" ng-if="vm.expanded[vm.dog.name]" ng-class="vm.activeTab(vm.dog.id, 'overview')">
-            <a href="#!/dog/{{vm.dog.id}}">Overview</a>
+            <a href="#!/dog/{{vm.dog.id}}">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Overview
+            </a>
         </li>
         <li class="list-group-item" ng-if="vm.expanded[vm.dog.name]" ng-class="vm.activeTab(vm.dog.id, 'log')">
-            <a href="#!/dog/{{vm.dog.id}}/date/{{vm.date.prev}}">
-                <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+            <a href="#!/dog/{{vm.dog.id}}/date/{{vm.today}}">
+                <i class="fa fa-sticky-note-o" aria-hidden="true"></i> Log
             </a>
-
-            <a href="#!/dog/{{vm.dog.id}}/date/{{vm.date.current}}" ng-class="vm.active">Today</a>
-            <a href="#!/dog/{{vm.dog.id}}/date/{{vm.date.next}}" ng-if="vm.notInFuture(vm.date.next)"">
-                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+        </li>
+        <li class="list-group-item" ng-if="vm.expanded[vm.dog.name]" ng-class="vm.activeTab(vm.dog.id, 'calendar')">
+            <a href="#!/dog/{{vm.dog.id}}/calendar">
+                <i class="fa fa-calendar" aria-hidden="true"></i> Calendar
             </a>
         </li>
         <li class="list-group-item">&nbsp;</li>

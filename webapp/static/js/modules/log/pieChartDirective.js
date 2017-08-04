@@ -22,17 +22,22 @@ define([
 			chart;
 		options.series = _.map(series, function (item) {
 			totalSoFar += item[options.collect];
+			console.log(item[options.collect], total, item[options.collect] / total)
 			return {
 				name: item.name, 
 				y: item[options.collect] / total,
 				formatted: item[options.collect] + options.metric
 			};
 		});
-		if (total !== totalSoFar) {
+		if (total > totalSoFar) {
 			options.series.push({
 				name: 'Remaining', 
-				y: (total - totalSoFar) / total,
+				y: Math.floor((total - totalSoFar) / total),
 				formatted: (total - totalSoFar) + options.metric
+			});
+		} else if (totalSoFar > total) {
+			_.forEach(options.series, function (series) {
+				series.colors = ['#e74c3c', '#F79D84', '#D6878B']
 			});
 		}
 		chart = Highcharts.chart('pieChart', pieChartOptions(options));

@@ -14,3 +14,20 @@
     margin-bottom: 15px;
     border-bottom: 2px dashed #1D2B4F;
 }
+.log-container {
+    padding: 15px;
+    position: relative;
+}
+.log-container.chart {
+    height: 100%;
+}
+.log-container.log {
+    height: 45%;
+}
+.img-container {
+    overflow: hidden;
+    width: 100%;
+}
+.thumbnail-container {
+    height: 475px;
+}

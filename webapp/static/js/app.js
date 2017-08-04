@@ -7,12 +7,12 @@ define([
     'common/services/cache/cacheService',
     'common/services/dialog/dialog',
     'common/services/httpService',
-    'common/factories/breadcrumb',
     'common/factories/upload',
     'common/factories/notification',
     'common/directives/navBar',
     'common/directives/sideBar',
     'modules/home/home',
+    'modules/calendar/calendar',
     'modules/details/details',
     'modules/log/log',
     'modules/updateDog/updateDog',
@@ -24,7 +24,6 @@ define([
     angular.module('app', [
         'ngRoute',
         'ngCookies',
-        'common.breadcrumb',
         'common.cache',
         'common.cacheService',
         'common.dialog',
@@ -33,6 +32,7 @@ define([
         'common.service',
         'common.sideBar',
         'common.upload',
+        'calendar',
         'details',
         'home',
         'log',
@@ -81,6 +81,11 @@ define([
         .when('/disclaimer', {
             templateUrl: '/static/partials/disclaimer.html'
         })
+        .when('/dog/:dog/calendar', {
+            templateUrl: '/static/partials/calendar.html',
+            controller: 'calendarCtrl',
+            controllerAs: 'vm'
+        })
         .otherwise({
             redirectTo: '/home'
         });
@@ -92,7 +97,9 @@ define([
             loggedIn,
             init;
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            var restricted = $location.path() !== '/user';
+            var path = $location.path(),
+                restricted = path !== '/user',
+                selected = path.match(/\/dog\/(\d+)/);
             loggedIn = $cookies.get('user') || $cookies.get('demo');
             if (restricted && !loggedIn) {
                 $location.path('/user');
@@ -100,10 +107,13 @@ define([
                 return;
             }
             if (loggedIn && !init) {
-                console.log('init');
                 initUser();
             }
-            selectDog();
+            if (selected && selected.length > 1) {
+                selectDog();
+            } else {
+                $rootScope.selectedDog = void 0;   
+            }
         });
 
         function initUser() {
@@ -123,19 +133,19 @@ define([
 
         function selectDog() {
             var dog = $location.path().match(/\/dog\/(\d+)/);
-            console.log(dog);
             if (dog && dog.length > 1 && dog[1]) {
-
                 if (!$rootScope.selectedDog || $rootScope.selectedDog.id !== dog[1]){
                     $q.when($rootScope.dogs).then(function (response) {
-                        console.log(response);
-                        $rootScope.selectedDog = _.find(response, function (dog) {
-                            return dog.id === dog[1];
-                        })[0];
+                        $rootScope.selectedDog = _.find(response.data, function (data) {
+                            return data.id === dog[1];
+                        });
+                        var cookieExp = new Date();
+                        cookieExp.setDate(cookieExp.getDate() + 7);
+                        $cookies.putObject('dog', $rootScope.selectedDog, {expires: cookieExp});
                     });
                 }
             } else {
-                $rootScope.selectedDog = void 0;
+                $rootScope.selectedDog = $cookies.get('dog');
             }
         }
         $rootScope.$on('$destroy', function () {

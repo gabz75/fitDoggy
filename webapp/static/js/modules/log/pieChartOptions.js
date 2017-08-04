@@ -10,16 +10,11 @@ define([
         return function (options) {
             return {
                 chart: {
-                    height: '50%',
+                    height: '475px',
                     plotShadow: false,
                     type: 'pie'
                 },
-                title: {
-                    text: options.title
-                },
-                tooltip: {
-                    pointFormat: '<b>{point.formatted}</b>'
-                },
+                colors: ['#4392F1', '#34495E', '#1ABC9C', '#434348'],
                 plotOptions: {
                     pie: {
                         dataLabels: {
@@ -37,7 +32,13 @@ define([
                 series: [{
                     name: options.name,
                     data: options.series
-                }]
+                }],
+                title: {
+                    text: ''
+                },
+                tooltip: {
+                    pointFormat: '<b>{point.formatted}</b>'
+                }
             }
         }
     }

@@ -14,17 +14,13 @@ define([
 
         function onLoad(reader, deferred, $scope) {
             return function () {
-                // $scope.$apply(function () {
-                    deferred.resolve(reader.result);
-                // });
+                deferred.resolve(reader.result);
             };
         }
  
         function onError(reader, deferred, $scope) {
             return function () {
-                // $scope.$apply(function () {
-                    deferred.reject(reader.result);
-                // });
+                deferred.reject(reader.result);
             };
         }
  

@@ -1,0 +1,21 @@
+<div id="calendar">
+    <div class="calendar__header c-align">
+        <span ng-if="vm.hasPrev()">
+            <i class="fa fa-angle-left" ng-click="vm.prev()"></i>
+        </span>
+        <h4>{{vm.current.format('MMMM') + ', ' + vm.current.format('YYYY')}}</h4>
+        <span ng-if="vm.hasNext()">
+            <i class="fa fa-angle-right" ng-click="vm.next()"></i>
+        </span>
+    </div>
+    <ul class="weekdays">
+        <li ng-repeat="day in vm.week">{{day}}</li>
+    </ul>
+    <ul class="days">
+        <li class="day" ng-class="vm.dateClass(day.date)" ng-repeat="day in vm.days" style="background-image: url({{day.img}})">
+            <a class="calendar__link" href="{{day.logUrl}}">
+                <div class="date">{{day.date.format('D')}}</div>
+            </a>
+        </li>
+    </ul>
+</div>
